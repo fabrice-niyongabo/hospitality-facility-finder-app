@@ -1,0 +1,8 @@
+@import "colors";
+@import "fonts";
+@import "mixins";
+
+h2 {
+  font-family: $quickSand;
+  color: $darkBlack;
+}
