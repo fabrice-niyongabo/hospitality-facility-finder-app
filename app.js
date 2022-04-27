@@ -91,42 +91,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
-  try {
-    // Get user input
-    const { email, password } = req.body;
-
-    // Validate user input
-    if (!(email && password)) {
-      res.status(400).send("Please provide your email and password");
-    }
-    // Validate if user exist in our database
-    const user = await User.findOne({ email });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email, username: user.username },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
-
-      // save user token
-      user.token = token;
-
-      // user
-      res.status(200).json({
-        token: user.token,
-      });
-    }
-    res.status(400).send("Wrong username or password");
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 //endpoints for the apis
 app.get("/profile/", auth, async (req, res) => {
   const user = await User.findOne({
@@ -558,6 +522,9 @@ app.get("/dishes/restaurant/:id", (req, res) => {
   }
 });
 
+const usersRoute = require("./routes/users");
+app.use("/api/users/", usersRoute);
+
 //404 route
 app.use("*", (req, res) => {
   res.status(404).json({
@@ -570,7 +537,6 @@ app.use("*", (req, res) => {
   });
 });
 
-// const { PORT } = process.env;
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
