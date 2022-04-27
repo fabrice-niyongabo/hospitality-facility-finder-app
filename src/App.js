@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Contact from "./components/Contact";
 import Home from "./components/Home";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -8,6 +11,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<SignUp />} />
+          <Route exact path="/contact" element={<Contact />} />
           {/* <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="home" element={<Home />}></Route>

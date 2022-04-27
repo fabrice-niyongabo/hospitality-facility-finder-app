@@ -1,0 +1,67 @@
+@import "colors";
+@import "fonts";
+@import "mixins";
+
+.login-main-container {
+  background-color: $lightOrange;
+  height: 100%;
+  .login-contents {
+    height: max-content;
+    padding: 4rem 5rem;
+
+    .login-header {
+      h1 {
+        font-family: $quickSand;
+        font-size: 50px;
+      }
+      p {
+        font-family: $roboto;
+        font-size: 25px;
+      }
+    }
+    .form-container {
+      margin-left: auto;
+      margin-right: auto;
+      width: 40%;
+      font-family: $roboto;
+      a {
+        color: $orange;
+      }
+      input {
+        padding: 10px 15px;
+      }
+      .phone-container {
+        @include flex-space;
+        input {
+          &:first-child {
+            text-align: center;
+            width: 50px;
+            padding: 10px 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            background-color: $lightOrange;
+            border: 1px solid $black;
+          }
+          &:last-child {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+          }
+        }
+      }
+      button {
+        width: 100%;
+        border-radius: 5px;
+        padding: 10px;
+        border: none;
+        background-color: $orange;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  .footer {
+    img {
+      width: 100%;
+    }
+  }
+}

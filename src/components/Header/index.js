@@ -1,7 +1,9 @@
 import React from "react";
 import { FaHome } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
-import { MdLogin, MdRestaurant } from "react-icons/md";
+import { MdLogin } from "react-icons/md";
+import { RiEditCircleLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 import "../../styles/header.scss";
 
@@ -14,20 +16,28 @@ function Header() {
       <div>
         <ul>
           <li>
-            <FaHome size={20} color="black" />
-            <span>Home</span>
+            <Link to="/">
+              <FaHome size={20} color="black" />
+              <span>Home</span>
+            </Link>
           </li>
           <li>
-            <MdRestaurant size={20} color="black" />
-            <span>Create facility</span>
+            <Link to="/contact">
+              <IoMdCall size={20} color="black" />
+              <span>Contact Us</span>
+            </Link>
           </li>
           <li>
-            <IoMdCall size={20} color="black" />
-            <span>Contact Us</span>
+            <Link to="/signup">
+              <RiEditCircleLine size={20} color="black" />
+              <span>Signup</span>
+            </Link>
           </li>
           <li>
-            <MdLogin size={20} color="black" />
-            <span>login</span>
+            <Link to="/login">
+              <MdLogin size={20} color="black" />
+              <span>Login</span>
+            </Link>
           </li>
         </ul>
       </div>
