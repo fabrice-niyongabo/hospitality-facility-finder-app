@@ -15,7 +15,6 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/contact" element={<Contact />} />
-
           <Route
             exact
             path="/login"
