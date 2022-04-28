@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/controller/ProtectedRoute";
+import UnProtectedRoute from "./components/controller/UnProtectedRoute";
 
 function App() {
   return (
@@ -13,9 +14,25 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/contact" element={<Contact />} />
+
+          <Route
+            exact
+            path="/login"
+            element={
+              <UnProtectedRoute>
+                <Login />
+              </UnProtectedRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <UnProtectedRoute>
+                <SignUp />
+              </UnProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
