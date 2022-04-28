@@ -4,6 +4,8 @@ import Contact from "./components/Contact";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import Dashboard from "./components/Dashboard";
+import ProtectedRoute from "./components/controller/ProtectedRoute";
 
 function App() {
   return (
@@ -14,9 +16,6 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/contact" element={<Contact />} />
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="home" element={<Home />}></Route>
           <Route
             path="/dashboard"
             element={
@@ -24,7 +23,7 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
-          /> */}
+          />
         </Routes>
       </BrowserRouter>
     </>

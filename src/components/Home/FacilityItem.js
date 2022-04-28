@@ -22,7 +22,7 @@ function FacilityItem({ facility }) {
   return (
     <div className="col-md-4">
       <div className="facility-container">
-        <img src={getImage(facility.image)} />
+        <img alt={facility.title} src={getImage(facility.image)} />
         <div className="title-container">
           <div>
             <h3>{facility.title}</h3>
