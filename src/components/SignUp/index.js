@@ -1,9 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import Axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setuserCompanyName,
+  setUserEmail,
+  setUserFullName,
+  setUserPhone,
+  setUserRole,
+  setUserToken,
+} from "../../actions/user";
 
 function SignUp() {
+  const dispatch = useDispatch();
+  const userObj = useSelector((state) => state.user);
   const [state, setState] = useState({
     fullName: "",
     phone: "",
@@ -19,6 +30,13 @@ function SignUp() {
     password: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    if (userObj.token.trim() !== "") {
+      window.location = "dashboard";
+    }
+  }, []);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const validPhoneCode = ["8", "9", "2", "3"];
 
@@ -142,15 +160,14 @@ function SignUp() {
     });
     Axios.post(process.env.REACT_APP_BACKEND_URL + "/users/register/", state)
       .then((res) => {
-        console.log("res", res);
-        setState({
-          fullName: "",
-          phone: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-        setIsSubmitting(false);
+        console.log("res", res.data);
+        dispatch(setUserFullName(res.data.fullName));
+        dispatch(setUserPhone(res.data.phone));
+        dispatch(setUserEmail(res.data.email));
+        dispatch(setuserCompanyName(res.data.companyName));
+        dispatch(setUserRole(res.data.role));
+        dispatch(setUserToken(res.data.token));
+        window.location = "dashboard";
       })
       .catch((error) => {
         setIsSubmitting(false);

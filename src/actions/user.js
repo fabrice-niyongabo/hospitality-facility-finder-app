@@ -1,75 +1,51 @@
-export const SET_CURRENT_USER_FNAME = "SET_CURRENT_USER_FNAME";
-export const SET_CURRENT_USER_LNAME = "SET_CURRENT_USER_LNAME";
-export const SET_CURRENT_USER_ID = "SET_CURRENT_USER_ID";
-export const SET_CURRENT_USER_USERNAME = "SET_CURRENT_USER_USERNAME";
-export const SET_CURRENT_USER_PHONE = "SET_CURRENT_USER_PHONE";
-export const SET_CURRENT_USER_EMAIL = "SET_CURRENT_USER_EMAIL";
-export const SET_CURRENT_USER_IMAGE = "SET_CURRENT_USER_IMAGE";
-export const SET_CURRENT_USER_DESCRIPTION = "SET_CURRENT_USER_DESCRIPTION";
-export const SET_CURRENT_USER_WORK = "SET_CURRENT_USER_WORK";
-export const RESET_CURRENT_USER = "RESET_CURRENT_USER";
+export const SET_USER_FULL_NAME = "SET_USER_FULL_NAME";
+export const SET_USER_PHONE = "SET_USER_PHONE";
+export const SET_USER_EMAIL = "SET_USER_EMAIL";
+export const SET_USER_COMPANY_NAME = "SET_USER_COMPANY_NAME";
+export const SET_USER_ROLE = "SET_USER_ROLE";
+export const SET_USER_TOKEN = "SET_USER_TOKEN";
+export const RESET_USER = "RESET_USER";
 
-export const setCurrentUserFname = (fname) => (dispatch) => {
+export const setUserFullName = (names) => (dispatch) => {
   dispatch({
-    type: SET_CURRENT_USER_FNAME,
-    payload: fname,
+    type: SET_USER_FULL_NAME,
+    payload: names,
   });
 };
 
-export const setCurrentUserLname = (lname) => (dispatch) => {
+export const setuserCompanyName = (name) => (dispatch) => {
   dispatch({
-    type: SET_CURRENT_USER_LNAME,
-    payload: lname,
+    type: SET_USER_COMPANY_NAME,
+    payload: name,
   });
 };
 
-export const setCurrentUserId = (id) => (dispatch) => {
+export const setUserPhone = (phone) => (dispatch) => {
   dispatch({
-    type: SET_CURRENT_USER_ID,
-    payload: id,
-  });
-};
-
-export const setCurrentUserUsername = (username) => (dispatch) => {
-  dispatch({
-    type: SET_CURRENT_USER_USERNAME,
-    payload: username,
-  });
-};
-
-export const setCurrentUserPhone = (phone) => (dispatch) => {
-  dispatch({
-    type: SET_CURRENT_USER_PHONE,
+    type: SET_USER_PHONE,
     payload: phone,
   });
 };
 
-export const setCurrentUserEmail = (email) => (dispatch) => {
+export const setUserRole = (role) => (dispatch) => {
   dispatch({
-    type: SET_CURRENT_USER_EMAIL,
+    type: SET_USER_ROLE,
+    payload: role,
+  });
+};
+
+export const setUserEmail = (email) => (dispatch) => {
+  dispatch({
+    type: SET_USER_EMAIL,
     payload: email,
   });
 };
 
-export const setCurrentUserImage = (image) => (dispatch) => {
+export const setUserToken = (token) => (dispatch) => {
   dispatch({
-    type: SET_CURRENT_USER_IMAGE,
-    payload: image,
+    type: SET_USER_TOKEN,
+    payload: token,
   });
 };
 
-export const setCurrentUserDescription = (description) => (dispatch) => {
-  dispatch({
-    type: SET_CURRENT_USER_DESCRIPTION,
-    payload: description,
-  });
-};
-
-export const setCurrentUserWork = (work) => (dispatch) => {
-  dispatch({
-    type: setCurrentUserWork,
-    payload: work,
-  });
-};
-
-export const resetCurrentUser = () => ({ type: RESET_CURRENT_USER });
+export const restUser = () => ({ type: RESET_USER });

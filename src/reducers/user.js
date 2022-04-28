@@ -1,77 +1,49 @@
 import {
-  SET_CURRENT_USER_FNAME,
-  SET_CURRENT_USER_LNAME,
-  SET_CURRENT_USER_ID,
-  SET_CURRENT_USER_USERNAME,
-  SET_CURRENT_USER_PHONE,
-  SET_CURRENT_USER_EMAIL,
-  SET_CURRENT_USER_IMAGE,
-  SET_CURRENT_USER_DESCRIPTION,
-  SET_CURRENT_USER_WORK,
-  RESET_CURRENT_USER,
+  SET_USER_FULL_NAME,
+  SET_USER_COMPANY_NAME,
+  SET_USER_ROLE,
+  SET_USER_EMAIL,
+  SET_USER_PHONE,
+  SET_USER_TOKEN,
+  RESET_USER,
 } from "../actions/user";
 
 const initialState = {
-  id: "",
-  username: null,
-  fname: "",
-  lname: "",
+  fullName: "",
+  companyName: "",
   phone: "",
   email: "",
-  image: "",
-  work: "",
-  description: "",
+  role: "",
+  token: "",
 };
-
-// const initialState = {
-//   id: "",
-//   fullName: "",
-//   companyName: "",
-//   phone: "",
-//   role: "",
-// };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-    case SET_CURRENT_USER_ID:
-      return { ...state, id: action.payload };
-
-    case SET_CURRENT_USER_USERNAME:
-      return { ...state, username: action.payload };
-
-    case SET_CURRENT_USER_FNAME:
-      return { ...state, fname: action.payload };
-
-    case SET_CURRENT_USER_LNAME:
-      return { ...state, lname: action.payload };
-
-    case SET_CURRENT_USER_PHONE:
+    case SET_USER_PHONE:
       return { ...state, phone: action.payload };
 
-    case SET_CURRENT_USER_EMAIL:
+    case SET_USER_EMAIL:
       return { ...state, email: action.payload };
 
-    case SET_CURRENT_USER_IMAGE:
-      return { ...state, image: action.payload };
+    case SET_USER_TOKEN:
+      return { ...state, token: action.payload };
 
-    case SET_CURRENT_USER_WORK:
-      return { ...state, work: action.payload };
+    case SET_USER_ROLE:
+      return { ...state, role: action.payload };
 
-    case SET_CURRENT_USER_DESCRIPTION:
-      return { ...state, description: action.payload };
+    case SET_USER_COMPANY_NAME:
+      return { ...state, companyName: action.payload };
 
-    case RESET_CURRENT_USER:
+    case SET_USER_FULL_NAME:
+      return { ...state, fullName: action.payload };
+
+    case RESET_USER:
       return {
-        ...state,
-        id: "",
-        username: null,
-        fname: "",
-        lname: "",
+        fullName: "",
+        companyName: "",
         phone: "",
         email: "",
-        image: "",
-        work: "",
-        description: "",
+        role: "",
       };
 
     default:
