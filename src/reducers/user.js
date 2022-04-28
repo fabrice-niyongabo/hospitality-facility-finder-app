@@ -23,6 +23,14 @@ const initialState = {
   description: "",
 };
 
+// const initialState = {
+//   id: "",
+//   fullName: "",
+//   companyName: "",
+//   phone: "",
+//   role: "",
+// };
+
 const user = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_USER_ID:
