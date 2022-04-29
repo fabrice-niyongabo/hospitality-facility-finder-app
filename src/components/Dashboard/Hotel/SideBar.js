@@ -1,9 +1,11 @@
 import React from "react";
-import { FaBed, FaRegUserCircle } from "react-icons/fa";
+import { FaBed, FaHome, FaRegUserCircle } from "react-icons/fa";
 import { SiHotelsdotcom } from "react-icons/si";
 import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
+import { RiLogoutCircleLine } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function SideBar() {
   const { fullName } = useSelector((state) => state.user);
@@ -44,6 +46,18 @@ function SideBar() {
           <GrUserSettings color="#f46a06" size={25} />
           <span>My account</span>
         </li>
+        <Link to="/">
+          <li>
+            <FaHome color="#f46a06" size={25} />
+            <span>Home page</span>
+          </li>
+        </Link>
+        <Link to="/logout">
+          <li>
+            <RiLogoutCircleLine color="#f46a06" size={25} />
+            <span>Logout</span>
+          </li>
+        </Link>
       </ul>
     </div>
   );
