@@ -48,4 +48,4 @@ export const setUserToken = (token) => (dispatch) => {
   });
 };
 
-export const restUser = () => ({ type: RESET_USER });
+export const resetUser = () => ({ type: RESET_USER });

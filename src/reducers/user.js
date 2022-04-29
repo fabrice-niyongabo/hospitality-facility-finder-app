@@ -44,6 +44,7 @@ const user = (state = initialState, action) => {
         phone: "",
         email: "",
         role: "",
+        token: "",
       };
 
     default:

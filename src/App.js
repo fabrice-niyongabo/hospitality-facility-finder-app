@@ -7,6 +7,7 @@ import SignUp from "./components/SignUp";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/controller/ProtectedRoute";
 import UnProtectedRoute from "./components/controller/UnProtectedRoute";
+import Logout from "./components/Logout";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/contact" element={<Contact />} />
+          <Route exact path="/logout" element={<Logout />} />
           <Route
             exact
             path="/login"

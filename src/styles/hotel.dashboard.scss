@@ -1,0 +1,140 @@
+@import "colors";
+@import "fonts";
+@import "mixins";
+
+body {
+  background-color: $orange !important;
+}
+
+.dashoard-main-container {
+  position: relative;
+  padding-top: 1rem;
+  .sidebar {
+    position: absolute;
+    left: 0;
+    background: $white;
+    border-radius: 10px;
+    margin-left: 15px;
+    width: 350px;
+    .main-contents {
+      height: 90vh;
+      .user-main-container {
+        padding: 1rem;
+        padding-bottom: 0;
+        margin-top: 2rem;
+        .rw {
+          @include flex-space;
+          .icon {
+            background-color: $orange;
+            border-radius: 100%;
+            padding: 5px;
+          }
+          .details {
+            width: 100%;
+            margin-left: 10px;
+            h2 {
+              font-family: $quickSand;
+              margin: 0;
+              padding: 0;
+              font-size: 18px;
+            }
+            .title {
+              @include flex-center;
+              width: auto;
+              justify-content: flex-start;
+              div {
+                width: 20px;
+                height: 12px;
+                background-color: $pink;
+                border-radius: 10px;
+              }
+              span {
+                color: $textGray;
+                font-size: 12px;
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        margin-top: 4rem;
+        li {
+          list-style: none;
+          font-family: $roboto;
+          @include flex-center;
+          justify-content: flex-start;
+          padding: 10px 1rem;
+          margin-bottom: 10px;
+          transition: 1s;
+          span {
+            margin-left: 10px;
+          }
+          &:hover {
+            background-color: $black;
+            color: $white;
+            cursor: pointer;
+          }
+        }
+        li.active {
+          background-color: $black;
+          color: $white;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .contents {
+    width: calc(100% - (15px + 350px));
+    margin-left: calc(350px + 15px);
+    margin-top: 1.5rem;
+    padding: 0px 25px;
+    .contents-header {
+      @include flex-space;
+      .title {
+        @include flex-end;
+        span {
+          font-size: 14px;
+          font-family: $roboto;
+          font-weight: 600;
+          padding-left: 10px;
+        }
+      }
+      .company {
+        color: $white;
+        font-family: $quickSand;
+        text-transform: capitalize;
+      }
+    }
+    .main-contents-container {
+      margin-top: 15px;
+      background-color: $lightOrange;
+      border-radius: 10px;
+      padding: 2rem;
+      .br {
+        height: 2px;
+        background-color: $darkGray;
+      }
+      .br-right {
+        border-right: 2px solid $darkGray;
+      }
+      .br-left {
+        border-left: 2px solid $darkGray;
+      }
+      .hotel-service {
+        @include flex-center;
+        flex-direction: column;
+        h2 {
+          font-family: $quickSand;
+          font-size: 20px;
+        }
+        span {
+          font-family: $roboto;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
