@@ -1,0 +1,23 @@
+@import "colors";
+@import "fonts";
+@import "mixins";
+
+.info-container {
+  background-color: $white;
+  border-radius: 10px;
+  .header {
+    padding: 1rem;
+    font-size: 20px;
+    font-family: $quickSand;
+  }
+  .info-contents {
+    padding: 1rem;
+    textarea {
+      height: 150px;
+    }
+  }
+  button {
+    color: $white;
+    background: $orange;
+  }
+}

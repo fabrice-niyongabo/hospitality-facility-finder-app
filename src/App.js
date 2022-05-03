@@ -8,6 +8,9 @@ import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/controller/ProtectedRoute";
 import UnProtectedRoute from "./components/controller/UnProtectedRoute";
 import Logout from "./components/Logout";
+import Description from "./components/Dashboard/Description/";
+import ManageRooms from "./components/Dashboard/Hotel/ManageRooms";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -42,8 +45,26 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/description"
+            element={
+              <ProtectedRoute>
+                <Description />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managerooms"
+            element={
+              <ProtectedRoute>
+                <ManageRooms />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

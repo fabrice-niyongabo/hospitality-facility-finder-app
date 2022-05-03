@@ -1,14 +1,16 @@
 @import "colors";
 @import "fonts";
 @import "mixins";
-
-body {
-  background-color: $orange !important;
+.body {
+  height: 100vh;
+  background-color: $orange;
 }
-
 .dashoard-main-container {
   position: relative;
   padding-top: 1rem;
+  height: fit-content;
+  background-color: $orange;
+
   .sidebar {
     position: absolute;
     left: 0;
@@ -141,5 +143,56 @@ body {
         }
       }
     }
+  }
+}
+
+.manage-room-header {
+  @include flex-space;
+  border-bottom: 1px solid $gray;
+  padding-bottom: 15px;
+  h3 {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    font-family: $quickSand;
+  }
+  button {
+    background: $orange;
+    color: $white;
+  }
+}
+
+.room-table {
+  table {
+    width: 100%;
+    th {
+      background-color: $lightOrange;
+      padding: 5px;
+    }
+    tr:nth-of-type(even) {
+      background-color: $lightOrange;
+    }
+    td {
+      padding: 5px;
+    }
+  }
+  .icons {
+    @include flex-space;
+    div {
+      background-color: $orange;
+      border-radius: 100%;
+      width: 30px;
+      height: 30px;
+      @include flex-center;
+    }
+  }
+}
+
+.manage-rooms-footer {
+  h3 {
+    font-size: 18px;
+    font-family: $roboto;
+    margin: 0;
+    padding: 0;
   }
 }

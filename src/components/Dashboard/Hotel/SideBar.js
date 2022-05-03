@@ -7,8 +7,11 @@ import { MdDashboard } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function SideBar() {
+function SideBar({ activate }) {
   const { fullName } = useSelector((state) => state.user);
+
+  const activateMe = (cls) => (activate === cls ? "active" : "");
+
   return (
     <div className="main-contents">
       <div className="user-main-container">
@@ -26,26 +29,36 @@ function SideBar() {
         </div>
       </div>
       <ul>
-        <li className="active">
-          <MdDashboard color="#f46a06" size={25} />
-          <span>Dashboard</span>
-        </li>
-        <li>
-          <SiHotelsdotcom color="#f46a06" size={25} />
-          <span>Hotel Description</span>
-        </li>
-        <li>
-          <FaBed color="#f46a06" size={25} />
-          <span>Manage Rooms</span>
-        </li>
-        <li>
-          <GrSettingsOption colorProfile="#f46a06" size={25} />
-          <span>Manage Services</span>
-        </li>
-        <li>
-          <GrUserSettings color="#f46a06" size={25} />
-          <span>My account</span>
-        </li>
+        <Link to="/dashboard">
+          <li className={activateMe("dashboard")}>
+            <MdDashboard color="#f46a06" size={25} />
+            <span>Dashboard</span>
+          </li>
+        </Link>
+        <Link to="/description">
+          <li className={activateMe("description")}>
+            <SiHotelsdotcom color="#f46a06" size={25} />
+            <span>Hotel Description</span>
+          </li>
+        </Link>
+        <Link to="/managerooms">
+          <li className={activateMe("managerooms")}>
+            <FaBed color="#f46a06" size={25} />
+            <span>Manage Rooms</span>
+          </li>
+        </Link>
+        <Link to="/manageservices">
+          <li className={activateMe("manageservices")}>
+            <GrSettingsOption colorProfile="#f46a06" size={25} />
+            <span>Manage Services</span>
+          </li>
+        </Link>
+        <Link to="/account">
+          <li className={activateMe("account")}>
+            <GrUserSettings color="#f46a06" size={25} />
+            <span>My account</span>
+          </li>
+        </Link>
         <Link to="/">
           <li>
             <FaHome color="#f46a06" size={25} />
