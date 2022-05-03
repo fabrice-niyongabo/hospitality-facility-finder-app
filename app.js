@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("./config/database").connect();
 const express = require("express");
+const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -14,6 +15,8 @@ const auth = require("./middleware/auth");
 const app = express();
 
 app.use(express.json({ limit: "50mb" }));
+
+app.use(cors());
 
 //home route
 app.get("/", (req, res) => {
@@ -435,26 +438,10 @@ app.get("/dishes", (req, res) => {
   });
 });
 
-app.get("/dishes/restaurant/:id", (req, res) => {
-  const { id } = req.params;
-  if (!id) {
-    res.json({
-      status: "error",
-      message: "Please provide restaurant's id",
-    });
-  } else {
-    Dishes.find({ restaurantId: id }, (err, result) => {
-      if (err) {
-        return res.json(err);
-      } else {
-        res.json(result);
-      }
-    });
-  }
-});
-
 const usersRoute = require("./routes/users");
+const facilityRoute = require("./routes/facility");
 app.use("/api/users/", usersRoute);
+app.use("/api/facility/", facilityRoute);
 
 //404 route
 app.use("*", (req, res) => {

@@ -1,4 +1,6 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const Users = require("../model/users");
@@ -24,6 +26,7 @@ router.post("/login", async (req, res) => {
           role: user.role,
           phone: user.phone,
           createdAt: user.createdAt,
+          companyName: user.companyName,
           fullName: user.fullName,
         },
         process.env.TOKEN_KEY,
@@ -37,12 +40,16 @@ router.post("/login", async (req, res) => {
 
       // user
       res.status(200).json({
+        phone: user.phone,
+        email: user.email,
+        fullName: user.fullName,
+        companyName: user.companyName,
+        role: user.role,
         token: user.token,
-        phone,
-        fullName,
       });
+    } else {
+      res.status(400).send({ msg: "Wrong username or password" });
     }
-    res.status(400).send({ msg: "Wrong username or password" });
   } catch (err) {
     console.log(err);
     res.status(400).send({
@@ -66,10 +73,12 @@ router.post("/register", async (req, res) => {
 
     // check if user already exist
     // Validate if user exist in our database
-    const oldUser = await Users.findOne({ email, username });
+    const oldUser = await Users.findOne({ email, phone });
 
     if (oldUser) {
-      return res.status(409).send({ msg: "User Already Exist. Please Login" });
+      return res
+        .status(409)
+        .send({ msg: "Email and phone number already exists." });
     }
 
     //Encrypt user password
@@ -91,6 +100,7 @@ router.post("/register", async (req, res) => {
         fullName,
         role: user.role,
         phone: user.phone,
+        companyName: user.companyName,
         createdAt: user.createdAt,
       },
       process.env.TOKEN_KEY,
@@ -106,13 +116,16 @@ router.post("/register", async (req, res) => {
       status: "success",
       msg: "User created successfull!",
       phone,
+      email,
       fullName,
+      companyName: user.companyName,
+      role: user.role,
       token: user.token,
     });
   } catch (err) {
     console.log(err);
     res.status(400).send({
-      msg: "Something went wrong while creating your account. Try again later",
+      msg: err.message,
     });
   }
 });
