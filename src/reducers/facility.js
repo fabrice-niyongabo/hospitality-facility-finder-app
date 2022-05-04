@@ -1,4 +1,9 @@
-import { SET_FACILITY, RESET_FACILITY } from "../actions/facility";
+import {
+  SET_FACILITY,
+  RESET_FACILITY,
+  SET_LOADING_ROOMS,
+  SET_ROOMS,
+} from "../actions/facility";
 
 const initialState = {
   details: {
@@ -11,6 +16,10 @@ const initialState = {
     stars: "",
     averagePrice: "",
     image: "",
+  },
+  rooms: {
+    loading: true,
+    allRooms: [],
   },
 };
 
@@ -42,6 +51,16 @@ const user = (state = initialState, action) => {
           averagePrice,
         },
       };
+    case SET_LOADING_ROOMS:
+      return {
+        ...state,
+        rooms: { ...state.rooms, loading: action.payload },
+      };
+    case SET_ROOMS:
+      return {
+        ...state,
+        rooms: { ...state.rooms, allRooms: action.payload },
+      };
 
     case RESET_FACILITY:
       return {
@@ -55,6 +74,10 @@ const user = (state = initialState, action) => {
           stars: "",
           averagePrice: "",
           image: "",
+        },
+        rooms: {
+          loading: true,
+          allRooms: [],
         },
       };
 

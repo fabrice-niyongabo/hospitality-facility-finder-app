@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.info-container {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.info-container .header {
+  padding: 1rem;
+  font-size: 20px;
+  font-family: "Quicksand", sans-serif;
+}
+
+.info-container .info-contents {
+  padding: 1rem;
+}
+
+.info-container .info-contents textarea {
+  height: 120px;
+}
+
+.info-container button {
+  color: #fff;
+  background: #f46a06;
+}
+/*# sourceMappingURL=description.css.map */

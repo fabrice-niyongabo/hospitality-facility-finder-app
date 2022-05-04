@@ -178,6 +178,10 @@
   }
   .icons {
     @include flex-space;
+    button {
+      border: none;
+      background-color: transparent;
+    }
     div {
       background-color: $orange;
       border-radius: 100%;
@@ -195,4 +199,11 @@
     margin: 0;
     padding: 0;
   }
+}
+
+.bg-orange {
+  background-color: $orange !important;
+}
+.text-orange {
+  color: $orange;
 }

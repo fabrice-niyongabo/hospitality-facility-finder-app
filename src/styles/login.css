@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.login-main-container {
+  background-color: #f1e8d7;
+  height: 100%;
+}
+
+.login-main-container .login-contents {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding: 4rem 5rem;
+}
+
+.login-main-container .login-contents .login-header h1 {
+  font-family: "Quicksand", sans-serif;
+  font-size: 50px;
+}
+
+.login-main-container .login-contents .login-header p {
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+}
+
+.login-main-container .login-contents .form-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  font-family: "Roboto", sans-serif;
+}
+
+.login-main-container .login-contents .form-container a {
+  color: #f46a06;
+}
+
+.login-main-container .login-contents .form-container input {
+  padding: 10px 15px;
+}
+
+.login-main-container .login-contents .form-container .phone-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.login-main-container .login-contents .form-container .phone-container input:first-child {
+  text-align: center;
+  width: 50px;
+  padding: 10px 5px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #f1e8d7;
+  border: 1px solid #1f1c1c;
+}
+
+.login-main-container .login-contents .form-container .phone-container input:last-child {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.login-main-container .login-contents .form-container button {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  background-color: #f46a06;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.login-main-container .footer img {
+  width: 100%;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+/*# sourceMappingURL=login.css.map */

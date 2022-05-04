@@ -48,3 +48,12 @@ export const toastMessage = (type, message) => {
     toast.success(message);
   }
 };
+
+export const errorHandler = (error) => {
+  if (error.response.data.msg) {
+    toastMessage("error", error.response.data.msg);
+  } else {
+    toastMessage("error", error.message);
+  }
+  handleAuthError(error);
+};

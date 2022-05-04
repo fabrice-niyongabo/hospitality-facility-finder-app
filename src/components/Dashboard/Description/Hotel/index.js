@@ -54,9 +54,9 @@ function Hotel({ user }) {
               setIsSubmitting(false);
               handleAuthError(error);
               console.log(error);
-              if (error.response.msg) {
+              if (error.response.data.msg) {
                 setMessage(error.response.msg);
-                toastMessage("error", error.response.msg);
+                toastMessage("error", error.response.data.msg);
               } else {
                 setMessage(error.message);
                 toastMessage("error", error.message);
@@ -65,8 +65,6 @@ function Hotel({ user }) {
         })
         .catch((error) => {
           setIsSubmitting(false);
-          console.log("error");
-          console.log(error);
           toastMessage("error", error.message);
         });
     } else {
