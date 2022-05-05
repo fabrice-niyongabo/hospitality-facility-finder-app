@@ -63,20 +63,23 @@ function ManageServices() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowLoader(true);
-    Axios.post(process.env.REACT_APP_BACKEND_URL + "/services/add/", {
-      token: userObj.token,
-      name,
-    })
-      .then((res) => {
-        setShowLoader(false);
-        toastMessage("success", res.data.msg);
-        setServices([...services, res.data.service]);
+    if (name.trim() !== "") {
+      setShowLoader(true);
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/services/add/", {
+        token: userObj.token,
+        name,
       })
-      .catch((error) => {
-        setShowLoader(false);
-        errorHandler(error);
-      });
+        .then((res) => {
+          setShowLoader(false);
+          toastMessage("success", res.data.msg);
+          setServices([...services, res.data.service]);
+          setName("");
+        })
+        .catch((error) => {
+          setShowLoader(false);
+          errorHandler(error);
+        });
+    }
   };
   return (
     <div className="body">
@@ -145,7 +148,7 @@ function ManageServices() {
                       marginBottom: 10,
                     }}
                   >
-                    <span>{service.name}</span>
+                    <h4>{service.name}</h4>
                     <button
                       className="btn bg-orange"
                       onClick={() => {
