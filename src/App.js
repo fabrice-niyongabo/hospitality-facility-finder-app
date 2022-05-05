@@ -11,6 +11,7 @@ import Logout from "./components/Logout";
 import Description from "./components/Dashboard/Description/";
 import ManageRooms from "./components/Dashboard/Hotel/ManageRooms";
 import { ToastContainer } from "react-toastify";
+import ManageServices from "./components/Dashboard/Hotel/ManageServices";
 
 function App() {
   return (
@@ -59,6 +60,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManageRooms />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/manageservices"
+            element={
+              <ProtectedRoute>
+                <ManageServices />
               </ProtectedRoute>
             }
           />
