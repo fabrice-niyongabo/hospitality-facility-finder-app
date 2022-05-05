@@ -1,79 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { FaEye, FaHome, FaPrint, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "./SideBar";
-import Rooms from "../PlaceHolders/Rooms";
-import { fetchRooms, setRooms } from "../../../actions/facility";
-import AddRoom from "../Modals/AddRoom";
 import Loader from "../Modals/Loader";
-import RoomDetails from "../Modals/RoomDetails";
-import Confirm from "../Modals/Confirm";
 import Axios from "axios";
-import { errorHandler, handleAuthError, toastMessage } from "../../../helpers";
-import { MdDelete } from "react-icons/md";
+import { errorHandler, toastMessage } from "../../../helpers";
+import { setUserFullName, setUserPhone } from "../../../actions/user";
+import Password from "../Modals/Password";
 
 function MyAccount() {
+  const dispatch = useDispatch();
   const userObj = useSelector((state) => state.user);
-  const [services, setServices] = useState([]);
-  const [isLoadingServices, setIsLoadingServices] = useState(true);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(userObj.fullName);
+  const [phone, setPhone] = useState(userObj.phone);
+  const [phoneError, setPhoneError] = useState("");
   const [showLoader, setShowLoader] = useState(false);
-  const [serviceToBeDeleted, setServiceToBeDeleted] = useState(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const deleteService = () => {
-    setShowLoader(true);
-    Axios.post(process.env.REACT_APP_BACKEND_URL + "/services/delete/", {
-      id: serviceToBeDeleted._id,
-      token: userObj.token,
-    })
-      .then((res) => {
-        setShowLoader(false);
-        toastMessage("success", "Service deleted successful!");
-        setServices(
-          services.filter((service) => service._id != serviceToBeDeleted._id)
-        );
-        setServiceToBeDeleted(null);
-      })
-      .catch((error) => {
-        setShowLoader(false);
-        errorHandler(error);
-      });
-  };
+  const phoneRef = useRef(null);
 
-  const fetchServices = () => {
-    Axios.get(
-      process.env.REACT_APP_BACKEND_URL +
-        "/services/all/?token=" +
-        userObj.token
-    )
-      .then((res) => {
-        setIsLoadingServices(false);
-        setServices(res.data.result);
-      })
-      .catch((error) => {
-        handleAuthError(error);
-        setIsLoadingServices(false);
-      });
-  };
-  useEffect(() => {
-    fetchServices();
-  }, []);
-
+  const validPhoneCode = ["8", "9", "2", "3"];
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim() !== "") {
+    if (phone.trim() === "") {
+      setPhoneError("Please enter your phone number");
+      phoneRef.current.classList.add("is-invalid");
+      phoneRef.current.focus();
+      return;
+    } else if (
+      !validPhoneCode.includes(phone[1]) ||
+      phone[0] !== "7" ||
+      phone.length !== 9
+    ) {
+      setPhoneError(
+        "Invalid phone number. please provide a valid MTN or AIRTEL-TIGO phone number."
+      );
+      phoneRef.current.classList.add("is-invalid");
+      phoneRef.current.focus();
+      return;
+    } else {
+      phoneRef.current.classList.remove("is-invalid");
+      setPhoneError("");
+    }
+    if (name.trim() !== "" && phone.trim() !== "") {
       setShowLoader(true);
-      Axios.post(process.env.REACT_APP_BACKEND_URL + "/services/add/", {
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/users/updateInfo/", {
         token: userObj.token,
         name,
+        phone,
       })
         .then((res) => {
           setShowLoader(false);
-          toastMessage("success", res.data.msg);
-          setServices([...services, res.data.service]);
-          setName("");
+          toastMessage("success", "User information updated successful!");
+          dispatch(setUserPhone(phone));
+          dispatch(setUserFullName(name));
         })
         .catch((error) => {
           setShowLoader(false);
@@ -104,75 +85,66 @@ function MyAccount() {
               }}
             >
               <div className="manage-room-header">
-                <h3>Services hotel offers</h3>
+                <h3>Manage your account</h3>
               </div>
 
               <div className="my-3">
-                <p>{userObj.companyName} Services</p>
-
                 <form onSubmit={handleSubmit}>
-                  <div
-                    className="manage-room-header bg-light-orange"
-                    style={{ border: "none", padding: 15, borderRadius: 10 }}
-                  >
+                  <div className="form-group mb-3">
+                    <label>Full names</label>
                     <input
-                      className="form-control"
-                      placeholder="Enter service name"
+                      type="text"
                       required
-                      value={name}
                       onChange={(e) => setName(e.target.value)}
+                      className="form-control"
+                      value={name}
                     />
-                    <div style={{ width: 150, marginLeft: 10 }}>
-                      <button
-                        type="submit"
-                        className="btn bg-orange text-white"
-                      >
-                        Add service
-                      </button>
-                    </div>
                   </div>
-                </form>
-              </div>
-
-              <div
-                className="mt-4 bg-light-orange"
-                style={{ padding: "2rem", borderRadius: 10 }}
-              >
-                {services.map((service, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <h4>{service.name}</h4>
+                  <div className="form-group mb-3">
+                    <label>Email address</label>
+                    <input
+                      type="email"
+                      disabled
+                      className="form-control"
+                      value={userObj.email}
+                    />
+                  </div>
+                  <div className="form-group mb-3">
+                    <label>Phone number</label>
+                    <input
+                      type="number"
+                      required
+                      onChange={(e) => setPhone(e.target.value)}
+                      value={phone}
+                      ref={phoneRef}
+                      className="form-control"
+                    />
+                    <span style={{ color: "red" }}>{phoneError}</span>
+                  </div>
+                  <div className="text-center">
                     <button
-                      className="btn bg-orange"
-                      onClick={() => {
-                        setServiceToBeDeleted(service);
-                        setShowConfirm(true);
-                      }}
+                      className="btn bg-orange text-white"
+                      type="button"
+                      onClick={() => setShowModal(true)}
                     >
-                      <MdDelete size={25} /> Delete
+                      Change password
+                    </button>
+                    &nbsp; &nbsp;
+                    <button className="btn bg-orange text-white" type="submit">
+                      Save changes
                     </button>
                   </div>
-                ))}
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {isLoadingServices === true && services.length === 0 && (
-        <Loader showLoader={true} />
-      )}
       <Loader showLoader={showLoader} />
-      <Confirm
-        showConfirm={showConfirm}
-        setShowConfirm={setShowConfirm}
-        callBack={deleteService}
+      <Password
+        setShowLoader={setShowLoader}
+        showModal={showModal}
+        setShowModal={setShowModal}
       />
     </div>
   );
