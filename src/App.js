@@ -12,6 +12,7 @@ import Description from "./components/Dashboard/Description/";
 import ManageRooms from "./components/Dashboard/Hotel/ManageRooms";
 import { ToastContainer } from "react-toastify";
 import ManageServices from "./components/Dashboard/Hotel/ManageServices";
+import MyAccount from "./components/Dashboard/Hotel/MyAccount";
 
 function App() {
   return (
@@ -68,6 +69,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManageServices />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <MyAccount />
               </ProtectedRoute>
             }
           />
