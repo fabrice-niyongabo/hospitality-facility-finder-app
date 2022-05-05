@@ -4,7 +4,7 @@ const facilitySchema = new mongoose.Schema({
   name: { type: String, required: true },
   type: { type: String, required: true },
   description: { type: String },
-  address: { type: String, unique: true },
+  address: { type: String },
   lat: { type: String },
   long: { type: String },
   stars: { type: String },
