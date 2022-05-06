@@ -13,6 +13,8 @@ import ManageRooms from "./components/Dashboard/Hotel/ManageRooms";
 import { ToastContainer } from "react-toastify";
 import ManageServices from "./components/Dashboard/Hotel/ManageServices";
 import MyAccount from "./components/Dashboard/Hotel/MyAccount";
+import OrderList from "./components/Dashboard/Restaurant/OrderList";
+import Analytics from "./components/Dashboard/Restaurant/Analytics";
 
 function App() {
   return (
@@ -47,7 +49,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          {/* hotel routes */}
           <Route
             path="/description"
             element={
@@ -80,6 +82,25 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* //hotel routes */}
+          {/* restaurant routes */}
+          <Route
+            path="/orderlist"
+            element={
+              <ProtectedRoute>
+                <OrderList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          {/* //restaurant routes */}
         </Routes>
       </BrowserRouter>
       <ToastContainer />
