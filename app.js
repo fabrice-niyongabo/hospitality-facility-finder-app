@@ -20,10 +20,12 @@ const usersRoute = require("./routes/users");
 const facilityRoute = require("./routes/facility");
 const roomsRoute = require("./routes/rooms");
 const servicesRoute = require("./routes/services");
+const restaurantRoute = require("./routes/restaurant");
 app.use("/api/users/", usersRoute);
 app.use("/api/facility/", facilityRoute);
 app.use("/api/rooms/", roomsRoute);
 app.use("/api/services/", servicesRoute);
+app.use("/api/restaurant/", restaurantRoute);
 
 //404 route
 app.use("*", (req, res) => {

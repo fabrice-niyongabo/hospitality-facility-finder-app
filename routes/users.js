@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
+const auth = require("../middleware/auth");
+
 const Users = require("../model/users");
 
 router.post("/login", async (req, res) => {
@@ -54,6 +56,49 @@ router.post("/login", async (req, res) => {
     console.log(err);
     res.status(400).send({
       msg: "Something went wrong while signing into your account. Try again later",
+    });
+  }
+});
+
+router.post("/updateInfo/", auth, (req, res) => {
+  const { name, phone } = req.body;
+  Users.updateOne(
+    { _id: req.user.user_id },
+    { fullName: name, phone },
+    (err, result) => {
+      if (err) {
+        return res.status(400).send({ msg: err.message });
+      } else {
+        res.status(200).send({ result });
+      }
+    }
+  );
+});
+
+router.post("/updatePassword/", auth, async (req, res) => {
+  const { newPwd, currentPwd } = req.body;
+  try {
+    const user = await Users.findOne({ _id: req.user.user_id });
+    if (user && (await bcrypt.compare(currentPwd, user.password))) {
+      encryptedPassword = await bcrypt.hash(newPwd, 10);
+      Users.updateOne(
+        { _id: req.user.user_id },
+        { password: encryptedPassword },
+        (err, result) => {
+          if (err) {
+            return res.status(400).send({ msg: err.message });
+          } else {
+            res.status(200).send({ result });
+          }
+        }
+      );
+    } else {
+      res.status(400).send({ msg: "Wrong old password" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({
+      msg: "Something went wrong. Try again later",
     });
   }
 });
