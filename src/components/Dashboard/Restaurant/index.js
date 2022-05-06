@@ -1,18 +1,37 @@
-import React, { useEffect } from "react";
-import { FaBars, FaBed, FaHome, FaMoneyCheck, FaUsers } from "react-icons/fa";
-import { BsCheckCircleFill, BsPatchQuestionFill } from "react-icons/bs";
-import { MdOutlinePendingActions, MdPending } from "react-icons/md";
-import { GiReceiveMoney } from "react-icons/gi";
+import React, { useEffect, useState } from "react";
+import { FaEye, FaHome } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "./SideBar";
-import { useLoadBasicData } from "../../../helpers";
+import Axios from "axios";
+import AddRestaurantItem from "../Modals/AddRestaurantItem";
+import Loader from "../Modals/Loader";
+import { handleAuthError } from "../../../helpers";
 
 function Restaurant() {
-  const loadBasics = useLoadBasicData();
   const userObj = useSelector((state) => state.user);
+  const [itemsList, setItemsList] = useState([]);
+  const [showLoader, setShowLoader] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  const fetchItemLists = () => {
+    Axios.get(
+      process.env.REACT_APP_BACKEND_URL +
+        "/restaurant/item/all/?token=" +
+        userObj.token
+    )
+      .then((res) => {
+        setShowLoader(false);
+        setItemsList(res.data.result);
+      })
+      .catch((error) => {
+        handleAuthError(error);
+        setItemsList([]);
+        setShowLoader(false);
+      });
+  };
   useEffect(() => {
-    loadBasics();
+    fetchItemLists();
   }, []);
   return (
     <div className="body">
@@ -24,96 +43,84 @@ function Restaurant() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Hotel Manager Dashboard</span>
+              <span> Restaurant Manager Dashboard</span>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>
-          <div className="main-contents-container">
-            <div className="row">
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <FaBed color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Total Rooms</span>
-                </div>
+          <div className="main-contents-container" style={{ padding: "1rem" }}>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "2rem",
+                borderRadius: 10,
+              }}
+            >
+              <div className="mb-3">
+                <button
+                  style={{ padding: "5px 15px", borderRadius: 5 }}
+                  className="orange-border bg-white"
+                  onClick={() => setShowModal(true)}
+                >
+                  ADD NEW ITEM
+                </button>
+                &nbsp;
+                <button
+                  style={{ padding: "5px 15px", borderRadius: 5 }}
+                  className="orange-border bg-white"
+                >
+                  DELETE SELECTED ITEMS
+                </button>
               </div>
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <FaBed color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Room Types</span>
-                </div>
-              </div>
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <FaUsers color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Reservations</span>
-                </div>
-              </div>
-              <div className="col-md-3 py-4">
-                <div className="hotel-service">
-                  <BsPatchQuestionFill color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Complaints</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="br my-4"></div>
-
-            <div className="row">
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <FaBars color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Booked Rooms</span>
-                </div>
-              </div>
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <MdPending color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Available Rooms</span>
-                </div>
-              </div>
-              <div className="col-md-3 py-4 br-right">
-                <div className="hotel-service">
-                  <BsCheckCircleFill color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Total checked in</span>
-                </div>
-              </div>
-              <div className="col-md-3 py-4">
-                <div className="hotel-service">
-                  <MdOutlinePendingActions color="#f46a06" size={30} />
-                  <h2>32</h2>
-                  <span>Pending payments</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="br my-4"></div>
-
-            <div className="row">
-              <div className="col-md-6 py-4 br-right">
-                <div className="hotel-service">
-                  <FaMoneyCheck color="#f46a06" size={30} />
-                  <h2>RWF 15000 / 150 USD</h2>
-                  <span>Total earning</span>
-                </div>
-              </div>
-              <div className="col-md-6 py-4">
-                <div className="hotel-service">
-                  <GiReceiveMoney color="#f46a06" size={30} />
-                  <h2>0 RWF / 0 USD</h2>
-                  <span>Pending payment</span>
-                </div>
-              </div>
+              {itemsList.length > 0 ? (
+                <>
+                  <table className="w-100">
+                    <thead className="bg-light-orange">
+                      <th className="p-2">
+                        <input type="checkbox" />
+                      </th>
+                      <th className="p-2">Item ID</th>
+                      <th className="p-2">Item Name</th>
+                      <th className="p-2">Item Category</th>
+                      <th className="p-2">Item Price</th>
+                      <th className="p-2">Item Quantity</th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                      {itemsList.map((item, i) => (
+                        <tr key={i}>
+                          <td className="p-2">
+                            <input type="checkbox" />
+                          </td>
+                          <td className="p-2">#{i + 1}</td>
+                          <td className="p-2">{item.menuName}</td>
+                          <td className="p-2">{item.category}</td>
+                          <td className="p-2">{item.price} RWF</td>
+                          <td className="p-2">{item.quantity}</td>
+                          <td className="p-2">
+                            <button className="btn bg-orange text-white">
+                              <FaEye size={20} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              ) : (
+                <p>No items found</p>
+              )}
             </div>
           </div>
         </div>
       </div>
+      <Loader showLoader={showLoader} />
+      <AddRestaurantItem
+        setShowLoader={setShowLoader}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        itemsList={itemsList}
+        setItemsList={setItemsList}
+      />
     </div>
   );
 }
