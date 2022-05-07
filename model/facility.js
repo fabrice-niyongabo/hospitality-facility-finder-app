@@ -10,7 +10,7 @@ const facilitySchema = new mongoose.Schema({
   stars: { type: String },
   averagePrice: { type: String, default: "50000" },
   image: { type: String },
-  managerId: { type: String, required: true },
+  managerId: { type: String, unique: true, required: true },
 });
 
 module.exports = mongoose.model("facilities", facilitySchema);
