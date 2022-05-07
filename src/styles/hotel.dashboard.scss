@@ -210,6 +210,15 @@
 .text-orange {
   color: $orange;
 }
+.text-gray {
+  color: $textGray;
+}
 .orange-border {
   border: 1px solid $orange;
+}
+.quicksand-font {
+  font-family: $quickSand;
+}
+.roboto-font {
+  font-family: $roboto;
 }

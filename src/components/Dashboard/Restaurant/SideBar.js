@@ -1,9 +1,8 @@
 import React from "react";
 import { FaBed, FaHome, FaRegUserCircle, FaUserCog } from "react-icons/fa";
 import { SiGoogleanalytics, SiHotelsdotcom } from "react-icons/si";
-import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
 import { RiFileListLine, RiLogoutCircleLine } from "react-icons/ri";
-import { MdDashboard } from "react-icons/md";
+import { BiRestaurant } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -39,6 +38,12 @@ function SideBar({ activate }) {
           <li className={activateMe("orderlist")}>
             <RiFileListLine color="#f46a06" size={25} />
             <span>Order List</span>
+          </li>
+        </Link>
+        <Link to="/description">
+          <li className={activateMe("description")}>
+            <BiRestaurant color="#f46a06" size={25} />
+            <span>Restaurant Description</span>
           </li>
         </Link>
         <Link to="/analytics">
