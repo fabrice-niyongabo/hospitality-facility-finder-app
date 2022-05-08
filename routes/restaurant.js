@@ -49,10 +49,10 @@ router.post("/item/add/", auth, async (req, res) => {
 });
 
 router.post("/item/update/", auth, (req, res) => {
-  const { price, description, id } = req.body;
+  const { name, quantity, price, description, category, id } = req.body;
   RestaurantsMenus.updateOne(
     { managerId: req.user.user_id, _id: id },
-    { description, price },
+    { menuName: name, quantity, price, description, category },
     (err, result) => {
       if (err) {
         return res.status(400).send({ msg: err.message });
