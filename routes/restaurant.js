@@ -64,17 +64,14 @@ router.post("/item/update/", auth, (req, res) => {
 });
 
 router.post("/item/delete/", auth, (req, res) => {
-  const { id } = req.body;
-  RestaurantsMenus.deleteOne(
-    { managerId: req.user.user_id, _id: id },
-    (err, result) => {
-      if (err) {
-        return res.status(400).send({ msg: err.message });
-      } else {
-        res.status(200).send({ result });
-      }
+  const { items } = req.body;
+  RestaurantsMenus.deleteMany({ _id: { $in: items } }, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err.message });
+    } else {
+      res.status(200).send({ result });
     }
-  );
+  });
 });
 
 module.exports = router;
