@@ -102,6 +102,13 @@
       @include flex-space;
       .title {
         @include flex-end;
+        a {
+          color: $black;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
         span {
           font-size: 14px;
           font-family: $roboto;

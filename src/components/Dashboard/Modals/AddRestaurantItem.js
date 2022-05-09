@@ -16,7 +16,6 @@ function AddRestaurantItem({
   itemsList,
   setItemsList,
 }) {
-  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState();

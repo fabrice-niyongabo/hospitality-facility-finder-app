@@ -11,6 +11,7 @@ import RoomDetails from "../Modals/RoomDetails";
 import Confirm from "../Modals/Confirm";
 import Axios from "axios";
 import { errorHandler, toastMessage } from "../../../helpers";
+import { Link } from "react-router-dom";
 
 function ManageRooms() {
   const dispatch = useDispatch();
@@ -89,7 +90,9 @@ function ManageRooms() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Hotel Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>

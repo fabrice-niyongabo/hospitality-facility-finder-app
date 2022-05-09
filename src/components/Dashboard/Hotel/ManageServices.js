@@ -12,6 +12,7 @@ import Confirm from "../Modals/Confirm";
 import Axios from "axios";
 import { errorHandler, handleAuthError, toastMessage } from "../../../helpers";
 import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function ManageServices() {
   const userObj = useSelector((state) => state.user);
@@ -91,7 +92,9 @@ function ManageServices() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Hotel Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>

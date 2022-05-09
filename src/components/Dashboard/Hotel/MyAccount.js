@@ -8,6 +8,7 @@ import Axios from "axios";
 import { errorHandler, toastMessage } from "../../../helpers";
 import { setUserFullName, setUserPhone } from "../../../actions/user";
 import Password from "../Modals/Password";
+import { Link } from "react-router-dom";
 
 function MyAccount() {
   const dispatch = useDispatch();
@@ -72,7 +73,9 @@ function MyAccount() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Hotel Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>

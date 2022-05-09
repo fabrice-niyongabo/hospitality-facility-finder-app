@@ -59,12 +59,6 @@ function SideBar({ activate }) {
             <span>My account</span>
           </li>
         </Link>
-        <Link to="/">
-          <li>
-            <FaHome color="#f46a06" size={25} />
-            <span>Home page</span>
-          </li>
-        </Link>
         <Link to="/logout">
           <li>
             <RiLogoutCircleLine color="#f46a06" size={25} />

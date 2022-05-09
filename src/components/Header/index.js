@@ -47,12 +47,6 @@ function Header() {
           ) : (
             <>
               <li>
-                <Link to="/signup">
-                  <RiEditCircleLine size={20} color="black" />
-                  <span>Signup</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/login">
                   <MdLogin size={20} color="black" />
                   <span>Login</span>

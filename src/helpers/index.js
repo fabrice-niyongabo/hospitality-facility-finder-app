@@ -50,7 +50,7 @@ export const toastMessage = (type, message) => {
 };
 
 export const errorHandler = (error) => {
-  if (error.response.data.msg) {
+  if (error?.response?.data?.msg) {
     toastMessage("error", error.response.data.msg);
   } else {
     toastMessage("error", error.message);

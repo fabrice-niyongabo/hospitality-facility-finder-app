@@ -9,6 +9,7 @@ import Loader from "../Modals/Loader";
 import { handleAuthError } from "../../../helpers";
 import Chart from "./Chart";
 import { GrUser } from "react-icons/gr";
+import { Link } from "react-router-dom";
 
 function Analytics() {
   const userObj = useSelector((state) => state.user);
@@ -22,7 +23,9 @@ function Analytics() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Restaurant Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>

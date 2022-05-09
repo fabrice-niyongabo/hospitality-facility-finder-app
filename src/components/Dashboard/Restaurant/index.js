@@ -6,13 +6,19 @@ import SideBar from "./SideBar";
 import Axios from "axios";
 import AddRestaurantItem from "../Modals/AddRestaurantItem";
 import Loader from "../Modals/Loader";
-import { handleAuthError } from "../../../helpers";
-
+import { errorHandler, handleAuthError, toastMessage } from "../../../helpers";
+import ViewRestaurantItem from "../Modals/ViewRestaurantItem";
+import Confirm from "../Modals/Confirm";
+import { Link } from "react-router-dom";
 function Restaurant() {
   const userObj = useSelector((state) => state.user);
   const [itemsList, setItemsList] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewItem, setPreviewItem] = useState({});
+  const [checkedList, setCheckedList] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const fetchItemLists = () => {
     Axios.get(
@@ -32,7 +38,56 @@ function Restaurant() {
   };
   useEffect(() => {
     fetchItemLists();
+    setCheckedList([]);
   }, []);
+
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      setCheckedList(itemsList.map((item) => item._id));
+    } else {
+      setCheckedList([]);
+    }
+  };
+
+  const handleCheck = (checked, id) => {
+    if (checked) {
+      if (!checkedList.includes(id)) {
+        setCheckedList([...checkedList, id]);
+      }
+    } else {
+      setCheckedList(checkedList.filter((item) => item != id));
+    }
+  };
+
+  const handleDelete = () => {
+    if (checkedList.length > 0) {
+      setShowLoader(true);
+      Axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/restaurant/item/delete/",
+        {
+          token: userObj.token,
+          items: checkedList,
+        }
+      )
+        .then((res) => {
+          setShowLoader(false);
+          toastMessage(
+            "success",
+            "Items selected has been deleted successful!"
+          );
+          setItemsList(
+            itemsList.filter((item) => !checkedList.includes(item._id))
+          );
+          setCheckedList([]);
+        })
+        .catch((error) => {
+          setShowLoader(false);
+          errorHandler(error);
+        });
+    } else {
+      toastMessage("info", "No items selected.");
+    }
+  };
   return (
     <div className="body">
       <div className="dashoard-main-container">
@@ -43,7 +98,9 @@ function Restaurant() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Restaurant Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>
@@ -67,6 +124,7 @@ function Restaurant() {
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
                   className="orange-border bg-white"
+                  onClick={() => setShowConfirm(true)}
                 >
                   DELETE SELECTED ITEMS
                 </button>
@@ -76,7 +134,10 @@ function Restaurant() {
                   <table className="w-100">
                     <thead className="bg-light-orange">
                       <th className="p-2">
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={(e) => handleSelectAll(e.target.checked)}
+                        />
                       </th>
                       <th className="p-2">Item ID</th>
                       <th className="p-2">Item Name</th>
@@ -89,7 +150,13 @@ function Restaurant() {
                       {itemsList.map((item, i) => (
                         <tr key={i}>
                           <td className="p-2">
-                            <input type="checkbox" />
+                            <input
+                              type="checkbox"
+                              checked={checkedList.includes(item._id)}
+                              onChange={(e) =>
+                                handleCheck(e.target.checked, item._id)
+                              }
+                            />
                           </td>
                           <td className="p-2">#{i + 1}</td>
                           <td className="p-2">{item.menuName}</td>
@@ -97,7 +164,13 @@ function Restaurant() {
                           <td className="p-2">{item.price} RWF</td>
                           <td className="p-2">{item.quantity}</td>
                           <td className="p-2">
-                            <button className="btn bg-orange text-white">
+                            <button
+                              className="btn bg-orange text-white"
+                              onClick={() => {
+                                setPreviewItem(item);
+                                setShowPreview(true);
+                              }}
+                            >
                               <FaEye size={20} />
                             </button>
                           </td>
@@ -120,6 +193,19 @@ function Restaurant() {
         setShowModal={setShowModal}
         itemsList={itemsList}
         setItemsList={setItemsList}
+      />
+      <ViewRestaurantItem
+        showPreview={showPreview}
+        setShowPreview={setShowPreview}
+        setShowLoader={setShowLoader}
+        item={previewItem}
+        itemsList={itemsList}
+        setItemsList={setItemsList}
+      />
+      <Confirm
+        callBack={handleDelete}
+        setShowConfirm={setShowConfirm}
+        showConfirm={showConfirm}
       />
     </div>
   );

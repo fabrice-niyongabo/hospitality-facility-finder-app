@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "./SideBar";
 import { useLoadBasicData } from "../../../helpers";
+import { Link } from "react-router-dom";
 
 function Hotel() {
   const loadBasics = useLoadBasicData();
@@ -24,7 +25,9 @@ function Hotel() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Hotel Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>
