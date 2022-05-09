@@ -15,6 +15,7 @@ import ManageServices from "./components/Dashboard/Hotel/ManageServices";
 import Account from "./components/Dashboard/Account";
 import OrderList from "./components/Dashboard/Restaurant/OrderList";
 import Analytics from "./components/Dashboard/Restaurant/Analytics";
+import Facility from "./components/Facility";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/:id" element={<Facility />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/logout" element={<Logout />} />
           <Route

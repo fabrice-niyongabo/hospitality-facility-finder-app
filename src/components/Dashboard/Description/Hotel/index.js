@@ -10,6 +10,7 @@ import {
 import Axios from "axios";
 import "../../../../styles/description.scss";
 import { setuserCompanyName } from "../../../../actions/user";
+import { Link } from "react-router-dom";
 function Hotel({ user }) {
   const dispatch = useDispatch();
   const loadBasics = useLoadBasicData();
@@ -103,8 +104,10 @@ function Hotel({ user }) {
     <>
       <div className="contents-header">
         <div className="title">
-          <FaHome color="black" size={30} />
-          <span> Hotel Manager Dashboard</span>
+          <FaHome color="black" size={30} />{" "}
+          <Link to="/">
+            <span>Back To Home Page</span>
+          </Link>
         </div>
         <div className="company">{user.companyName}</div>
       </div>

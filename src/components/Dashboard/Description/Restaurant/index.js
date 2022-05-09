@@ -10,6 +10,7 @@ import {
 import Axios from "axios";
 import "../../../../styles/description.scss";
 import { setuserCompanyName } from "../../../../actions/user";
+import { Link } from "react-router-dom";
 function Restaurant({ user }) {
   const dispatch = useDispatch();
   const loadBasics = useLoadBasicData();
@@ -105,7 +106,9 @@ function Restaurant({ user }) {
       <div className="contents-header">
         <div className="title">
           <FaHome color="black" size={30} />
-          <span> Restaurant Manager Dashboard</span>
+          <Link to="/">
+            <span>Back To Home Page</span>
+          </Link>
         </div>
         <div className="company">{user.companyName}</div>
       </div>
