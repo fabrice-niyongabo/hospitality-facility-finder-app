@@ -16,6 +16,16 @@ router.get("/detail", auth, (req, res) => {
   });
 });
 
+router.get("/find/all/", (req, res) => {
+  Facilities.find({}, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err.message });
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
 router.get("/find/:id", (req, res) => {
   const { id } = req.params;
   if (id) {
@@ -29,16 +39,6 @@ router.get("/find/:id", (req, res) => {
   } else {
     return res.status(400).send({ msg: "invalid request" });
   }
-});
-
-router.get("/find/all/", (req, res) => {
-  Facilities.find({}, (err, result) => {
-    if (err) {
-      return res.status(400).send({ msg: err.message });
-    } else {
-      res.status(200).send({ result });
-    }
-  });
 });
 
 router.get("/find/hotels/", (req, res) => {
