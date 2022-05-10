@@ -6,6 +6,7 @@ function Facility() {
   const { id } = useParams();
   const [isLoading, setisLoading] = useState(true);
   const [facility, setFacility] = useState(null);
+  useEffect(() => {}, []);
   return (
     <>
       <Header />
