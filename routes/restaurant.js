@@ -63,6 +63,18 @@ router.post("/item/update/", auth, (req, res) => {
   );
 });
 
+router.get("/menus/:category", (req, res) => {
+  const menuCategory = req.params["category"];
+  const query = menuCategory == "all" ? {} : { category: menuCategory };
+  RestaurantsMenus.find(query, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
 router.post("/item/delete/", auth, (req, res) => {
   const { items } = req.body;
   RestaurantsMenus.deleteMany({ _id: { $in: items } }, (err, result) => {

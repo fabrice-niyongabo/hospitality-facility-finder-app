@@ -5,6 +5,8 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 const Facilities = require("../model/facility");
+const Services = require("../model/services");
+const Rooms = require("../model/rooms");
 
 router.get("/detail", auth, (req, res) => {
   Facilities.find({ managerId: req.user.user_id }, (err, result) => {
@@ -26,8 +28,8 @@ router.get("/find/all/", (req, res) => {
   });
 });
 
-router.get("/find/:id", (req, res) => {
-  const { id } = req.params;
+router.post("/find/", (req, res) => {
+  const { id } = req.body;
   if (id) {
     Facilities.find({ _id: id }, (err, result) => {
       if (err) {
@@ -45,6 +47,28 @@ router.get("/find/hotels/", (req, res) => {
   Facilities.find({ type: "hotel" }, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err.message });
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
+router.get("/services/:id", (req, res) => {
+  const { id } = req.params;
+  Services.find({ managerId: id }, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err });
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
+router.get("/rooms/:id", (req, res) => {
+  const { id } = req.params;
+  Rooms.find({ managerId: id }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
     } else {
       res.status(200).send({ result });
     }
