@@ -16,6 +16,7 @@ import Account from "./components/Dashboard/Account";
 import OrderList from "./components/Dashboard/Restaurant/OrderList";
 import Analytics from "./components/Dashboard/Restaurant/Analytics";
 import Facility from "./components/Facility";
+import Cart from "./components/cart";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/:id" element={<Facility />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/logout" element={<Logout />} />
+          <Route exact path="/cart" element={<Cart />} />
           <Route
             exact
             path="/login"

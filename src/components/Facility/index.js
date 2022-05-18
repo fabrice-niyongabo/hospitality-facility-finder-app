@@ -6,6 +6,7 @@ import Axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { RiStarSFill } from "react-icons/ri";
 import Hotel from "./Hotel";
+import Restaurant from "./Restaurant";
 function Facility() {
   const { id } = useParams();
   const [isLoading, setisLoading] = useState(true);
@@ -175,6 +176,9 @@ function Facility() {
 
           {/* body */}
           {facility.type === "hotel" && <Hotel id={facility.managerId} />}
+          {facility.type === "restaurant" && (
+            <Restaurant id={facility.managerId} />
+          )}
           {/* body */}
         </>
       )}

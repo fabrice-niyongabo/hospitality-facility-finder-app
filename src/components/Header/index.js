@@ -5,6 +5,7 @@ import { MdLogin, MdOutlineDashboard } from "react-icons/md";
 import { RiEditCircleLine, RiLogoutCircleLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { BsCart4 } from "react-icons/bs";
 
 import "../../styles/header.scss";
 
@@ -27,6 +28,12 @@ function Header() {
             <Link to="/contact">
               <IoMdCall size={20} color="black" />
               <span>Contact Us</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact">
+              <BsCart4 size={20} color="black" />
+              <span>Cart(0)</span>
             </Link>
           </li>
           {token && token !== "" && fullName !== "" ? (
