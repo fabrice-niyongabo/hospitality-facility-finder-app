@@ -24,7 +24,7 @@ router.get("/all/", (req, res) => {
   } else {
     if (verifyToken(token)) {
       Orders.find(
-        { managerId: verifyToken(token).user_id, status: "pending" },
+        { customerId: verifyToken(token).user_id, status: "pending" },
         (err, result) => {
           if (err) {
             return res.status(400).send(err);
@@ -33,35 +33,43 @@ router.get("/all/", (req, res) => {
           }
         }
       );
+    } else {
+      return res.status(401).send({ msg: "invalid token", tokenError: true });
     }
   }
 });
 
-router.post("/add/", auth, async (req, res) => {
-  const { roomNumber, price, roomType, description, image } = req.body;
+router.post("/add/", async (req, res) => {
+  const { managerId, price, roomType, description, image } = req.body;
   try {
-    const room = await Orders.find({
-      managerId: req.user_id,
-      roomNumber,
-    });
-    if (room.length > 0) {
-      res.status(400).send({
-        msg: "Room already exists.",
+    if (req.body?.token && verifyToken(req.body?.token)) {
+      const order = await Orders.find({
+        managerId: managerId,
+        clientId: verifyToken.user_id,
+        status: "pending",
       });
+
+      if (order.length > 0) {
+        res.status(400).send({
+          msg: "Room already exists.",
+        });
+      } else {
+        const rm = await Orders.create({
+          roomNumber,
+          price,
+          type: roomType,
+          description,
+          image,
+          facilityId: "",
+          managerId: req.user.user_id,
+        });
+        res.status(201).json({
+          msg: "Room created successfull!",
+          room: rm,
+        });
+      }
     } else {
-      const rm = await Orders.create({
-        roomNumber,
-        price,
-        type: roomType,
-        description,
-        image,
-        facilityId: "",
-        managerId: req.user.user_id,
-      });
-      res.status(201).json({
-        msg: "Room created successfull!",
-        room: rm,
-      });
+      //ip address
     }
   } catch (error) {
     res.status(400).send({ msg: error.message });
