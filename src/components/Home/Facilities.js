@@ -4,8 +4,10 @@ import { BiSad } from "react-icons/bi";
 import FacilityItem from "./FacilityItem";
 import Axios from "axios";
 import FacilitySkeleton from "./FacilitySkeleton";
+import { useSelector } from "react-redux";
 
 function Facilities() {
+  const { cart } = useSelector((state) => state.cart);
   const defaultMessage = "No results found";
   const [isLoading, setisLoading] = useState(true);
   const [results, setResults] = useState([]);
@@ -68,7 +70,7 @@ function Facilities() {
           <div className="contents">
             <HiOutlineShoppingBag color="black" size={30} />
             <div className="counter">
-              <span>01</span>
+              <span>{cart.length}</span>
             </div>
           </div>
         </div>

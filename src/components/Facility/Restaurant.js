@@ -7,19 +7,25 @@ import FacilitySkeleton from "../Home/FacilitySkeleton";
 import RestaurantMenuItem from "./RestaurantMenuItem";
 
 import Axios from "axios";
-function Restaurant({ id }) {
-  const [services, setServices] = useState([]);
+import Loader from "../Dashboard/Modals/Loader";
+import { useSelector } from "react-redux";
+function Restaurant({ id, restoName }) {
+  const { cart } = useSelector((state) => state.cart);
   const [menus, setMenus] = useState([]);
   const [isLoadingMenus, setIsLoadingMenus] = useState(true);
-  const [servicesError, setServicesError] = useState("");
   const [menuError, setMenuError] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [showLoader, setShowLoader] = useState(false);
 
   const fetchMenus = () => {
     setIsLoadingMenus(true);
     setMenuError("");
     Axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/restaurant/menus/" + activeTab
+      process.env.REACT_APP_BACKEND_URL +
+        "/restaurant/menus/" +
+        id +
+        "/" +
+        activeTab
     )
       .then((res) => {
         setIsLoadingMenus(false);
@@ -73,7 +79,7 @@ function Restaurant({ id }) {
             <div className="contents">
               <HiOutlineShoppingBag color="black" size={30} />
               <div className="counter">
-                <span>01</span>
+                <span>{cart.length}</span>
               </div>
             </div>
           </div>
@@ -89,7 +95,12 @@ function Restaurant({ id }) {
             {menus.length > 0 ? (
               <div className="row">
                 {menus.map((item, i) => (
-                  <RestaurantMenuItem key={i} item={item} />
+                  <RestaurantMenuItem
+                    key={i}
+                    item={item}
+                    setShowLoader={setShowLoader}
+                    restoName={restoName}
+                  />
                 ))}
               </div>
             ) : (
@@ -104,6 +115,7 @@ function Restaurant({ id }) {
           </>
         )}
       </div>
+      <Loader showLoader={showLoader} />
     </>
   );
 }

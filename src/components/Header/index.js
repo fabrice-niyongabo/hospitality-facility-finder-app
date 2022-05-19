@@ -10,6 +10,7 @@ import { BsCart4 } from "react-icons/bs";
 import "../../styles/header.scss";
 
 function Header() {
+  const { cart } = useSelector((state) => state.cart);
   const { token, fullName } = useSelector((state) => state.user);
   return (
     <div className="header-main-container">
@@ -31,9 +32,9 @@ function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/contact">
+            <Link to="/cart">
               <BsCart4 size={20} color="black" />
-              <span>Cart(0)</span>
+              <span>Cart({cart.length})</span>
             </Link>
           </li>
           {token && token !== "" && fullName !== "" ? (

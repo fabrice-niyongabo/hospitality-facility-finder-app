@@ -7,7 +7,10 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { RiStarSFill } from "react-icons/ri";
 import Hotel from "./Hotel";
 import Restaurant from "./Restaurant";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "../../actions/cart";
 function Facility() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoading, setisLoading] = useState(true);
   const [facility, setFacility] = useState(null);
@@ -20,6 +23,8 @@ function Facility() {
         setisLoading(false);
       })
       .catch((error) => {});
+
+    dispatch(fetchCart());
   }, []);
 
   function handleResize() {
@@ -177,7 +182,7 @@ function Facility() {
           {/* body */}
           {facility.type === "hotel" && <Hotel id={facility.managerId} />}
           {facility.type === "restaurant" && (
-            <Restaurant id={facility.managerId} />
+            <Restaurant id={facility.managerId} restoName={facility.name} />
           )}
           {/* body */}
         </>

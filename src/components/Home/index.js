@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../Header";
 
 import "../../styles/home.scss";
 import Facilities from "./Facilities";
 import Footer from "../Footer";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "../../actions/cart";
 
 function Home() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, []);
   return (
     <div>
       <Header />

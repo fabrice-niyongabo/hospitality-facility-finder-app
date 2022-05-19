@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-
+import Axios from "axios";
 import { FiImage } from "react-icons/fi";
-function RestaurantMenuItem({ item }) {
+import { useDispatch, useSelector } from "react-redux";
+import { toastMessage } from "../../helpers";
+import { setCart } from "../../actions/cart";
+function RestaurantMenuItem({ item, setShowLoader, restoName }) {
+  const dispatch = useDispatch();
+  const { facilityName, managerId, cart } = useSelector((state) => state.cart);
+  const { token } = useSelector((state) => state.user);
   const [quantity, setQuantity] = useState(1);
   const handlePlus = () => {
     if (quantity + 1 <= item.quantity) {
@@ -11,6 +17,49 @@ function RestaurantMenuItem({ item }) {
   const handleMinus = () => {
     if (quantity - 1 > 0) {
       setQuantity(quantity - 1);
+    }
+  };
+  const handleAddToCart = () => {
+    if (managerId != item.managerId && managerId != "") {
+      console.log("no match");
+    } else {
+      let data;
+      setShowLoader(true);
+      if (token && token.trim() !== "") {
+        data = {
+          managerId: item.managerId,
+          price: item.price,
+          quantity,
+          facilityName: restoName,
+          menuName: item.menuName,
+          menuId: item._id,
+          menuDescription: item.description,
+          menuImage: item.image,
+          token,
+        };
+      } else {
+        data = {
+          managerId: item.managerId,
+          price: item.price,
+          quantity,
+          facilityName: restoName,
+          menuName: item.menuName,
+          menuId: item._id,
+          menuDescription: item.description,
+          menuImage: item.image,
+        };
+      }
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/add/", data)
+        .then((res) => {
+          setShowLoader(false);
+          console.log(res.data);
+          toastMessage("success", res.data.msg);
+          dispatch(setCart([...cart, res.data.item]));
+        })
+        .catch((error) => {
+          setShowLoader(false);
+          console.log(error);
+        });
     }
   };
   return (
@@ -65,7 +114,14 @@ function RestaurantMenuItem({ item }) {
               </td>
             </tr>
           </table>
-          <button className="btn bg-orange text-white">Add to cart</button>
+          <button
+            className="btn bg-orange text-white"
+            onClick={() => {
+              handleAddToCart();
+            }}
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     </div>
