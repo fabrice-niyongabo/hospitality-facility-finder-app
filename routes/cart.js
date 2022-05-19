@@ -77,6 +77,8 @@ router.post("/add/", async (req, res) => {
       const rm = await Cart.create({
         menuId: menuId,
         menuName: menuName,
+        menuImage: menuImage,
+        menuDescription: menuDescription,
         ipAddress: getMyIp(req),
         quantity: quantity,
         price: price,
