@@ -18,8 +18,13 @@ router.get("/detail", auth, (req, res) => {
   });
 });
 
-router.get("/find/all/", (req, res) => {
-  Facilities.find({}, (err, result) => {
+router.get("/find/category/:category", (req, res) => {
+  const category = req.params["category"];
+  let query = {};
+  if (category === "restaurants") query = { type: "restaurant" };
+  if (category === "coffeeshops") query = { type: "coffeeshop" };
+  if (category === "hotels") query = { type: "hotel" };
+  Facilities.find(query, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err.message });
     } else {
@@ -43,18 +48,8 @@ router.post("/find/", (req, res) => {
   }
 });
 
-router.get("/find/hotels/", (req, res) => {
-  Facilities.find({ type: "hotel" }, (err, result) => {
-    if (err) {
-      return res.status(400).send({ msg: err.message });
-    } else {
-      res.status(200).send({ result });
-    }
-  });
-});
-
 router.get("/services/:id", (req, res) => {
-  const { id } = req.params;
+  const id = req.params["id"];
   Services.find({ managerId: id }, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err });
@@ -65,30 +60,10 @@ router.get("/services/:id", (req, res) => {
 });
 
 router.get("/rooms/:id", (req, res) => {
-  const { id } = req.params;
+  const id = req.params["id"];
   Rooms.find({ managerId: id }, (err, result) => {
     if (err) {
       return res.status(400).send(err);
-    } else {
-      res.status(200).send({ result });
-    }
-  });
-});
-
-router.get("/find/restaurants/", (req, res) => {
-  Facilities.find({ type: "restaurant" }, (err, result) => {
-    if (err) {
-      return res.status(400).send({ msg: err.message });
-    } else {
-      res.status(200).send({ result });
-    }
-  });
-});
-
-router.get("/find/coffeeshops/", (req, res) => {
-  Facilities.find({ type: "coffeeshop" }, (err, result) => {
-    if (err) {
-      return res.status(400).send({ msg: err.message });
     } else {
       res.status(200).send({ result });
     }
