@@ -75,14 +75,16 @@ function Restaurant({ id, restoName }) {
               Drinks
             </li>
           </ul>
-          <div className="cart-container">
-            <div className="contents">
-              <HiOutlineShoppingBag color="black" size={30} />
-              <div className="counter">
-                <span>{cart.length}</span>
+          <a href="/cart">
+            <div className="cart-container">
+              <div className="contents">
+                <HiOutlineShoppingBag color="black" size={30} />
+                <div className="counter">
+                  <span>{cart.length}</span>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div className=" mx-5 px-4">
