@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { FiImage } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { toastMessage } from "../../helpers";
+import { errorHandler, toastMessage } from "../../helpers";
 import { setCart } from "../../actions/cart";
 function RestaurantMenuItem({ item, setShowLoader, restoName }) {
   const dispatch = useDispatch();
@@ -22,45 +22,44 @@ function RestaurantMenuItem({ item, setShowLoader, restoName }) {
   const handleAddToCart = () => {
     if (managerId != item.managerId && managerId != "") {
       console.log("no match");
-    } else {
-      let data;
-      setShowLoader(true);
-      if (token && token.trim() !== "") {
-        data = {
-          managerId: item.managerId,
-          price: item.price,
-          quantity,
-          facilityName: restoName,
-          menuName: item.menuName,
-          menuId: item._id,
-          menuDescription: item.description,
-          menuImage: item.image,
-          token,
-        };
-      } else {
-        data = {
-          managerId: item.managerId,
-          price: item.price,
-          quantity,
-          facilityName: restoName,
-          menuName: item.menuName,
-          menuId: item._id,
-          menuDescription: item.description,
-          menuImage: item.image,
-        };
-      }
-      Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/add/", data)
-        .then((res) => {
-          setShowLoader(false);
-          console.log(res.data);
-          toastMessage("success", res.data.msg);
-          dispatch(setCart([...cart, res.data.item]));
-        })
-        .catch((error) => {
-          setShowLoader(false);
-          console.log(error);
-        });
     }
+
+    let data;
+    setShowLoader(true);
+    if (token && token.trim() !== "") {
+      data = {
+        managerId: item.managerId,
+        price: item.price,
+        quantity,
+        facilityName: restoName,
+        menuName: item.menuName,
+        menuId: item._id,
+        menuDescription: item.description,
+        menuImage: item.image,
+        token,
+      };
+    } else {
+      data = {
+        managerId: item.managerId,
+        price: item.price,
+        quantity,
+        facilityName: restoName,
+        menuName: item.menuName,
+        menuId: item._id,
+        menuDescription: item.description,
+        menuImage: item.image,
+      };
+    }
+    Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/add/", data)
+      .then((res) => {
+        setShowLoader(false);
+        toastMessage("success", res.data.msg);
+        dispatch(setCart([...cart, res.data.item]));
+      })
+      .catch((error) => {
+        setShowLoader(false);
+        errorHandler(error);
+      });
   };
   return (
     <div className="col-md-4">

@@ -18,7 +18,10 @@ function Facilities() {
     setisLoading(true);
     setErrorMessage("");
     Axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/facility/find/" + activeTab + "/"
+      process.env.REACT_APP_BACKEND_URL +
+        "/facility/find/category/" +
+        activeTab +
+        "/"
     )
       .then((res) => {
         setisLoading(false);
