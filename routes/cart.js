@@ -117,6 +117,23 @@ router.post("/add/", async (req, res) => {
   }
 });
 
+router.post("/giveCart/", auth, async (req, res) => {
+  try {
+    await Cart.updateMany(
+      { ipAddress: getMyIp(req) },
+      {
+        customerId: req.user.user_id,
+        ipAddress: "",
+      }
+    );
+    res.status(201).json({
+      msg: "Cart Updated successfull!",
+    });
+  } catch (error) {
+    res.status(400).send({ msg: error.message });
+  }
+});
+
 router.post("/update/", async (req, res) => {
   const { quantity, id } = req.body;
   try {
