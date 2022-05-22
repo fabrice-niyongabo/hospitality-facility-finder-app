@@ -1,0 +1,17 @@
+@import "colors";
+@import "fonts";
+@import "mixins";
+
+.tab{
+    transition: .4s;
+    cursor: pointer;
+    &:hover{
+        color: $orange;
+        border-bottom: 3px solid $orange;
+    }
+}
+
+.tab.active{
+    color: $orange;
+        border-bottom: 3px solid $orange; 
+}

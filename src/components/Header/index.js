@@ -2,7 +2,8 @@ import React from "react";
 import { FaHome } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
 import { MdLogin, MdOutlineDashboard } from "react-icons/md";
-import { RiEditCircleLine, RiLogoutCircleLine } from "react-icons/ri";
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { FaRegUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { BsCart4 } from "react-icons/bs";
@@ -11,7 +12,7 @@ import "../../styles/header.scss";
 
 function Header() {
   const { cart } = useSelector((state) => state.cart);
-  const { token, fullName } = useSelector((state) => state.user);
+  const { token, fullName, role } = useSelector((state) => state.user);
   return (
     <div className="header-main-container">
       <div className="log-container">
@@ -39,12 +40,25 @@ function Header() {
           </li>
           {token && token !== "" && fullName !== "" ? (
             <>
-              <li>
-                <Link to="/dashboard">
-                  <MdOutlineDashboard size={20} color="black" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
+              {role === "user" ? (
+                <>
+                  <li>
+                    <Link to="/profile">
+                      <FaRegUserCircle size={20} color="black" />
+                      <span>{fullName.split(" ")[0]}</span>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/dashboard">
+                      <MdOutlineDashboard size={20} color="black" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </li>
+                </>
+              )}
               <li>
                 <Link to="/logout">
                   <RiLogoutCircleLine size={20} color="black" />

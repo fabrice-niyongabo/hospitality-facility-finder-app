@@ -336,9 +336,9 @@ function Hotel({ id }) {
                             className="quicksand-font"
                           >
                             <h4>Room Price</h4>
-                            <div>
+                            <div className="text-end">
                               <h4>{item.price}/RWF</h4>
-                              <h4>{item.price}/USD</h4>
+                              <h4>{item.price / 1000}/USD</h4>
                             </div>
                           </div>
                           <div
@@ -350,7 +350,7 @@ function Hotel({ id }) {
                             className="quicksand-font"
                           >
                             <h4>Room Availability</h4>
-                            <h4>-</h4>
+                            <h4>{item.status}</h4>
                           </div>
                         </div>
                       </div>

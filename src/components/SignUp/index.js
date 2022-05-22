@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   setuserCompanyName,
   setUserEmail,
@@ -13,6 +14,7 @@ import {
 } from "../../actions/user";
 
 function SignUp() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userObj = useSelector((state) => state.user);
   const [state, setState] = useState({
@@ -33,7 +35,7 @@ function SignUp() {
 
   useEffect(() => {
     if (userObj.token.trim() !== "") {
-      window.location = "dashboard";
+      navigate("/");
     }
   }, []);
 

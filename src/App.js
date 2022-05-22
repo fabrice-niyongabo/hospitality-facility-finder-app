@@ -17,6 +17,7 @@ import OrderList from "./components/Dashboard/Restaurant/OrderList";
 import Analytics from "./components/Dashboard/Restaurant/Analytics";
 import Facility from "./components/Facility";
 import Cart from "./components/cart";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
               <UnProtectedRoute>
                 <SignUp />
               </UnProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
             }
           />
           <Route

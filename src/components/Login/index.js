@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../../styles/login.scss";
 import { Spinner } from "react-bootstrap";
@@ -13,6 +13,7 @@ import {
   setUserToken,
 } from "../../actions/user";
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +37,7 @@ function Login() {
           dispatch(setuserCompanyName(res.data.companyName));
           dispatch(setUserRole(res.data.role));
           dispatch(setUserToken(res.data.token));
-          window.location = "dashboard";
+          updateCart(res.data.token, res.data.role);
         })
         .catch((error) => {
           setIsSubmitting(false);
@@ -48,6 +49,13 @@ function Login() {
           }
         });
     }
+  };
+
+  const updateCart = async (token, role) => {
+    await Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/giveCart", {
+      token,
+    });
+    role === "user" ? navigate("/") : navigate("/dashboard");
   };
   return (
     <div className="login-main-container">
