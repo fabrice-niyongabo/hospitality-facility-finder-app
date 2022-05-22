@@ -2,15 +2,21 @@ import { Skeleton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import { useSelector } from "react-redux";
 import Axios from "axios";
+import HotelModal from "./HotelModal";
+import Loader from "../../Dashboard/Modals/Loader";
 function Hotel({ id }) {
+  const user = useSelector((state) => state.user);
   const [services, setServices] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [isLoadingServices, setIsLoadingServices] = useState(true);
   const [isLoadingRooms, setIsLoadingRooms] = useState(true);
   const [servicesError, setServicesError] = useState("");
   const [roomsError, setRoomsError] = useState("");
+  const [showHotelModal, setShowHotelModal] = useState(false);
+  const [roomToBook, setRoomToBook] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     Axios.get(process.env.REACT_APP_BACKEND_URL + "/facility/services/" + id)
@@ -251,18 +257,39 @@ function Hotel({ id }) {
                       <h2 style={{ textTransform: "capitalize" }}>
                         {item.type}
                       </h2>
-                      <button
-                        className="bg-orange text-white"
-                        style={{
-                          boxShadow: "0px 16px 12px rgba(0, 0, 0, 0.25)",
-                          borderRadius: "20px",
-                          padding: "0.7rem 2.5rem",
-                          border: "none",
-                          fontSize: "30px",
-                        }}
-                      >
-                        Book Now
-                      </button>
+                      {user.email.trim() !== "" ? (
+                        <button
+                          className="bg-orange text-white"
+                          style={{
+                            boxShadow: "0px 16px 12px rgba(0, 0, 0, 0.25)",
+                            borderRadius: "20px",
+                            padding: "0.7rem 2.5rem",
+                            border: "none",
+                            fontSize: "30px",
+                          }}
+                          onClick={() => {
+                            setRoomToBook(item);
+                            setShowHotelModal(true);
+                          }}
+                        >
+                          Book Now
+                        </button>
+                      ) : (
+                        <a href="/login">
+                          <button
+                            className="bg-orange text-white"
+                            style={{
+                              boxShadow: "0px 16px 12px rgba(0, 0, 0, 0.25)",
+                              borderRadius: "20px",
+                              padding: "0.7rem 2.5rem",
+                              border: "none",
+                              fontSize: "30px",
+                            }}
+                          >
+                            Book Now
+                          </button>
+                        </a>
+                      )}
                     </div>
                     <div
                       style={{
@@ -337,6 +364,13 @@ function Hotel({ id }) {
           </>
         )}
       </div>
+      <HotelModal
+        setShowHotelModal={setShowHotelModal}
+        showHotelModal={showHotelModal}
+        room={roomToBook}
+        setShowLoader={setShowLoader}
+      />
+      <Loader showLoader={showLoader} />
     </>
   );
 }

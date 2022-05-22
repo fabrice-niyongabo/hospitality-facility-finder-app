@@ -13,6 +13,13 @@ function Cart() {
   useEffect(() => {
     dispatch(fetchCart());
   }, []);
+  const calculateTotal = () => {
+    let total = 0;
+    for (let i = 0; i < cart.length; i++) {
+      total += cart[i].price;
+    }
+    return total;
+  };
   return (
     <>
       <Header />
@@ -32,6 +39,20 @@ function Cart() {
                   <CartItem key={i} item={item} setShowLoader={setShowLoader} />
                 ))}
               </table>
+              <div
+                className="bg-light-orange p-3 mb-5 text-end"
+                style={{
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  display: "flex",
+                }}
+              >
+                <h3>TOTAL: {calculateTotal()} RWF</h3>
+                <span>&nbsp;&nbsp;</span>
+                <button className="btn bg-orange text-white">
+                  Continue to checkout
+                </button>
+              </div>
             </div>
           ) : (
             <div
