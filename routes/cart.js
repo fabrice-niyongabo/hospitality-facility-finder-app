@@ -52,6 +52,17 @@ router.post("/add/", async (req, res) => {
         customerId: verifyToken(req.body.token).user_id,
       });
 
+      const itemExists = await Cart.findOne({
+        menuId: menuId,
+        customerId: verifyToken(req.body.token).user_id,
+      });
+
+      if (itemExists) {
+        return res
+          .status(409)
+          .send({ msg: "Item already exists in the cart." });
+      }
+
       const rm = await Cart.create({
         menuId: menuId,
         menuName: menuName,
@@ -73,6 +84,17 @@ router.post("/add/", async (req, res) => {
         managerId: { $ne: managerId },
         ipAddress: getMyIp(req),
       });
+
+      const itemExists = await Cart.findOne({
+        menuId: menuId,
+        ipAddress: getMyIp(req),
+      });
+
+      if (itemExists) {
+        return res
+          .status(409)
+          .send({ msg: "Item already exists in the cart." });
+      }
 
       const rm = await Cart.create({
         menuId: menuId,

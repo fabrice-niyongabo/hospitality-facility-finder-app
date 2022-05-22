@@ -23,6 +23,7 @@ const servicesRoute = require("./routes/services");
 const restaurantRoute = require("./routes/restaurant");
 const ordersRoute = require("./routes/orders");
 const cartRoute = require("./routes/cart");
+const bookingRoute = require("./routes/booking");
 app.use("/api/users/", usersRoute);
 app.use("/api/facility/", facilityRoute);
 app.use("/api/rooms/", roomsRoute);
@@ -30,6 +31,7 @@ app.use("/api/services/", servicesRoute);
 app.use("/api/restaurant/", restaurantRoute);
 app.use("/api/orders/", ordersRoute);
 app.use("/api/cart/", cartRoute);
+app.use("/api/booking/", bookingRoute);
 
 //404 route
 app.use("*", (req, res) => {
