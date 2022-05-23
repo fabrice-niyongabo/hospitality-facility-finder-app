@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { BsCheck2Circle } from "react-icons/bs";
-import { errorHandler } from "../../helpers";
+import { errorHandler, toastMessage } from "../../helpers";
 import { Skeleton } from "@mui/material";
 function RoomItem({ item, token, fetchData, setShowLoader }) {
   const [loading, setLoading] = useState(true);
@@ -25,6 +25,7 @@ function RoomItem({ item, token, fetchData, setShowLoader }) {
       token,
     })
       .then((res) => {
+        toastMessage("info", res.data.msg);
         setShowLoader(false);
         fetchData();
       })
