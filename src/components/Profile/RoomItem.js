@@ -62,11 +62,28 @@ function RoomItem({ item, token, fetchData, setShowLoader }) {
       <td>
         <h3 className="m-0">{result?.roomNumber}</h3>
         <p>{result?.description}</p>
+        <p className="m-0 p-0">Check in date: {item.checkinDate}</p>
+        <p className="m-0 p-0">Check out date: {item.checkoutDate}</p>
+        <p className="m-0 p-0">
+          Transaction date&time:
+          {new Date(item.transactionDate).getFullYear()}-
+          {new Date(item.transactionDate).getMonth() + 1}-
+          {new Date(item.transactionDate).getDate()}&nbsp;&nbsp;
+          {new Date(item.transactionDate).getHours()}:
+          {new Date(item.transactionDate).getMinutes()}
+        </p>
+      </td>
+      <td>
         <p className="text-orange m-0 p-0">Price: {item.pricePerDay} RWF</p>
         <p className="text-orange m-0 p-0">Total days: {item.totalDays}</p>
         <p className="text-orange m-0 p-0">
           Total price: {item.totalDays * item.pricePerDay} RWF
         </p>
+        {item.paymentStatus === "paid" && (
+          <p className="text-orange m-0 p-0">
+            Transaction ID: {item.transactionId}
+          </p>
+        )}
       </td>
       <td>
         {item.paymentStatus === "pending" ? (
