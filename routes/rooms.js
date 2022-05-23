@@ -16,6 +16,17 @@ router.get("/all/", auth, (req, res) => {
   });
 });
 
+router.get("/find/:id", (req, res) => {
+  const id = req.params["id"];
+  Rooms.findOne({ _id: id }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
 router.post("/add/", auth, async (req, res) => {
   const { roomNumber, price, roomType, description, image } = req.body;
   try {

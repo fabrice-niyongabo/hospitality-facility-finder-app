@@ -79,34 +79,17 @@ router.post("/book/", auth, async (req, res) => {
   }
 });
 
-// router.post("/update/", async (req, res) => {
-//   const { quantity, id } = req.body;
-//   try {
-//     if (req.body?.token && verifyToken(req.body?.token)) {
-//       await Cart.updateOne(
-//         { _id: id, customerId: verifyToken(req.body.token).user_id },
-//         {
-//           quantity: quantity,
-//         }
-//       );
-//       res.status(201).json({
-//         msg: "Cart Item Updated successfull!",
-//       });
-//     } else {
-//       await Cart.updateOne(
-//         { _id: id, ipAddress: getMyIp(req) },
-//         {
-//           quantity: quantity,
-//         }
-//       );
-//       res.status(201).json({
-//         msg: "Cart Item Updated successfull!",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(400).send({ msg: error.message });
-//   }
-// });
+router.post("/cancel/", auth, async (req, res) => {
+  const { id } = req.body;
+  try {
+    await Booking.updateOne({ _id: id }, { paymentStatus: "failed" });
+    res.status(201).json({
+      msg: "Transaction cancelled successfull",
+    });
+  } catch (error) {
+    res.status(400).send({ msg: error.message });
+  }
+});
 
 // router.post("/delete/", async (req, res) => {
 //   const { id } = req.body;
