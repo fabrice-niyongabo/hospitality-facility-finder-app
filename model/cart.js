@@ -11,6 +11,8 @@ const cartSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   managerId: { type: String, required: true },
   facilityName: { type: String, required: true },
+  paymentInitialised: { type: Boolean, default: false, required: true },
+  orderId: { type: String, default: " ", required: true },
 });
 
 module.exports = mongoose.model("cart", cartSchema);
