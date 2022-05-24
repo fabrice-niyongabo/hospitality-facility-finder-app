@@ -14,7 +14,7 @@ function Loader({ showLoader }) {
           zIndex: 2000000000,
         }}
       >
-        <view
+        <div
           style={{
             height: "100vh",
             width: "100%",
@@ -26,7 +26,7 @@ function Loader({ showLoader }) {
           <div className="text-white">
             <Spinner animation="border" />
           </div>
-        </view>
+        </div>
       </div>
     );
   } else {

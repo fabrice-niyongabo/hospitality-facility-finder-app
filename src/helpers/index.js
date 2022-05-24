@@ -57,3 +57,20 @@ export const errorHandler = (error) => {
   }
   handleAuthError(error);
 };
+
+export const fetchCoordinates = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        console.log("lt is :", position.coords.latitude);
+        console.log("lg is :", position.coords.longitude);
+        resolve({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        });
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
