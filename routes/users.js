@@ -103,6 +103,18 @@ router.post("/updatePassword/", auth, async (req, res) => {
   }
 });
 
+router.post("/editInfo", auth, async (req, res) => {
+  const { phone, fullName } = req.body;
+  try {
+    await Users.updateOne({ _id: req.user.user_id }, { phone, fullName });
+    res.status(201).send({
+      msg: "User info updated successfull!",
+    });
+  } catch (error) {
+    res.status(400).send({ msg: error.message });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     // Get user input
