@@ -8,7 +8,8 @@ const bookingSchema = new mongoose.Schema({
   pricePerDay: { type: Number, required: true },
   totalDays: { type: Number, required: true },
   paymentStatus: { type: String, default: "pending" },
-  transactionId: { type: Number },
+  transactionId: { type: String, required: true, default: "-" },
+  totalAmount: { type: Number, required: true, default: 0 },
   transactionDate: { type: Date, default: new Date() },
 });
 

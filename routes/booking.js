@@ -62,7 +62,7 @@ router.post("/book/", auth, async (req, res) => {
       });
     }
 
-    await Booking.create({
+    const booking = await Booking.create({
       roomId,
       managerId,
       customerId: req.user.user_id,
@@ -72,7 +72,8 @@ router.post("/book/", auth, async (req, res) => {
       totalDays: totalDays,
     });
     res.status(201).json({
-      msg: "Item Added to cart successfull!",
+      msg: "Room booked cart successfull!",
+      booking,
     });
   } catch (error) {
     res.status(400).send({ msg: error.message });
@@ -82,9 +83,27 @@ router.post("/book/", auth, async (req, res) => {
 router.post("/cancel/", auth, async (req, res) => {
   const { id } = req.body;
   try {
-    await Booking.updateOne({ _id: id }, { paymentStatus: "failed" });
+    await Booking.updateOne(
+      { _id: id, customerId: req.user.user_id },
+      { paymentStatus: "failed" }
+    );
     res.status(201).json({
       msg: "Transaction cancelled successfull",
+    });
+  } catch (error) {
+    res.status(400).send({ msg: error.message });
+  }
+});
+
+router.post("/approve/", auth, async (req, res) => {
+  const { id, totalAmount, transactionId } = req.body;
+  try {
+    await Booking.updateOne(
+      { _id: id, customerId: req.user.user_id },
+      { paymentStatus: "paid", transactionId, totalAmount }
+    );
+    res.status(201).json({
+      msg: "Transaction approved successfull",
     });
   } catch (error) {
     res.status(400).send({ msg: error.message });

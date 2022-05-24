@@ -66,6 +66,34 @@ router.post("/cancelOrder/", auth, async (req, res) => {
   }
 });
 
+router.post("/completedOrder/", auth, async (req, res) => {
+  const { totalAmount, pickupDate, pickupTime, managerId, transactionId } =
+    req.body;
+  try {
+    const newOrder = await Orders.create({
+      status: "paid",
+      totalAmount,
+      pickupDate,
+      pickupTime,
+      managerId,
+      transactionId,
+      customerId: req.user.user_id,
+    });
+    await Cart.updateMany(
+      {
+        customerId: req.user.user_id,
+        paymentInitialised: false,
+      },
+      { paymentInitialised: true, orderId: newOrder._id }
+    );
+    return res
+      .status(200)
+      .send({ msg: "Order payment completed successfull." });
+  } catch (error) {
+    return res.status(409).send({ msg: error.message });
+  }
+});
+
 router.post("/add/", async (req, res) => {
   const {
     managerId,

@@ -5,7 +5,7 @@ const ordersSchema = new mongoose.Schema({
   pickupDate: { type: String },
   customerId: { type: String },
   status: { type: String, default: "pending" },
-  transactionId: { type: String, default: "-" },
+  transactionId: { type: String, default: "-", required: true },
   totalAmount: { type: Number, required: true },
   date: { type: String, default: new Date() },
   managerId: { type: String, required: true },

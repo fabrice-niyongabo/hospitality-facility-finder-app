@@ -115,6 +115,17 @@ router.post("/editInfo", auth, async (req, res) => {
   }
 });
 
+router.post("/getAll/", auth, async (req, res) => {
+  try {
+    const users = await Users.find({ role: "user" });
+    res.status(200).send({
+      users,
+    });
+  } catch (error) {
+    res.status(400).send({ msg: error.message });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     // Get user input
