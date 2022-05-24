@@ -88,7 +88,7 @@ function Cart() {
           })
             .then((res) => {
               toastMessage("info", res.data.msg);
-              navigate("/profile?tab=failedOrders");
+              navigate("/profile/failedOrders");
             })
             .catch((error) => {
               errorHandler(error);

@@ -8,7 +8,10 @@ import Axios from "axios";
 import { errorHandler } from "../../helpers";
 import Loader from "../Dashboard/Modals/Loader";
 import ProfileDetails from "./ProfileDetails";
+import { useParams } from "react-router-dom";
+import OrderDetails from "./OrderDeatails";
 function Profile() {
+  const params = useParams();
   const { fullName, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("pendingOrders");
   const [results, setResults] = useState([]);
@@ -16,9 +19,23 @@ function Profile() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showOrderDetailsModal, setShowOrderDetailsModal] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   useEffect(() => {
     fetchData();
   }, [activeTab]);
+  useEffect(() => {
+    if (
+      params?.tab === "pendingOrders" ||
+      params?.tab === "failedOrders" ||
+      params?.tab === "completedOrders" ||
+      params?.tab === "pendingBookings" ||
+      params?.tab === "failedBookings" ||
+      params?.tab === "completedBookings"
+    ) {
+      setActiveTab(params.tab);
+    }
+  }, []);
   const fetchData = () => {
     setIsLoading(true);
     setErrorMessage("");
@@ -147,6 +164,8 @@ function Profile() {
           fetchData={fetchData}
           setShowLoader={setShowLoader}
           token={token}
+          setShowOrderDetailsModal={setShowOrderDetailsModal}
+          setOrderId={setOrderId}
         />
       </div>
       <Loader showLoader={showLoader} />
@@ -154,6 +173,12 @@ function Profile() {
         setShowLoader={setShowLoader}
         setShowModal={setShowModal}
         showModal={showModal}
+      />
+      <OrderDetails
+        setShowModal={setShowOrderDetailsModal}
+        showModal={showOrderDetailsModal}
+        orderId={orderId}
+        setOrderId={setOrderId}
       />
     </>
   );

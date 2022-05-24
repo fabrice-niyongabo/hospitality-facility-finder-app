@@ -1,5 +1,5 @@
-import { Skeleton } from "@mui/material";
 import React from "react";
+import { Skeleton } from "@mui/material";
 import RoomItem from "./RoomItem";
 
 function Info({
@@ -10,6 +10,8 @@ function Info({
   fetchData,
   setShowLoader,
   token,
+  setShowOrderDetailsModal,
+  setOrderId,
 }) {
   return (
     <div>
@@ -105,7 +107,58 @@ function Info({
               {activeTab === "pendingOrders" ||
               activeTab === "failedOrders" ||
               activeTab === "completedOrders" ? (
-                <></>
+                <>
+                  <table className="table">
+                    <tr>
+                      <th>#</th>
+                      <th>Transaction Id</th>
+                      <th>Pickup Date</th>
+                      <th>Pickup Time</th>
+                      <th>Total Price</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                    <tbody>
+                      {results.map((item, i) => (
+                        <>
+                          <tr>
+                            <td>{i + 1}</td>
+                            {item.status === "paid" ? (
+                              <td>{item.transactionId}</td>
+                            ) : (
+                              <td>-</td>
+                            )}
+                            <td>{item.pickupDate}</td>
+                            <td>{item.pickupTime}</td>
+                            <td>{item.totalAmount} RWF</td>
+                            <td>
+                              {new Date(item.date).getDate()}-
+                              {new Date(item.date).getMonth() + 1}-
+                              {new Date(item.date).getFullYear()}
+                            </td>
+                            {item.status === "failed" ? (
+                              <td className="text-danger">{item.status}</td>
+                            ) : (
+                              <td className="text-info">{item.status}</td>
+                            )}
+                            <td>
+                              <button
+                                onClick={() => {
+                                  setOrderId(item._id);
+                                  setShowOrderDetailsModal(true);
+                                }}
+                                className="btn bg-orange text-white"
+                              >
+                                More...
+                              </button>
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
               ) : (
                 <>
                   <table className="table">
