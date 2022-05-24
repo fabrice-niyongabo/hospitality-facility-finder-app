@@ -138,9 +138,19 @@ function Info({
                               {new Date(item.date).getFullYear()}
                             </td>
                             {item.status === "failed" ? (
-                              <td className="text-danger">{item.status}</td>
+                              <td
+                                className="text-danger"
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {item.status}
+                              </td>
                             ) : (
-                              <td className="text-info">{item.status}</td>
+                              <td
+                                className="text-info"
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {item.status}
+                              </td>
                             )}
                             <td>
                               <button

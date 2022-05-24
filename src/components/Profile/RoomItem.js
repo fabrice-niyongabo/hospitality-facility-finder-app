@@ -60,12 +60,15 @@ function RoomItem({ item, token, fetchData, setShowLoader }) {
           />
         )}
       </td>
-      <td>
-        <h3 className="m-0">{result?.roomNumber}</h3>
-        <p>{result?.description}</p>
+      <td className="roboto-font">
+        <h3 className="m-0 px-0">{result?.roomNumber}</h3>
+        <p className="px-0">{result?.description}</p>
         <p className="m-0 p-0">Check in date: {item.checkinDate}</p>
         <p className="m-0 p-0">Check out date: {item.checkoutDate}</p>
-        <p className="m-0 p-0">
+        <p className="m-0 p-0" style={{ fontWeight: 700 }}>
+          Transaction ID: {item.transactionId}
+        </p>
+        <p className="m-0 p-0" style={{ fontWeight: 700 }}>
           Transaction date&time:
           {new Date(item.transactionDate).getFullYear()}-
           {new Date(item.transactionDate).getMonth() + 1}-
@@ -113,9 +116,14 @@ function RoomItem({ item, token, fetchData, setShowLoader }) {
                 <p className="h4 text-orange">Paid</p>
               </div>
             ) : (
-              <div className="alert alert-danger text-center">
-                <h4>Failed/canceled</h4>
-              </div>
+              <>
+                <div className="alert alert-danger text-center">
+                  <h4>Failed/canceled</h4>
+                </div>
+                {/* <button className="btn bg-orange text-white d-block mb-3">
+                  Checkout
+                </button> */}
+              </>
             )}
           </>
         )}

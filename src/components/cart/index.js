@@ -59,9 +59,9 @@ function Cart() {
       name: fullName,
     },
     customizations: {
-      title: "Hospitality finder - checkout page",
+      title: "Hospitality Finder - Order Checkout Page",
       description: getDescription(),
-      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+      logo: process.env.REACT_APP_PROJECT_LOGO,
     },
   };
   const handleFlutterPayment = useFlutterwave(config);
@@ -74,21 +74,43 @@ function Cart() {
     handleFlutterPayment({
       callback: (response) => {
         console.log(response);
-        // closePaymentModal();
+
         setIsPaying(false);
-        if (response.status === "failed") {
+        if (response.status !== "successful") {
           toastMessage("Error", "Transaction failed!");
           setShowLoader(true);
           Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/cancelOrder/", {
-            totalAmount: calculateTotal(),
             pickupDate,
             pickupTime,
+            totalAmount: response.amount,
             managerId: cart[0].managerId,
             token,
           })
             .then((res) => {
               toastMessage("info", res.data.msg);
               navigate("/profile/failedOrders");
+            })
+            .catch((error) => {
+              errorHandler(error);
+            });
+        } else {
+          closePaymentModal();
+          toastMessage("success", "Transaction paid successfull!");
+          setShowLoader(true);
+          Axios.post(
+            process.env.REACT_APP_BACKEND_URL + "/cart/completedOrder/",
+            {
+              pickupDate,
+              pickupTime,
+              totalAmount: response.amount,
+              managerId: cart[0].managerId,
+              transactionId: response.transaction_id,
+              token,
+            }
+          )
+            .then((res) => {
+              toastMessage("success", res.data.msg);
+              navigate("/profile/completedOrders");
             })
             .catch((error) => {
               errorHandler(error);
