@@ -7,6 +7,7 @@ import Info from "./Info";
 import Axios from "axios";
 import { errorHandler } from "../../helpers";
 import Loader from "../Dashboard/Modals/Loader";
+import ProfileDetails from "./ProfileDetails";
 function Profile() {
   const { fullName, token } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState("pendingOrders");
@@ -14,6 +15,7 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -55,7 +57,12 @@ function Profile() {
           >
             <h3 className="quicksand-font mb-0">{fullName}</h3>
             <span>&nbsp;&nbsp;</span>
-            <AiFillEdit size={30} color="#f46a06" />
+            <AiFillEdit
+              size={30}
+              color="#f46a06"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowModal(true)}
+            />
           </div>
         </div>
         <div className="my-4">
@@ -143,6 +150,11 @@ function Profile() {
         />
       </div>
       <Loader showLoader={showLoader} />
+      <ProfileDetails
+        setShowLoader={setShowLoader}
+        setShowModal={setShowModal}
+        showModal={showModal}
+      />
     </>
   );
 }
