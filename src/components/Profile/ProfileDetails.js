@@ -143,7 +143,6 @@ function ProfileDetails({ showModal, setShowModal, setShowLoader }) {
               </>
             ) : (
               <>
-                {" "}
                 <div className="form-group my-2">
                   <label>Full names</label>
                   <input

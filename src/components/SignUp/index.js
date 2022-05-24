@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   setuserCompanyName,
   setUserEmail,
@@ -162,14 +161,13 @@ function SignUp() {
     });
     Axios.post(process.env.REACT_APP_BACKEND_URL + "/users/register/", state)
       .then((res) => {
-        console.log("res", res.data);
         dispatch(setUserFullName(res.data.fullName));
         dispatch(setUserPhone(res.data.phone));
         dispatch(setUserEmail(res.data.email));
         dispatch(setuserCompanyName(res.data.companyName));
         dispatch(setUserRole(res.data.role));
         dispatch(setUserToken(res.data.token));
-        window.location = "dashboard";
+        navigate("/");
       })
       .catch((error) => {
         setIsSubmitting(false);

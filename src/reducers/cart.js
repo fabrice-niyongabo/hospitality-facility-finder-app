@@ -5,7 +5,6 @@ import {
   SET_CART_FACILITY_MANAGER_ID,
   SET_CART_FACILITY_NAME,
 } from "../actions/cart";
-import { SET_FACILITY } from "../actions/facility";
 
 const initialState = {
   loading: true,

@@ -4,16 +4,40 @@ import { fetchCart } from "../../actions/cart";
 import { errorHandler, toastMessage } from "../../helpers";
 import Axios from "axios";
 
-function CartItem({ item, setShowLoader }) {
+function CartItem({ item, setShowLoader, setQuantities, quantities, index }) {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const [quantity, setQuantity] = useState(item.quantity);
   const handlePlus = () => {
     setQuantity(quantity + 1);
+    const qty = quantities.filter((value) => value.index === index);
+    if (qty.length === 1) {
+      const updated = [...quantities];
+      for (let i = 0; i < updated.length; i++) {
+        if (updated[i].index === index) {
+          updated[i] = { index, value: quantity + 1 };
+        }
+      }
+      setQuantities([...updated]);
+    } else {
+      setQuantities([...quantities, { index, value: quantity + 1 }]);
+    }
   };
   const handleMinus = () => {
     if (quantity - 1 > 0) {
       setQuantity(quantity - 1);
+      const qty = quantities.filter((value) => value.index === index);
+      if (qty.length === 1) {
+        const updated = [...quantities];
+        for (let i = 0; i < updated.length; i++) {
+          if (updated[i].index === index) {
+            updated[i] = { index, value: quantity - 1 };
+          }
+        }
+        setQuantities([...updated]);
+      } else {
+        setQuantities([...quantities, { index, value: quantity - 1 }]);
+      }
     }
   };
 
