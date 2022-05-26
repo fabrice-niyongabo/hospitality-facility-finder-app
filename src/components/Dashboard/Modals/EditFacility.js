@@ -3,48 +3,52 @@ import { Modal, Button } from "react-bootstrap";
 import Axios from "axios";
 import { errorHandler, toastMessage } from "../../../helpers";
 import { useSelector } from "react-redux";
-function AddHotel({
+function EditFacility({
   showModal,
   setShowModal,
   setShowLoader,
-  long,
-  lat,
+  facility,
   getCors,
   getData,
   users,
-  results,
-  setResults,
+  fetchData,
 }) {
   const { token } = useSelector((state) => state.user);
-  const [name, setName] = useState("");
-  const [latitude, setLatitude] = useState(lat);
-  const [longitude, setLongitude] = useState(long);
-  const [stars, setStars] = useState("");
-  const [averagePrice, setAveragePrice] = useState("");
-  const [address, setAddress] = useState("");
-  const [managerId, setManagerId] = useState("");
+  const [name, setName] = useState(facility.name);
+  const [latitude, setLatitude] = useState(facility.lat);
+  const [longitude, setLongitude] = useState(facility.long);
+  const [stars, setStars] = useState(facility.stars);
+  const [averagePrice, setAveragePrice] = useState(facility.averagePrice);
+  const [address, setAddress] = useState(facility.address);
+  const [managerId, setManagerId] = useState(facility.managerId);
+  const [status, setStatus] = useState(facility.status);
+  const [type, setType] = useState(facility.type);
   useEffect(() => {
-    getCors();
-    setLongitude(long);
-    setLatitude(lat);
-    setManagerId("");
-    setAveragePrice("");
-    setAddress("");
-    setName("");
+    if (showModal) {
+      getCors();
+      setLongitude(facility.long);
+      setLatitude(facility.lat);
+      setManagerId(facility.managerId);
+      setAveragePrice(facility.averagePrice);
+      setAddress(facility.address);
+      setName(facility.name);
+      setStatus(facility.status);
+      setType(facility.type);
+    }
   }, [showModal]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
       name.trim() !== "" &&
-      String(latitude).trim() !== "" &&
-      String(longitude).trim() !== "" &&
-      stars.trim() != "" &&
+      latitude.trim() !== "" &&
+      longitude.trim() !== "" &&
+      stars != "" &&
       address.trim() !== "" &&
       managerId.trim() !== ""
     ) {
       setShowLoader(true);
-      Axios.post(process.env.REACT_APP_BACKEND_URL + "/facility/create", {
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/facility/edit/", {
         token,
         name,
         latitude,
@@ -53,14 +57,16 @@ function AddHotel({
         stars,
         address,
         managerId,
-        type: "hotel",
+        type: facility.type,
+        id: facility._id,
+        status: status,
+        type: type,
       })
         .then((res) => {
-          setShowLoader(false);
-          toastMessage("success", res.data.msg);
-          setResults([...results, res.data.facility]);
           setShowModal(false);
+          toastMessage("success", res.data.msg);
           getData();
+          fetchData();
         })
         .catch((error) => {
           setShowLoader(false);
@@ -79,7 +85,7 @@ function AddHotel({
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Register New Hotel</Modal.Title>
+          <Modal.Title>Edit Facility</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSubmit}>
           <Modal.Body>
@@ -167,12 +173,39 @@ function AddHotel({
                 value={managerId}
                 onChange={(e) => setManagerId(e.target.value)}
               >
-                <option value="">Select manager</option>
+                <option value={facility.managerId}>Current manager</option>
                 {users.map((user, i) => (
                   <option key={i} value={user._id}>
                     {user.fullName} - 0{user.phone}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div className="form-group my-2">
+              <label>Facility Type</label>
+              <select
+                type="text"
+                className="form-select"
+                required
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="hotel">hotel</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="coffeeshop">offee shop</option>
+              </select>
+            </div>
+            <div className="form-group my-2">
+              <label>Status</label>
+              <select
+                type="text"
+                className="form-select"
+                required
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="active">Active</option>
+                <option value="disabled">Disabled</option>
               </select>
             </div>
           </Modal.Body>
@@ -187,4 +220,4 @@ function AddHotel({
   );
 }
 
-export default AddHotel;
+export default EditFacility;

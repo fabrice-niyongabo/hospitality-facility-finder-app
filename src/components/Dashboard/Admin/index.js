@@ -8,25 +8,26 @@ import Axios from "axios";
 import { errorHandler, fetchCoordinates } from "../../../helpers";
 import AddHotel from "../Modals/AddHotel";
 import { useSelector } from "react-redux";
+import EditFacility from "../Modals/EditFacility";
 function Admin() {
   const { token } = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [results, setResults] = useState([]);
   const [users, setUsers] = useState([]);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
+  const [facility, setFacility] = useState({});
+
   useEffect(() => {
-    Axios.post(process.env.REACT_APP_BACKEND_URL + "/users/getAll/", { token })
-      .then((res) => {
-        if (res.data.users && res.data.users.length > 0) {
-          setUsers(res.data.users);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        errorHandler(error);
-      });
+    fetchData();
+    getCors();
+    getData();
+  }, []);
+
+  const fetchData = () => {
+    setShowLoader(true);
     Axios.get(
       process.env.REACT_APP_BACKEND_URL + "/facility/find/category/hotels"
     )
@@ -38,9 +39,19 @@ function Admin() {
         setShowLoader(false);
         errorHandler(error);
       });
-    getCors();
-  }, []);
-
+  };
+  const getData = () => {
+    Axios.post(process.env.REACT_APP_BACKEND_URL + "/users/getAll/", { token })
+      .then((res) => {
+        if (res.data.users && res.data.users.length > 0) {
+          setUsers(res.data.users);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        errorHandler(error);
+      });
+  };
   const getCors = () => {
     fetchCoordinates()
       .then((res) => {
@@ -93,6 +104,7 @@ function Admin() {
                     <th className="p-2">Lat</th>
                     <th className="p-2">Long</th>
                     <th className="p-2">Address</th>
+                    <th className="p-2">Status</th>
                   </tr>
                   {results.map((item, i) => (
                     <tr
@@ -106,6 +118,18 @@ function Admin() {
                       <td className="p-2">{item.lat}</td>
                       <td className="p-2">{item.long}</td>
                       <td className="p-2">{item.address}</td>
+                      <td className="p-2">{item.status}</td>
+                      <td className="p-2">
+                        <button
+                          className="btn border"
+                          onClick={() => {
+                            setFacility(item);
+                            setShowEditModal(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </table>
@@ -120,9 +144,24 @@ function Admin() {
         setShowLoader={setShowLoader}
         setShowModal={setShowModal}
         getCors={getCors}
+        getData={getData}
         lat={lat}
         long={long}
         users={users}
+        results={results}
+        setResults={setResults}
+      />
+      <EditFacility
+        showModal={showEditModal}
+        setShowLoader={setShowLoader}
+        setShowModal={setShowEditModal}
+        getCors={getCors}
+        getData={getData}
+        facility={facility}
+        users={users}
+        results={results}
+        setResults={setResults}
+        fetchData={fetchData}
       />
     </>
   );
