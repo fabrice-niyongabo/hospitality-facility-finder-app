@@ -18,6 +18,9 @@ import Analytics from "./components/Dashboard/Restaurant/Analytics";
 import Facility from "./components/Facility";
 import Cart from "./components/cart";
 import Profile from "./components/Profile";
+import ManageRestaurants from "./components/Dashboard/Admin/ManageRestaurants";
+import ManageCoffeeShops from "./components/Dashboard/Admin/ManageCoffeeShops";
+import ManagePayments from "./components/Dashboard/Admin/ManagePayments";
 
 function App() {
   return (
@@ -86,6 +89,32 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* admin routes */}
+          <Route
+            path="/managerestaurants"
+            element={
+              <ProtectedRoute>
+                <ManageRestaurants />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managecoffeeshops"
+            element={
+              <ProtectedRoute>
+                <ManageCoffeeShops />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payments"
+            element={
+              <ProtectedRoute>
+                <ManagePayments />
+              </ProtectedRoute>
+            }
+          />
+          {/* admin routes */}
           {/* hotel routes */}
           <Route
             path="/managerooms"
