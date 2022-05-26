@@ -7,36 +7,39 @@ const { verifyToken, getMyIp } = require("../helpers");
 
 const Orders = require("../model/orders");
 
-router.get("/all/", (req, res) => {
-  const token =
-    req.body.token || req.query.token || req.headers["access-token"];
-  if (!token) {
-    Orders.find(
-      { ipAddress: getMyIp(req), status: "pending" },
-      (err, result) => {
-        if (err) {
-          return res.status(400).send(err);
-        } else {
-          res.status(200).send({ result });
-        }
+router.get("/all/", auth, (req, res) => {
+  Orders.find(
+    { customerId: req.user.user_id, status: "pending" },
+    (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        return res.status(200).send({ result });
       }
-    );
-  } else {
-    if (verifyToken(token)) {
-      Orders.find(
-        { customerId: verifyToken(token).user_id, status: "pending" },
-        (err, result) => {
-          if (err) {
-            return res.status(400).send(err);
-          } else {
-            res.status(200).send({ result });
-          }
-        }
-      );
-    } else {
-      return res.status(401).send({ msg: "invalid token", tokenError: true });
     }
-  }
+  );
+});
+
+router.get("/master/", auth, (req, res) => {
+  Orders.aggregate(
+    [
+      {
+        $lookup: {
+          from: "facilities",
+          localField: "managerId",
+          foreignField: "managerId",
+          as: "facility",
+        },
+      },
+    ],
+    (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        return res.status(200).send({ result });
+      }
+    }
+  );
 });
 
 router.post("/add/", async (req, res) => {

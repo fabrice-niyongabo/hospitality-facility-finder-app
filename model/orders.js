@@ -9,6 +9,7 @@ const ordersSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
   date: { type: String, default: new Date() },
   managerId: { type: String, required: true },
+  transfered: { type: Boolean, required: true, default: false },
 });
 
 module.exports = mongoose.model("orders", ordersSchema);

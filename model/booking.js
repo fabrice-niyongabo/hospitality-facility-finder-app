@@ -11,6 +11,7 @@ const bookingSchema = new mongoose.Schema({
   transactionId: { type: String, required: true, default: "-" },
   totalAmount: { type: Number, required: true, default: 0 },
   transactionDate: { type: Date, default: new Date() },
+  transfered: { type: Boolean, required: true, default: false },
 });
 
 module.exports = mongoose.model("booking", bookingSchema);

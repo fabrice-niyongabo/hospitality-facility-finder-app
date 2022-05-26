@@ -4,31 +4,27 @@ const auth = require("../middleware/auth");
 
 const Booking = require("../model/booking");
 
-// router.get("/all/", (req, res) => {
-//   const token =
-//     req.body.token || req.query.token || req.headers["access-token"];
-//   if (!token) {
-//     Cart.find({ ipAddress: getMyIp(req) }, (err, result) => {
-//       if (err) {
-//         return res.status(400).send(err);
-//       } else {
-//         res.status(200).send({ result });
-//       }
-//     });
-//   } else {
-//     if (verifyToken(token)) {
-//       Cart.find({ customerId: verifyToken(token).user_id }, (err, result) => {
-//         if (err) {
-//           return res.status(400).send(err);
-//         } else {
-//           res.status(200).send({ result });
-//         }
-//       });
-//     } else {
-//       return res.status(401).send({ msg: "invalid token", tokenError: true });
-//     }
-//   }
-// });
+router.get("/master/", auth, (req, res) => {
+  Booking.aggregate(
+    [
+      {
+        $lookup: {
+          from: "facilities",
+          localField: "managerId",
+          foreignField: "managerId",
+          as: "facility",
+        },
+      },
+    ],
+    (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        return res.status(200).send({ result });
+      }
+    }
+  );
+});
 
 router.post("/book/", auth, async (req, res) => {
   const { checkIn, checkOut, price, managerId, roomId } = req.body;
