@@ -11,6 +11,7 @@ const facilitySchema = new mongoose.Schema({
   averagePrice: { type: String, default: "50000" },
   image: { type: String },
   managerId: { type: String, unique: true, required: true },
+  status: { type: String, required: true, default: "active" },
 });
 
 module.exports = mongoose.model("facilities", facilitySchema);
