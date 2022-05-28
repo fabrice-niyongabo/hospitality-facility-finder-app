@@ -25,6 +25,7 @@ const ordersRoute = require("./routes/orders");
 const cartRoute = require("./routes/cart");
 const bookingRoute = require("./routes/booking");
 const profileRoute = require("./routes/profile");
+const mapRoute = require("./routes/map");
 app.use("/api/users/", usersRoute);
 app.use("/api/facility/", facilityRoute);
 app.use("/api/rooms/", roomsRoute);
@@ -34,6 +35,7 @@ app.use("/api/orders/", ordersRoute);
 app.use("/api/cart/", cartRoute);
 app.use("/api/booking/", bookingRoute);
 app.use("/api/profile/", profileRoute);
+app.use("/api/map/", mapRoute);
 
 //404 route
 app.use("*", (req, res) => {
