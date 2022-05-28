@@ -21,6 +21,7 @@ import Profile from "./components/Profile";
 import ManageRestaurants from "./components/Dashboard/Admin/ManageRestaurants";
 import ManageCoffeeShops from "./components/Dashboard/Admin/ManageCoffeeShops";
 import ManagePayments from "./components/Dashboard/Admin/ManagePayments";
+import Map from "./components/Map";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/logout" element={<Logout />} />
           <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/map" element={<Map />} />
           <Route
             exact
             path="/login"

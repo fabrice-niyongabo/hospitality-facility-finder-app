@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "../Hotel/SideBar";
 import RestoSideBar from "../Restaurant/SideBar";
+import CoffeeShopSideBar from "../CoffeeShop/SideBar";
 import Contents from "./Contents";
 
 function Description() {
@@ -14,6 +15,9 @@ function Description() {
           {userObj.role === "hotel" && <SideBar activate="description" />}
           {userObj.role === "restaurant" && (
             <RestoSideBar activate="description" />
+          )}
+          {userObj.role === "coffeeshop" && (
+            <CoffeeShopSideBar activate="description" />
           )}
         </div>
         <div className="contents">

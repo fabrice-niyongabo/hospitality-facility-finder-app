@@ -6,6 +6,7 @@ import Facilities from "./Facilities";
 import Footer from "../Footer";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "../../actions/cart";
+import { Link } from "react-router-dom";
 
 function Home() {
   const dispatch = useDispatch();
@@ -29,7 +30,9 @@ function Home() {
                 </p>
                 <h3>Want nearby facilities on the map? click below</h3>
                 <div className="text-center">
-                  <button>View on map</button>
+                  <Link to="/map">
+                    <button>View on map</button>
+                  </Link>
                 </div>
               </div>
             </div>
