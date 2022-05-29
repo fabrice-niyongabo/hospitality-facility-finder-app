@@ -22,6 +22,7 @@ import ManageRestaurants from "./components/Dashboard/Admin/ManageRestaurants";
 import ManageCoffeeShops from "./components/Dashboard/Admin/ManageCoffeeShops";
 import ManagePayments from "./components/Dashboard/Admin/ManagePayments";
 import Map from "./components/Map";
+import ManageTransport from "./components/Dashboard/Admin/ManageTransport";
 
 function App() {
   return (
@@ -97,6 +98,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManageRestaurants />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managetransport"
+            element={
+              <ProtectedRoute>
+                <ManageTransport />
               </ProtectedRoute>
             }
           />

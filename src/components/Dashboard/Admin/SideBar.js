@@ -50,6 +50,12 @@ function SideBar({ activate }) {
             <span>Manage Coffee shops</span>
           </li>
         </Link>
+        <Link to="/managetransport">
+          <li className={activateMe("managetransport")}>
+            <RiSettingsLine color="#f46a06" size={25} />
+            <span>Manage Transport</span>
+          </li>
+        </Link>
         <Link to="/payments">
           <li className={activateMe("payments")}>
             <RiSecurePaymentLine color="#f46a06" size={25} />

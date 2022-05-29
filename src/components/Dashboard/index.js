@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import Hotel from "./Hotel";
 import Restaurant from "./Restaurant";
 import Admin from "./Admin";
-import { useNavigate } from "react-router-dom";
 import CoffeeShop from "./CoffeeShop";
+import Transport from "./Transport";
 function Dashboard() {
-  const navigate = useNavigate();
   const { role } = useSelector((state) => state.user);
   if (role === "hotel") {
     return <Hotel />;
@@ -16,8 +15,10 @@ function Dashboard() {
     return <Admin />;
   } else if (role === "coffeeshop") {
     return <CoffeeShop />;
+  } else if (role === "transport") {
+    return <Transport />;
   } else {
-    navigate("/");
+    window.location = "/";
     return null;
   }
 }
