@@ -5,26 +5,42 @@ import {
   handleAuthError,
   toastMessage,
   uploadImage,
-  useLoadBasicData,
 } from "../../../../helpers";
 import Axios from "axios";
 import "../../../../styles/description.scss";
 import { setuserCompanyName } from "../../../../actions/user";
 import { Link } from "react-router-dom";
-function Hotel({ user }) {
+function Hotel({ user, setShowLoader }) {
   const dispatch = useDispatch();
-  const loadBasics = useLoadBasicData();
-  const facility = useSelector((state) => state.facility).details;
-  const [name, setName] = useState(facility?.name);
-  const [description, setDescription] = useState(facility?.description);
-  const [address, setAddress] = useState(facility?.address);
-  const [stars, setStars] = useState(facility?.stars);
-  const [averagePrice, setAveragePrice] = useState(facility?.averagePrice);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
+  const [stars, setStars] = useState("");
+  const [averagePrice, setAveragePrice] = useState("");
   const [image, setImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => {
-    loadBasics();
+    setShowLoader(true);
+    Axios.get(
+      process.env.REACT_APP_BACKEND_URL +
+        "/facility/detail/?token=" +
+        user.token
+    )
+      .then((res) => {
+        setName(res.data.result[0].name);
+        setDescription(res.data.result[0].description);
+        setAddress(res.data.result[0].address);
+        setStars(res.data.result[0].stars);
+        setAveragePrice(res.data.result[0].averagePrice);
+        dispatch(setuserCompanyName(res.data.result[0].name));
+        setShowLoader(false);
+      })
+      .catch((error) => {
+        setShowLoader(false);
+        console.log(error);
+        handleAuthError(error);
+      });
   }, []);
 
   const onSubmit = (e) => {
@@ -135,9 +151,8 @@ function Hotel({ user }) {
                 required
                 disabled={isSubmitting}
                 onChange={(t) => setDescription(t.target.value)}
-              >
-                {description}
-              </textarea>
+                defaultValue={description}
+              ></textarea>
               <div className="row">
                 <div className="col-md-6">
                   <label>Hotel address</label>

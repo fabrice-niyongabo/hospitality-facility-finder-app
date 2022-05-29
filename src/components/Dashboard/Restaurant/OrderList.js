@@ -6,11 +6,46 @@ import SideBar from "./SideBar";
 import Axios from "axios";
 import AddRestaurantItem from "../Modals/AddRestaurantItem";
 import Loader from "../Modals/Loader";
-import { handleAuthError } from "../../../helpers";
+import { errorHandler, handleAuthError } from "../../../helpers";
+import { Link } from "react-router-dom";
+import OrderDetails from "./OrderDetails";
 
 function OrderList() {
   const userObj = useSelector((state) => state.user);
-  const [ordersList, setOrdersList] = useState(["dddd"]);
+  const [showLoader, setShowLoader] = useState(true);
+  const [activeTab, setActiveTab] = useState("all");
+  const [results, setResults] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
+
+  const fetchData = () => {
+    setShowLoader(true);
+    Axios.get(
+      process.env.REACT_APP_BACKEND_URL +
+        "/orders/find/" +
+        activeTab +
+        "?token=" +
+        userObj.token
+    )
+      .then((res) => {
+        setShowLoader(false);
+        setResults(res.data.result);
+      })
+      .catch((error) => {
+        setShowLoader(false);
+        errorHandler(error);
+      });
+  };
+  const calculateTotal = () => {
+    let total = 0;
+    for (let i = 0; i < results.length; i++) {
+      total += results[i].order.totalAmount;
+    }
+    return total;
+  };
   return (
     <div className="body">
       <div className="dashoard-main-container">
@@ -21,7 +56,9 @@ function OrderList() {
           <div className="contents-header">
             <div className="title">
               <FaHome color="black" size={30} />
-              <span> Restaurant Manager Dashboard</span>
+              <Link to="/">
+                <span>Back To Home Page</span>
+              </Link>
             </div>
             <div className="company">{userObj.companyName}</div>
           </div>
@@ -36,67 +73,114 @@ function OrderList() {
               <div className="mb-3">
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
-                  className="orange-border bg-white"
+                  className={
+                    activeTab === "all"
+                      ? "orange-border bg-orange"
+                      : "orange-border bg-white"
+                  }
+                  onClick={() => setActiveTab("all")}
                 >
                   ALL ORDERS
                 </button>
                 &nbsp;
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
-                  className="orange-border bg-white"
-                >
-                  NEW ORDERS
-                </button>
-                &nbsp;
-                <button
-                  style={{ padding: "5px 15px", borderRadius: 5 }}
-                  className="orange-border bg-white"
+                  className={
+                    activeTab === "pending"
+                      ? "orange-border bg-orange"
+                      : "orange-border bg-white"
+                  }
+                  onClick={() => setActiveTab("pending")}
                 >
                   ON PREGRESS
                 </button>
                 &nbsp;
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
-                  className="orange-border bg-white"
+                  className={
+                    activeTab === "failed"
+                      ? "orange-border bg-orange"
+                      : "orange-border bg-white"
+                  }
+                  onClick={() => setActiveTab("failed")}
                 >
-                  CANCELLED ORDERS
+                  CANCELLED/FAILED ORDERS
                 </button>
                 &nbsp;
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
-                  className="orange-border bg-white"
+                  className={
+                    activeTab === "paid"
+                      ? "orange-border bg-orange"
+                      : "orange-border bg-white"
+                  }
+                  onClick={() => setActiveTab("paid")}
                 >
                   COMPLETED ORDERS
                 </button>
               </div>
-              {ordersList.length > 0 ? (
+              {results.length > 0 ? (
                 <>
-                  <table className="w-100">
+                  <table className="w-100 roboto-font">
                     <thead className="bg-light-orange">
-                      <th className="p-2">Order ID</th>
+                      <th className="p-2">#ID</th>
+                      <th className="p-2">Transaction ID</th>
                       <th className="p-2">Pickup Time</th>
                       <th className="p-2">Pickup Date</th>
                       <th className="p-2">Customer Name</th>
+                      <th className="p-2">Amount</th>
                       <th className="p-2">Payment Status</th>
+                      <th>Date</th>
                       <th></th>
                     </thead>
                     <tbody>
-                      <tr className="border-bottom">
-                        <td className="p-2">#1</td>
-                        <td className="p-2">08:12</td>
-                        <td className="p-2">14/05/2020</td>
-                        <td className="p-2">User names</td>
-                        <td className="p-2 text-orange">Pending</td>
-                      </tr>
-                      <tr className="border-bottom">
-                        <td className="p-2">#2</td>
-                        <td className="p-2">08:12</td>
-                        <td className="p-2">14/05/2020</td>
-                        <td className="p-2">User names</td>
-                        <td className="p-2 text-orange">Cancelled</td>
-                      </tr>
+                      {results.map((item, i) => (
+                        <tr className="border-bottom">
+                          <td className="p-2">{i + 1}</td>
+                          <td>{item.order.transactionId}</td>
+                          <td>{item.order.pickupTime}</td>
+                          <td>{item.order.pickupDate}</td>
+                          <td>{item.customer.name}</td>
+                          <td>{item.order.totalAmount} RWF</td>
+
+                          <td
+                            className={
+                              item.order.status !== "paid"
+                                ? " text-danger text-center"
+                                : " text-success text-center"
+                            }
+                            style={{ textTransform: "capitalize" }}
+                          >
+                            {item.order.status}
+                          </td>
+
+                          <td>
+                            {new Date(item.order.date).getDate() +
+                              "/" +
+                              new Date(item.order.date).getDate() +
+                              "/" +
+                              new Date(item.order.date).getFullYear()}
+                          </td>
+                          <td className="p-2">
+                            <button
+                              className="btn bg-orange"
+                              onClick={() => {
+                                setOrderId(item.order._id);
+                                setShowModal(true);
+                              }}
+                            >
+                              <FaEye color="white" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
+                  {activeTab === "paid" && (
+                    <div className="text-end mt-2 quicksand-font">
+                      TOTAL AMOUNT: {calculateTotal()} RWF
+                    </div>
+                  )}
                 </>
               ) : (
                 <p>No orders found</p>
@@ -105,14 +189,13 @@ function OrderList() {
           </div>
         </div>
       </div>
-      {/* <Loader showLoader={showLoader} />
-      <AddRestaurantItem
-        setShowLoader={setShowLoader}
+      <Loader showLoader={showLoader} />
+      <OrderDetails
         showModal={showModal}
         setShowModal={setShowModal}
-        itemsList={itemsList}
-        setItemsList={setItemsList}
-      /> */}
+        setOrderId={setOrderId}
+        orderId={orderId}
+      />
     </div>
   );
 }

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "../Hotel/SideBar";
 import RestoSideBar from "../Restaurant/SideBar";
 import CoffeeShopSideBar from "../CoffeeShop/SideBar";
 import Contents from "./Contents";
+import Loader from "../Modals/Loader";
 
 function Description() {
+  const [showLoader, setShowLoader] = useState(true);
   const userObj = useSelector((state) => state.user);
   return (
     <div className="body">
@@ -21,9 +23,10 @@ function Description() {
           )}
         </div>
         <div className="contents">
-          <Contents />
+          <Contents setShowLoader={setShowLoader} />
         </div>
       </div>
+      <Loader showLoader={showLoader} />
     </div>
   );
 }

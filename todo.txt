@@ -1,2 +1,6 @@
 TODO:
 being able to checkout again a failed transaction
+
+
+change categories for item (restaurant & coffeeshops)
+also category for hotel rooms
