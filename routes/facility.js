@@ -21,8 +21,9 @@ router.get("/detail", auth, (req, res) => {
 
 router.get("/find/category/:category", (req, res) => {
   const category = req.params["category"];
-  let query = {};
+  let query = { type: { $ne: "transport" } };
   if (category === "restaurants") query = { type: "restaurant" };
+  if (category === "transports") query = { type: "transport" };
   if (category === "coffeeshops") query = { type: "coffeeshop" };
   if (category === "hotels") query = { type: "hotel" };
   Facilities.find(query, (err, result) => {
@@ -72,7 +73,12 @@ router.post("/create/", auth, async (req, res) => {
     type,
   } = req.body;
   //validate type
-  if (type === "hotel" || type === "restaurant" || type === "coffeeshop") {
+  if (
+    type === "hotel" ||
+    type === "restaurant" ||
+    type === "coffeeshop" ||
+    type === "transport"
+  ) {
     //validate manager
     const manager = await Users.findOne({ _id: managerId, role: "user" });
     if (manager) {

@@ -6,6 +6,8 @@ const auth = require("../middleware/auth");
 const { verifyToken, getMyIp } = require("../helpers");
 
 const Orders = require("../model/orders");
+const Users = require("../model/users");
+const Cart = require("../model/cart");
 
 router.get("/all/", auth, (req, res) => {
   Orders.find(
@@ -101,6 +103,43 @@ router.post("/delete/", auth, (req, res) => {
       return res.status(400).send({ msg: err.message });
     } else {
       res.status(200).send({ result });
+    }
+  });
+});
+
+router.get("/find/:status", auth, async (req, res) => {
+  try {
+    const status = req.params["status"];
+    const result = [];
+    let query = {};
+    if (status === "all") {
+      query = { managerId: req.user.user_id };
+    } else {
+      query = { managerId: req.user.user_id, status };
+    }
+
+    const results = await Orders.find(query);
+
+    for (let i = 0; i < results.length; i++) {
+      const customer = await Users.findOne({ _id: results[i].customerId });
+      result.push({
+        order: results[i],
+        customer: { name: customer?.fullName, email: customer?.email },
+      });
+    }
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send(err.message);
+  }
+});
+
+router.get("/orderDetails/:id", auth, (req, res) => {
+  const id = req.params["id"];
+  Cart.find({ orderId: id, managerId: req.user.user_id }, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err.message });
+    } else {
+      return res.status(200).send({ result });
     }
   });
 });
