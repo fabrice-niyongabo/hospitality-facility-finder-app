@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "./SideBar";
 import Axios from "axios";
-import AddRestaurantItem from "../Modals/AddRestaurantItem";
+import AddDriver from "../Modals/AddDriver";
 import Loader from "../Modals/Loader";
 import { errorHandler, handleAuthError, toastMessage } from "../../../helpers";
 import ViewRestaurantItem from "../Modals/ViewRestaurantItem";
@@ -23,7 +23,7 @@ function Transport() {
   const fetchItemLists = () => {
     Axios.get(
       process.env.REACT_APP_BACKEND_URL +
-        "/restaurant/item/all/?token=" +
+        "/drivers/find/?token=" +
         userObj.token
     )
       .then((res) => {
@@ -62,18 +62,15 @@ function Transport() {
   const handleDelete = () => {
     if (checkedList.length > 0) {
       setShowLoader(true);
-      Axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/restaurant/item/delete/",
-        {
-          token: userObj.token,
-          items: checkedList,
-        }
-      )
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/drivers/remove/", {
+        token: userObj.token,
+        items: checkedList,
+      })
         .then((res) => {
           setShowLoader(false);
           toastMessage(
             "success",
-            "Items selected has been deleted successful!"
+            "Drivers selected has been deleted successful!"
           );
           setItemsList(
             itemsList.filter((item) => !checkedList.includes(item._id))
@@ -116,9 +113,12 @@ function Transport() {
                 <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
                   className="orange-border bg-white"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    setPreviewItem({});
+                    setShowModal(true);
+                  }}
                 >
-                  ADD NEW ITEM
+                  ADD NEW DRIVER
                 </button>
                 &nbsp;
                 <button
@@ -126,7 +126,7 @@ function Transport() {
                   className="orange-border bg-white"
                   onClick={() => setShowConfirm(true)}
                 >
-                  DELETE SELECTED ITEMS
+                  DELETE SELECTED DRIVERS
                 </button>
               </div>
               {itemsList.length > 0 ? (
@@ -139,11 +139,12 @@ function Transport() {
                           onChange={(e) => handleSelectAll(e.target.checked)}
                         />
                       </th>
-                      <th className="p-2">Item ID</th>
-                      <th className="p-2">Item Name</th>
-                      <th className="p-2">Item Category</th>
-                      <th className="p-2">Item Price</th>
-                      <th className="p-2">Item Quantity</th>
+                      <th className="p-2">#</th>
+                      <th className="p-2">Driver ID</th>
+                      <th className="p-2">Driver Name</th>
+                      <th className="p-2">Phone number</th>
+                      <th className="p-2">Language</th>
+                      <th className="p-2">Status</th>
                       <th></th>
                     </thead>
                     <tbody>
@@ -158,20 +159,21 @@ function Transport() {
                               }
                             />
                           </td>
-                          <td className="p-2">#{i + 1}</td>
-                          <td className="p-2">{item.menuName}</td>
-                          <td className="p-2">{item.category}</td>
-                          <td className="p-2">{item.price} RWF</td>
-                          <td className="p-2">{item.quantity}</td>
+                          <td className="p-2">{i + 1}</td>
+                          <td className="p-2">{item.driverId}</td>
+                          <td className="p-2">{item.name}</td>
+                          <td className="p-2">{item.poneNumber} RWF</td>
+                          <td className="p-2">{item.language}</td>
+                          <td className="p-2">{item.status}</td>
                           <td className="p-2">
                             <button
                               className="btn bg-orange text-white"
                               onClick={() => {
                                 setPreviewItem(item);
-                                setShowPreview(true);
+                                setShowModal(true);
                               }}
                             >
-                              <FaEye size={20} />
+                              Edit
                             </button>
                           </td>
                         </tr>
@@ -187,20 +189,14 @@ function Transport() {
         </div>
       </div>
       <Loader showLoader={showLoader} />
-      <AddRestaurantItem
+      <AddDriver
         setShowLoader={setShowLoader}
         showModal={showModal}
         setShowModal={setShowModal}
         itemsList={itemsList}
         setItemsList={setItemsList}
-      />
-      <ViewRestaurantItem
-        showPreview={showPreview}
-        setShowPreview={setShowPreview}
-        setShowLoader={setShowLoader}
         item={previewItem}
-        itemsList={itemsList}
-        setItemsList={setItemsList}
+        loadData={fetchItemLists}
       />
       <Confirm
         callBack={handleDelete}

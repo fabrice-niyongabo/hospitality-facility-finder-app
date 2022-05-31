@@ -163,6 +163,19 @@ function Info({
                                 More...
                               </button>
                             </td>
+                            {item.status === "paid" && (
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    setOrderId(item._id);
+                                    setShowOrderDetailsModal(true);
+                                  }}
+                                  className="btn bg-orange text-white"
+                                >
+                                  Book Taxi
+                                </button>
+                              </td>
+                            )}
                           </tr>
                         </>
                       ))}
