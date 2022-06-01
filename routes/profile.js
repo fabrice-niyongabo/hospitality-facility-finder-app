@@ -6,6 +6,7 @@ const Booking = require("../model/booking");
 const Cart = require("../model/cart");
 const Orders = require("../model/orders");
 const Transportation = require("../model/transportation");
+const Facility = require("../model/facility");
 
 router.get("/find/:category", auth, async (req, res) => {
   const category = req.params["category"];
@@ -43,8 +44,12 @@ router.get("/find/:category", auth, async (req, res) => {
         const transport = await Transportation.findOne({
           parentTransactionId: orders[i]._id,
         });
-        let obj = orders[i];
-        obj.transport = "transport";
+        const facility = await Facility.findOne({
+          managerId: orders[i].managerId,
+        });
+        let obj = { ...orders[i]._doc };
+        obj.transport = transport;
+        obj.facility = facility;
         result.push(obj);
       }
       return res.status(200).send({ result });
