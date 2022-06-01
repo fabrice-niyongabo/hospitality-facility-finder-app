@@ -14,8 +14,9 @@ function Info({
   setShowOrderDetailsModal,
   setOrderId,
 }) {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [facility, setFacility] = useState({});
+  const [parentId, setParentId] = useState(null);
   return (
     <div>
       <h2 style={{ textTransform: "capitalize" }}>{activeTab}</h2>
@@ -171,6 +172,7 @@ function Info({
                                 <button
                                   onClick={() => {
                                     setFacility(item.facility);
+                                    setParentId(item._id);
                                     setShowModal(true);
                                   }}
                                   className="btn bg-orange text-white"
@@ -217,6 +219,7 @@ function Info({
         setShowModal={setShowModal}
         setShowLoader={setShowLoader}
         facility={facility}
+        parentId={parentId}
       />
     </div>
   );

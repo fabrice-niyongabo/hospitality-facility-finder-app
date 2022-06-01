@@ -23,6 +23,7 @@ import ManageCoffeeShops from "./components/Dashboard/Admin/ManageCoffeeShops";
 import ManagePayments from "./components/Dashboard/Admin/ManagePayments";
 import Map from "./components/Map";
 import ManageTransport from "./components/Dashboard/Admin/ManageTransport";
+import Print from "./components/Print";
 
 function App() {
   return (
@@ -92,6 +93,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* every logged in user */}
+          <Route
+            path="/print/:status/:id"
+            element={
+              <ProtectedRoute>
+                <Print />
+              </ProtectedRoute>
+            }
+          />
+          {/* every logged in user */}
           {/* admin routes */}
           <Route
             path="/managerestaurants"
