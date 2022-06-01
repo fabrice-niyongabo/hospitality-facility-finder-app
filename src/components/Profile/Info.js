@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Skeleton } from "@mui/material";
 import RoomItem from "./RoomItem";
+import BookTaxi from "./BookTaxi";
 
 function Info({
   activeTab,
@@ -13,6 +14,8 @@ function Info({
   setShowOrderDetailsModal,
   setOrderId,
 }) {
+  const [showModal, setShowModal] = useState(true);
+  const [facility, setFacility] = useState({});
   return (
     <div>
       <h2 style={{ textTransform: "capitalize" }}>{activeTab}</h2>
@@ -167,8 +170,8 @@ function Info({
                               <td>
                                 <button
                                   onClick={() => {
-                                    setOrderId(item._id);
-                                    setShowOrderDetailsModal(true);
+                                    setFacility(item.facility);
+                                    setShowModal(true);
                                   }}
                                   className="btn bg-orange text-white"
                                 >
@@ -209,6 +212,12 @@ function Info({
           )}
         </>
       )}
+      <BookTaxi
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setShowLoader={setShowLoader}
+        facility={facility}
+      />
     </div>
   );
 }

@@ -47,6 +47,7 @@ function Profile() {
         token
     )
       .then((res) => {
+        console.log(res.data);
         setIsLoading(false);
         setResults(res.data.result);
       })
