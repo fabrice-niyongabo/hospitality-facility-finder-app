@@ -234,20 +234,6 @@ function ManageRooms() {
                 </>
               )}
             </div>
-            {rooms?.loading !== true && rooms.allRooms?.length !== 0 && (
-              <div
-                style={{
-                  padding: "1rem",
-                  borderRadius: 10,
-                  backgroundColor: "#fff",
-                  marginTop: "1rem",
-                }}
-              >
-                <div className="manage-rooms-footer">
-                  <h3>Total payment: {calculateTotal()} Rwf</h3>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
