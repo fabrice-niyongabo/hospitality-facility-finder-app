@@ -36,9 +36,10 @@ function BookTaxi({
   const config = {
     public_key: process.env.REACT_APP_PUBLIC_KEY,
     tx_ref: Date.now(),
-    amount:
+    amount: (
       calCulateDistance(lat, long, facility.lat, facility.long).toFixed(1) *
-      amountPerKilometer,
+      amountPerKilometer
+    ).toFixed(1),
     currency: "RWF",
     payment_options: "card,mobilemoney",
     customer: {
@@ -184,21 +185,25 @@ function BookTaxi({
                   </p>
                   <p>
                     TOTAL PRICE:{" "}
-                    {calCulateDistance(
-                      lat,
-                      long,
-                      facility.lat,
-                      facility.long
-                    ).toFixed(1) * 1500}{" "}
+                    {(
+                      calCulateDistance(
+                        lat,
+                        long,
+                        facility.lat,
+                        facility.long
+                      ).toFixed(1) * amountPerKilometer
+                    ).toFixed(1)}{" "}
                     RWF /{" "}
-                    {(calCulateDistance(
-                      lat,
-                      long,
-                      facility.lat,
-                      facility.long
-                    ).toFixed(1) *
-                      1500) /
-                      1000}{" "}
+                    {(
+                      (calCulateDistance(
+                        lat,
+                        long,
+                        facility.lat,
+                        facility.long
+                      ).toFixed(1) *
+                        amountPerKilometer) /
+                      1000
+                    ).toFixed(1)}{" "}
                     USD
                   </p>
                   <button className="text-white bg-orange btn">Pay Now</button>

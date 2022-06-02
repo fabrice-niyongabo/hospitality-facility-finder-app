@@ -86,10 +86,10 @@ function Profile() {
         <div className="my-4">
           <table className="w-100">
             <tr>
-              <td colSpan={3} className="bg-light pt-2">
+              <td colSpan={2} className="bg-light pt-2">
                 <h4 className="text-center">Orders</h4>
               </td>
-              <td colSpan={3} className="bg-light-orange pt-2">
+              <td colSpan={2} className="bg-light-orange pt-2">
                 <h4 className="text-center">Booking</h4>
               </td>
             </tr>
