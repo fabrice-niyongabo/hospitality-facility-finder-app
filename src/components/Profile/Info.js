@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Skeleton } from "@mui/material";
 import RoomItem from "./RoomItem";
 import BookTaxi from "./BookTaxi";
+import OrderItem from "./OrderItem";
 
 function Info({
   activeTab,
@@ -125,81 +126,17 @@ function Info({
                     </tr>
                     <tbody>
                       {results.map((item, i) => (
-                        <>
-                          <tr>
-                            <td>{i + 1}</td>
-                            {item.status === "paid" ? (
-                              <td>{item.transactionId}</td>
-                            ) : (
-                              <td>-</td>
-                            )}
-                            <td>{item.pickupDate}</td>
-                            <td>{item.pickupTime}</td>
-                            <td>{item.totalAmount} RWF</td>
-                            <td>
-                              {new Date(item.date).getDate()}-
-                              {new Date(item.date).getMonth() + 1}-
-                              {new Date(item.date).getFullYear()}
-                            </td>
-                            {item.status === "failed" ? (
-                              <td
-                                className="text-danger"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            ) : (
-                              <td
-                                className="text-info"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            )}
-                            <td>
-                              <button
-                                onClick={() => {
-                                  setOrderId(item._id);
-                                  setShowOrderDetailsModal(true);
-                                }}
-                                className="btn bg-orange text-white"
-                              >
-                                More...
-                              </button>
-                            </td>
-                            {item.status === "paid" && (
-                              <td>
-                                {item.transport === null ? (
-                                  <button
-                                    onClick={() => {
-                                      setFacility(item.facility);
-                                      setParentId(item._id);
-                                      setShowModal(true);
-                                    }}
-                                    className="btn bg-orange text-white"
-                                  >
-                                    Book Taxi
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => {
-                                      window.open(
-                                        process.env.REACT_APP_URL +
-                                          "/print/customerTransportId/" +
-                                          item.transport._id,
-                                        "Print",
-                                        "width:100"
-                                      );
-                                    }}
-                                    className="btn bg-orange text-white"
-                                  >
-                                    View Booked Taxi
-                                  </button>
-                                )}
-                              </td>
-                            )}
-                          </tr>
-                        </>
+                        <OrderItem
+                          item={item}
+                          i={i}
+                          key={i}
+                          setShowLoader={setShowLoader}
+                          setFacility={setFacility}
+                          setOrderId={setOrderId}
+                          setParentId={setParentId}
+                          setShowModal={setShowModal}
+                          setShowOrderDetailsModal={setShowOrderDetailsModal}
+                        />
                       ))}
                     </tbody>
                   </table>
