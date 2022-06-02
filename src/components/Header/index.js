@@ -28,12 +28,12 @@ function Header() {
               <span>Home</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/contact">
               <IoMdCall size={20} color="black" />
               <span>Contact Us</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/cart">
               <BsCart4 size={20} color="black" />

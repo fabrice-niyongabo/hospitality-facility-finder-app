@@ -50,10 +50,10 @@ function Home() {
         <hr />
         <div className="nearest-facilities-list-tab mb-4">
           <h2>Nearest facilities list</h2>
-          <div>
+          {/* <div>
             <h2>need taxi to destination click here</h2>
             <button>Book car</button>
-          </div>
+          </div> */}
         </div>
       </div>
       <Facilities />
