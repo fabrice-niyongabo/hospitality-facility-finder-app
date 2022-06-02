@@ -26,6 +26,16 @@ router.get("/master/", auth, (req, res) => {
   );
 });
 
+router.get("/all/", auth, (req, res) => {
+  Booking.find({ managerId: req.user.user_id }, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+
 router.post("/book/", auth, async (req, res) => {
   const { checkIn, checkOut, price, managerId, roomId } = req.body;
   let totalDays;
