@@ -88,12 +88,26 @@ function ManageCoffeeShops() {
                   className="mb-3"
                 >
                   <h2>Coffe shops</h2>
-                  <button
-                    className="btn bg-orange text-white"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Add coffe shop
-                  </button>
+                  <div>
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => {
+                        window.open(
+                          process.env.REACT_APP_URL +
+                            "/print/facility/coffeeshops"
+                        );
+                      }}
+                    >
+                      Print
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Add coffe shop
+                    </button>
+                  </div>
                 </div>
                 <table className="table">
                   <tr>

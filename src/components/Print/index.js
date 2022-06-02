@@ -60,29 +60,33 @@ function Print() {
       {status === "facility" && (
         <>
           <h4 style={{ textTransform: "uppercase" }}>{id} Reports</h4>
-          <table className="table border">
-            <tr>
-              <th>#ID</th>
-              <th>Name</th>
-              <th>Stars</th>
-              <th>Average price</th>
-              <th>Lat</th>
-              <th>Long</th>
-              <th>Address</th>
-              <th>Status</th>
-            </tr>
-            {results.map((item, i) => (
-              <tr key={i} style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}>
-                <td>{i + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.stars}</td>
-                <td>{item.averagePrice}sadasd</td>
-                <td>{item.lat}</td>
-                <td>{item.long}</td>
-                <td>{item.address}</td>
-                <td>{item.status}</td>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Name</th>
+                <th>Stars</th>
+                <th>Average price</th>
+                <th>Lat</th>
+                <th>Long</th>
+                <th>Address</th>
+                <th>Status</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {results.map((item, i) => (
+                <tr key={i}>
+                  <td>{i + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.stars}</td>
+                  <td>{item.averagePrice}sadasd</td>
+                  <td>{item.lat}</td>
+                  <td>{item.long}</td>
+                  <td>{item.address}</td>
+                  <td>{item.status}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </>
       )}
