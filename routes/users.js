@@ -75,6 +75,19 @@ router.post("/updateInfo/", auth, (req, res) => {
   );
 });
 
+// admin
+router.post("/userInfo/", auth, (req, res) => {
+  const { i } = req.body;
+  Users.find({ _id: i }, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err.message });
+    } else {
+      return res.status(200).send({ result });
+    }
+  });
+});
+// admin
+
 router.post("/updatePassword/", auth, async (req, res) => {
   const { newPwd, currentPwd } = req.body;
   try {

@@ -59,6 +59,28 @@ router.post("/book/", auth, async (req, res) => {
   }
 });
 
+router.get("/master/", auth, (req, res) => {
+  Transportation.aggregate(
+    [
+      {
+        $lookup: {
+          from: "facilities",
+          localField: "managerId",
+          foreignField: "managerId",
+          as: "facility",
+        },
+      },
+    ],
+    (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        return res.status(200).send({ result });
+      }
+    }
+  );
+});
+
 router.get("/print/:id", auth, async (req, res) => {
   try {
     const id = req.params["id"];
