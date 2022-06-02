@@ -88,12 +88,25 @@ function Admin() {
                   className="mb-3"
                 >
                   <h2>Hotels</h2>
-                  <button
-                    className="btn bg-orange text-white"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Add hotel
-                  </button>
+                  <div>
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => {
+                        window.open(
+                          process.env.REACT_APP_URL + "/print/facility/hotels"
+                        );
+                      }}
+                    >
+                      Print
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Add hotel
+                    </button>
+                  </div>
                 </div>
                 <table className="table">
                   <tr>

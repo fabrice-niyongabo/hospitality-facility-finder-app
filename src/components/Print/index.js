@@ -33,10 +33,59 @@ function Print() {
           setShowLoader(false);
         });
     }
+    if (status === "facility") {
+      Axios.get(
+        process.env.REACT_APP_BACKEND_URL +
+          "/facility/find/category/" +
+          id +
+          "?token=" +
+          token
+      )
+        .then((res) => {
+          setShowLoader(false);
+          setResults(res.data.result);
+          setTimeout(() => {
+            window.print();
+          }, 500);
+        })
+        .catch((error) => {
+          errorHandler(error);
+          setShowLoader(false);
+        });
+    }
   }, []);
   return (
     <div>
       <img src={require("../../assets/logo.png")} />
+      {status === "facility" && (
+        <>
+          <h4 style={{ textTransform: "uppercase" }}>{id} Reports</h4>
+          <table className="table border">
+            <tr>
+              <th>#ID</th>
+              <th>Name</th>
+              <th>Stars</th>
+              <th>Average price</th>
+              <th>Lat</th>
+              <th>Long</th>
+              <th>Address</th>
+              <th>Status</th>
+            </tr>
+            {results.map((item, i) => (
+              <tr key={i} style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}>
+                <td>{i + 1}</td>
+                <td>{item.name}</td>
+                <td>{item.stars}</td>
+                <td>{item.averagePrice}sadasd</td>
+                <td>{item.lat}</td>
+                <td>{item.long}</td>
+                <td>{item.address}</td>
+                <td>{item.status}</td>
+              </tr>
+            ))}
+          </table>
+        </>
+      )}
       {status === "customerTransportId" && (
         <div>
           <h1>DRIVER PAYMENT ID</h1>

@@ -34,6 +34,7 @@ function Transfer({
   }, [showModal]);
 
   const handleTransfer = () => {
+    setShowLoader(true);
     Axios.post(
       "https://api.flutterwave.com/v3/transfers",
       {
@@ -52,10 +53,13 @@ function Transfer({
       }
     )
       .then((res) => {
+        setShowLoader(false);
         console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        setShowLoader(false);
+        errorHandler(error);
       });
   };
   return (
@@ -80,17 +84,19 @@ function Transfer({
               <p className="p-0 m-0">Facility Name: {tx?.facility[0]?.name}</p>
               <p className="p-0 m-0">Address: {tx?.facility[0]?.address}</p>
               <p className="p-0 m-0">Phone: 0{owner.phone}</p>
+              <div className="border p-2">
+                <p className="p-0 m-0">
+                  Paid amount: {tx?.facility[0]?.totalAmount}
+                </p>
+                <p className="p-0 m-0">
+                  Incame: {(tx?.totalAmount * 7) / 100} RWF
+                </p>
+                <p className="p-0 m-0">
+                  Amount to be transfered: {(tx?.totalAmount * 93) / 100} RWF
+                </p>
+              </div>
             </>
           )}
-          <div className="border p-2">
-            <p className="p-0 m-0">
-              Paid amount: {tx?.facility[0]?.totalAmount}
-            </p>
-            <p className="p-0 m-0">Incame: {(tx?.totalAmount * 7) / 100} RWF</p>
-            <p className="p-0 m-0">
-              Amount to be transfered: {(tx?.totalAmount * 93) / 100} RWF
-            </p>
-          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button
