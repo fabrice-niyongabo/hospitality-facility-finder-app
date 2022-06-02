@@ -94,6 +94,32 @@ router.post("/completedOrder/", auth, async (req, res) => {
   }
 });
 
+router.post("/completedOrder2/", auth, async (req, res) => {
+  const { i, totalAmount, transactionId } = req.body;
+  try {
+    await Orders.updateOne(
+      { _id: i, customerId: req.user.user_id },
+      {
+        status: "paid",
+        transactionId,
+        totalAmount,
+      }
+    );
+    await Cart.updateMany(
+      {
+        customerId: req.user.user_id,
+        paymentInitialised: false,
+      },
+      { paymentInitialised: true, orderId: i }
+    );
+    return res
+      .status(200)
+      .send({ msg: "Order payment completed successfull." });
+  } catch (error) {
+    return res.status(409).send({ msg: error.message });
+  }
+});
+
 router.post("/add/", async (req, res) => {
   const {
     managerId,
