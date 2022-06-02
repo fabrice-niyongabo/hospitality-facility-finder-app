@@ -24,6 +24,8 @@ import ManagePayments from "./components/Dashboard/Admin/ManagePayments";
 import Map from "./components/Map";
 import ManageTransport from "./components/Dashboard/Admin/ManageTransport";
 import Print from "./components/Print";
+import ManageReports from "./components/Dashboard/Transport/ManageReports";
+import ManageCustomers from "./components/Dashboard/Transport/ManageCustomers";
 
 function App() {
   return (
@@ -173,6 +175,25 @@ function App() {
             }
           />
           {/* //restaurant routes */}
+
+          {/*transport routes*/}
+          <Route
+            path="/managereports"
+            element={
+              <ProtectedRoute>
+                <ManageReports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managecustomers"
+            element={
+              <ProtectedRoute>
+                <ManageCustomers />
+              </ProtectedRoute>
+            }
+          />
+          {/*transport routes*/}
         </Routes>
       </BrowserRouter>
       <ToastContainer />

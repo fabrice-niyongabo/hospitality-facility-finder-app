@@ -169,16 +169,33 @@ function Info({
                             </td>
                             {item.status === "paid" && (
                               <td>
-                                <button
-                                  onClick={() => {
-                                    setFacility(item.facility);
-                                    setParentId(item._id);
-                                    setShowModal(true);
-                                  }}
-                                  className="btn bg-orange text-white"
-                                >
-                                  Book Taxi
-                                </button>
+                                {item.transport === null ? (
+                                  <button
+                                    onClick={() => {
+                                      setFacility(item.facility);
+                                      setParentId(item._id);
+                                      setShowModal(true);
+                                    }}
+                                    className="btn bg-orange text-white"
+                                  >
+                                    Book Taxi
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      window.open(
+                                        process.env.REACT_APP_URL +
+                                          "/print/customerTransportId/" +
+                                          item.transport._id,
+                                        "Print",
+                                        "width:100"
+                                      );
+                                    }}
+                                    className="btn bg-orange text-white"
+                                  >
+                                    View Booked Taxi
+                                  </button>
+                                )}
                               </td>
                             )}
                           </tr>

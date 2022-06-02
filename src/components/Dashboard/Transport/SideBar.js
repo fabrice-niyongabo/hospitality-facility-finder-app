@@ -32,14 +32,14 @@ function SideBar({ activate }) {
             <span>Drivers List</span>
           </li>
         </Link>
-        <Link to="/orderlist">
-          <li className={activateMe("orderlist")}>
+        <Link to="/managecustomers">
+          <li className={activateMe("managecustomers")}>
             <RiFileListLine color="#f46a06" size={25} />
             <span>Manage customers</span>
           </li>
         </Link>
-        <Link to="/description">
-          <li className={activateMe("description")}>
+        <Link to="/managereports">
+          <li className={activateMe("managereports")}>
             <FaClipboardList color="#f46a06" size={25} />
             <span>Manage reports</span>
           </li>
