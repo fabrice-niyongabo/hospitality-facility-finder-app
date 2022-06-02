@@ -7,13 +7,16 @@ import Loader from "../Modals/Loader";
 import Axios from "axios";
 import { errorHandler } from "../../../helpers";
 import { useSelector } from "react-redux";
-import { FaPrint } from "react-icons/fa";
+import { FaPrint, FaCheckCircle } from "react-icons/fa";
+import { BiSend } from "react-icons/bi";
+import Transfer from "../Modals/Transfer";
 function ManagePayments() {
   const { token } = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [results, setResults] = useState([]);
   const [activeTab, setActiveTab] = useState("orders");
-
+  const [tx, setTx] = useState({});
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -118,7 +121,9 @@ function ManagePayments() {
                   <tr>
                     <th className="p-2">#ID</th>
                     <th className="p-2">Transaction ID</th>
-                    <th className="p-2">Amount</th>
+                    <th className="p-2">Amount Paid</th>
+                    <th className="p-2">income(7%)</th>
+                    <th className="p-2">Amount to transfer(93%)</th>
                     <th className="p-2">Facility Name</th>
                     <th className="p-2">Facility Type</th>
                     <th className="p-2">Date</th>
@@ -146,6 +151,44 @@ function ManagePayments() {
                         )}{" "}
                         RWF
                       </td>
+                      <td className="p-2">
+                        {activeTab === "orders" ? (
+                          <>
+                            {item.status === "paid" ? (
+                              <>{(item.totalAmount * 7) / 100} RWF</>
+                            ) : (
+                              <>-</>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {item.paymentStatus === "paid" ? (
+                              <>{(item.totalAmount * 7) / 100} RWF</>
+                            ) : (
+                              <>-</>
+                            )}
+                          </>
+                        )}
+                      </td>
+                      <td className="p-2">
+                        {activeTab === "orders" ? (
+                          <>
+                            {item.status === "paid" ? (
+                              <>{(item.totalAmount * 93) / 100} RWF</>
+                            ) : (
+                              <>-</>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {item.paymentStatus === "paid" ? (
+                              <>{(item.totalAmount * 93) / 100} RWF</>
+                            ) : (
+                              <>-</>
+                            )}
+                          </>
+                        )}
+                      </td>
                       <td className="p-2">{item.facility[0].name}</td>
                       <td
                         className="p-2"
@@ -172,7 +215,26 @@ function ManagePayments() {
                         className="p-2"
                         style={{ textTransform: "capitalize" }}
                       >
-                        {item.transfered ? "Yes" : "No"}
+                        {item?.status === "paid" ||
+                        item?.paymentStatus === "paid" ? (
+                          <>
+                            {item.transfered ? (
+                              <FaCheckCircle size={30} />
+                            ) : (
+                              <button
+                                className="btn bg-orange"
+                                onClick={() => {
+                                  setTx(item);
+                                  setShowModal(true);
+                                }}
+                              >
+                                <BiSend size={25} color="#FFF" />
+                              </button>
+                            )}
+                          </>
+                        ) : (
+                          <>NO</>
+                        )}
                       </td>
                       {activeTab === "orders" ? (
                         <>
@@ -238,6 +300,14 @@ function ManagePayments() {
         </div>
       </div>
       <Loader showLoader={showLoader} />
+      <Transfer
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setShowLoader={setShowLoader}
+        loadData={fetchData}
+        setTx={setTx}
+        tx={tx}
+      />
     </>
   );
 }
