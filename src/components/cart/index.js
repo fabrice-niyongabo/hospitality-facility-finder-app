@@ -13,7 +13,9 @@ import { useNavigate } from "react-router-dom";
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { fullName, phone, email, token } = useSelector((state) => state.user);
+  const { fullName, phone, email, token, id } = useSelector(
+    (state) => state.user
+  );
   const { loading, facilityName, cart } = useSelector((state) => state.cart);
   const [showLoader, setShowLoader] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
@@ -178,18 +180,29 @@ function Cart() {
               >
                 <h3>TOTAL: {calculateTotal()} RWF</h3>
                 <span>&nbsp;&nbsp;</span>
-                <button
-                  className="btn bg-orange text-white"
-                  onClick={() => handleCheckout()}
-                  disabled={isPaying}
-                >
-                  {isPaying && (
-                    <span>
-                      <Spinner animation="border" size="sm" />
-                    </span>
-                  )}{" "}
-                  Continue to checkout
-                </button>
+                {token.trim !== "" && id !== "" ? (
+                  <button
+                    className="btn bg-orange text-white"
+                    onClick={() => handleCheckout()}
+                    disabled={isPaying}
+                  >
+                    {isPaying && (
+                      <span>
+                        <Spinner animation="border" size="sm" />
+                      </span>
+                    )}{" "}
+                    Continue to checkout
+                  </button>
+                ) : (
+                  <a href="/">
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => handleCheckout()}
+                    >
+                      Continue to checkout
+                    </button>
+                  </a>
+                )}
               </div>
             </div>
           ) : (
