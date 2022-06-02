@@ -16,7 +16,9 @@ function Header() {
   return (
     <div className="header-main-container">
       <div className="log-container">
-        <img src={require("../../assets/logo.png")} alt="logo" />
+        <Link to="/">
+          <img src={require("../../assets/logo.png")} alt="logo" />{" "}
+        </Link>
       </div>
       <div>
         <ul>

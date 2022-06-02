@@ -188,6 +188,7 @@ function ViewRestaurantItem({
                     <option value="Main dishes">Main dishes</option>
                     <option value="Coffee">Coffee</option>
                     <option value="Drinks">Drinks</option>
+                    <option value="Snaks">Snaks</option>
                   </select>
                 </div>
                 <div className="form-group my-2">

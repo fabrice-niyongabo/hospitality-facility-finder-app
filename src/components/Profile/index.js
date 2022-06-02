@@ -94,7 +94,7 @@ function Profile() {
               </td>
             </tr>
             <tr>
-              <td
+              {/* <td
                 className={
                   activeTab === "pendingOrders"
                     ? "tab p-2 text-center bg-light active"
@@ -103,7 +103,7 @@ function Profile() {
                 onClick={() => setActiveTab("pendingOrders")}
               >
                 Pending
-              </td>
+              </td> */}
               <td
                 className={
                   activeTab === "failedOrders"
@@ -124,7 +124,7 @@ function Profile() {
               >
                 Completed
               </td>
-              <td
+              {/* <td
                 className={
                   activeTab === "pendingBookings"
                     ? "tab p-2 text-center bg-light active"
@@ -133,7 +133,7 @@ function Profile() {
                 onClick={() => setActiveTab("pendingBookings")}
               >
                 Pending
-              </td>
+              </td> */}
               <td
                 className={
                   activeTab === "failedBookings"
