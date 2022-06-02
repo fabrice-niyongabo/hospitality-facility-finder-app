@@ -50,6 +50,7 @@ router.post("/book/", auth, async (req, res) => {
 
     const oldBooking = await Booking.findOne({
       $or: [{ checkinDate: checkIn }, { checkoutDate: checkOut }],
+      $and: [{ paymentStatus: "paid" }],
     });
 
     if (oldBooking) {
@@ -68,7 +69,7 @@ router.post("/book/", auth, async (req, res) => {
       totalDays: totalDays,
     });
     res.status(201).json({
-      msg: "Room booked cart successfull!",
+      msg: "Room booked successfull!",
       booking,
     });
   } catch (error) {

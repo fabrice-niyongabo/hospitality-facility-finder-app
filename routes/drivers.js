@@ -16,6 +16,19 @@ router.get("/find/", auth, (req, res) => {
   });
 });
 
+router.get("/find2/", auth, (req, res) => {
+  Drivers.find(
+    { managerId: req.user.user_id, status: "available" },
+    (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        res.status(200).send({ result });
+      }
+    }
+  );
+});
+
 router.post("/register/", auth, async (req, res) => {
   const { name, driverId, phoneNumber, language, status } = req.body;
   try {
