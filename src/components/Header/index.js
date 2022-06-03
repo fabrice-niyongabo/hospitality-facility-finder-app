@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { FaHome } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
 import { MdLogin, MdOutlineDashboard } from "react-icons/md";
@@ -11,10 +11,20 @@ import { BsCart4 } from "react-icons/bs";
 import "../../styles/header.scss";
 
 function Header() {
+  const navHeaderRef = useRef(null);
+  useEffect(() => {
+    window.addEventListener("scroll", (event) => {
+      if (window.scrollY > 500) {
+        navHeaderRef.current.classList.add("fixed-header");
+      } else {
+        navHeaderRef.current.classList.remove("fixed-header");
+      }
+    });
+  }, []);
   const { cart } = useSelector((state) => state.cart);
   const { token, fullName, role } = useSelector((state) => state.user);
   return (
-    <div className="header-main-container">
+    <div className="header-main-container" ref={navHeaderRef}>
       <div className="log-container">
         <Link to="/">
           <img src={require("../../assets/logo.png")} alt="logo" />{" "}
