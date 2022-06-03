@@ -99,9 +99,49 @@ function ManagePayments() {
                   className="mb-3 border-bottom"
                 >
                   <h2>Payment History</h2>
-                  <button className="btn bg-orange text-white">
-                    <FaPrint />
-                  </button>
+                  <div>
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => {
+                        window.open(
+                          process.env.REACT_APP_URL +
+                            "/print/" +
+                            activeTab +
+                            "/all"
+                        );
+                      }}
+                    >
+                      <FaPrint /> All
+                    </button>
+                    &nbsp; &nbsp;
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => {
+                        window.open(
+                          process.env.REACT_APP_URL +
+                            "/print/" +
+                            activeTab +
+                            "/failed"
+                        );
+                      }}
+                    >
+                      <FaPrint /> Failed
+                    </button>
+                    &nbsp; &nbsp;
+                    <button
+                      className="btn bg-orange text-white"
+                      onClick={() => {
+                        window.open(
+                          process.env.REACT_APP_URL +
+                            "/print/" +
+                            activeTab +
+                            "/paid"
+                        );
+                      }}
+                    >
+                      <FaPrint /> Completed
+                    </button>
+                  </div>
                 </div>
                 <table>
                   <tr>
@@ -302,35 +342,35 @@ function ManagePayments() {
                             <>NO</>
                           )}
                         </td>
-                        {activeTab === "orders" ||
-                          (activeTab === "transport" && (
-                            <>
-                              {item.status === "failed" && (
-                                <td
-                                  className="p-2 text-danger"
-                                  style={{ textTransform: "capitalize" }}
-                                >
-                                  {item.status}
-                                </td>
-                              )}
-                              {item.status === "pending" && (
-                                <td
-                                  className="p-2 text-info"
-                                  style={{ textTransform: "capitalize" }}
-                                >
-                                  {item.status}
-                                </td>
-                              )}
-                              {item.status === "paid" && (
-                                <td
-                                  className="p-2 text-success"
-                                  style={{ textTransform: "capitalize" }}
-                                >
-                                  {item.status}
-                                </td>
-                              )}
-                            </>
-                          ))}
+                        {(activeTab === "orders" ||
+                          activeTab === "transport") && (
+                          <>
+                            {item.status === "failed" && (
+                              <td
+                                className="p-2 text-danger"
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {item.status}
+                              </td>
+                            )}
+                            {item.status === "pending" && (
+                              <td
+                                className="p-2 text-info"
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {item.status}
+                              </td>
+                            )}
+                            {item.status === "paid" && (
+                              <td
+                                className="p-2 text-success"
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {item.status}
+                              </td>
+                            )}
+                          </>
+                        )}
                         {activeTab === "bookings" && (
                           <>
                             {item.paymentStatus === "failed" && (
