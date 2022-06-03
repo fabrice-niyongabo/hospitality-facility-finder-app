@@ -24,6 +24,7 @@ export class MapContainer extends Component {
     selectedPlace: {},
     facilities: [],
     triangleCoords: [],
+    showPolygon: false,
     lat: "",
     long: "",
   };
@@ -49,6 +50,7 @@ export class MapContainer extends Component {
       });
     }
   };
+
   componentDidMount() {
     fetchCoordinates()
       .then((res) => {
@@ -63,15 +65,16 @@ export class MapContainer extends Component {
         )
           .then((res) => {
             toastMessage("info", res.data.msg);
-            this.setState({ ...this.state, facilities: res.data.result });
-            const dt = [];
-            for (let i = 0; i < res.data.result.length; i++) {
-              dt.push({
-                lat: parseFloat(res.data.result[i].lat),
-                lng: parseFloat(res.data.result[i].long),
-              });
-            }
-            this.setState({ ...this.state, triangleCoords: dt });
+            this.setState({
+              ...this.state,
+              facilities: res.data.result,
+              triangleCoords: res.data.result.map((item) => {
+                return {
+                  lat: parseFloat(item.lat),
+                  lng: parseFloat(item.long),
+                };
+              }),
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -147,21 +150,36 @@ export class MapContainer extends Component {
               </p>
             </div>
           </InfoWindow>
-          {/* <Polygon
-          paths={this.state.triangleCoords}
-          strokeColor="#0000FF"
-          strokeOpacity={0.8}
-          strokeWeight={2}
-          fillColor="#0000FF"
-          fillOpacity={0.35}
-        /> */}
+
+          {this.state.showPolygon && (
+            <Polygon
+              paths={this.state.triangleCoords}
+              strokeColor="#0000FF"
+              strokeOpacity={0.8}
+              strokeWeight={2}
+              fillColor="#0000FF"
+              fillOpacity={0.35}
+            />
+          )}
         </Map>
         <div style={{ position: "absolute", top: 0, right: 0 }}>
-          <a href="/">
-            <div className="p-2">
+          <div className="p-2">
+            <button
+              className="btn bg-orange text-white"
+              onClick={() =>
+                this.setState({
+                  ...this.state,
+                  showPolygon: !this.state.showPolygon,
+                })
+              }
+            >
+              {this.state.showPolygon ? "Hide" : "Show"} Polygon
+            </button>
+            &nbsp; &nbsp;
+            <a href="/">
               <button className="btn bg-orange text-white">Back to home</button>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
       </div>
     );
