@@ -3,27 +3,63 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 const Booking = require("../model/booking");
+const Users = require("../model/users");
+const Facility = require("../model/facility");
 
-router.get("/master/", auth, (req, res) => {
-  Booking.aggregate(
-    [
-      {
-        $lookup: {
-          from: "facilities",
-          localField: "managerId",
-          foreignField: "managerId",
-          as: "facility",
-        },
-      },
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(400).send(err);
-      } else {
-        return res.status(200).send({ result });
-      }
+// router.get("/master/", auth, (req, res) => {
+//   Booking.aggregate(
+//     [
+//       {
+//         $lookup: {
+//           from: "facilities",
+//           localField: "managerId",
+//           foreignField: "managerId",
+//           as: "facility",
+//         },
+//       },
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         return res.status(400).send(err);
+//       } else {
+//         return res.status(200).send({ result });
+//       }
+//     }
+//   );
+// });
+
+router.get("/master/", auth, async (req, res) => {
+  try {
+    const result = [];
+    const trans = await Booking.find({});
+    for (let i = 0; i < trans.length; i++) {
+      const facility = await Facility.find({
+        managerId: trans[i].managerId,
+      });
+      const customer = await Users.find({ _id: trans[i].customerId });
+      result.push({ ...trans[i]._doc, facility, customer });
     }
-  );
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+});
+
+router.get("/manager/", auth, async (req, res) => {
+  try {
+    const result = [];
+    const trans = await Booking.find({ managerId: req.user.user_id });
+    for (let i = 0; i < trans.length; i++) {
+      const facility = await Facility.find({
+        managerId: trans[i].managerId,
+      });
+      const customer = await Users.find({ _id: trans[i].customerId });
+      result.push({ ...trans[i]._doc, facility, customer });
+    }
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
 });
 
 router.get("/all/", auth, (req, res) => {

@@ -59,26 +59,60 @@ router.post("/book/", auth, async (req, res) => {
   }
 });
 
-router.get("/master/", auth, (req, res) => {
-  Transportation.aggregate(
-    [
-      {
-        $lookup: {
-          from: "facilities",
-          localField: "managerId",
-          foreignField: "managerId",
-          as: "facility",
-        },
-      },
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(400).send(err);
-      } else {
-        return res.status(200).send({ result });
-      }
+// router.get("/master/", auth, (req, res) => {
+//   Transportation.aggregate(
+//     [
+//       {
+//         $lookup: {
+//           from: "facilities",
+//           localField: "managerId",
+//           foreignField: "managerId",
+//           as: "facility",
+//         },
+//       },
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         return res.status(400).send(err);
+//       } else {
+//         return res.status(200).send({ result });
+//       }
+//     }
+//   );
+// });
+
+router.get("/master/", auth, async (req, res) => {
+  try {
+    const result = [];
+    const trans = await Transportation.find({});
+    for (let i = 0; i < trans.length; i++) {
+      const facility = await Facility.find({
+        managerId: trans[i].managerId,
+      });
+      const customer = await Users.find({ _id: trans[i].customerId });
+      result.push({ ...trans[i]._doc, facility, customer });
     }
-  );
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+});
+
+router.get("/manager/", auth, async (req, res) => {
+  try {
+    const result = [];
+    const trans = await Transportation.find({});
+    for (let i = 0; i < trans.length; i++) {
+      const facility = await Facility.find({
+        managerId: trans[i].managerId,
+      });
+      const customer = await Users.find({ _id: trans[i].customerId });
+      result.push({ ...trans[i]._doc, facility, customer });
+    }
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
 });
 
 router.get("/print/:id", auth, async (req, res) => {
