@@ -107,7 +107,7 @@ function ManageRooms() {
               <div className="manage-room-header">
                 <h3>Manage Rooms</h3>
                 <div>
-                  <button class="btn" onClick={() => setShowModal(true)}>
+                  <button className="btn" onClick={() => setShowModal(true)}>
                     Add item
                   </button>
                 </div>
@@ -143,7 +143,7 @@ function ManageRooms() {
                             <td>{room.checkIn ? "Yes" : "No"}</td>
                             <td>{room.checkOut ? "Yes" : "No"}</td>
                             <td>
-                              <div class="icons">
+                              <div className="icons">
                                 <button
                                   onClick={() => {
                                     setItemToView(room);
@@ -197,7 +197,7 @@ function ManageRooms() {
                                 <td>{room.checkIn ? "Yes" : "No"}</td>
                                 <td>{room.checkOut ? "Yes" : "No"}</td>
                                 <td>
-                                  <div class="icons">
+                                  <div className="icons">
                                     <button
                                       onClick={() => {
                                         setItemToView(room);

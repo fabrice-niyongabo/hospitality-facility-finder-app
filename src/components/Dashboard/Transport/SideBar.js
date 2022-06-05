@@ -38,10 +38,10 @@ function SideBar({ activate }) {
             <span>Manage customers</span>
           </li>
         </Link>
-        <Link to="/managereports">
-          <li className={activateMe("managereports")}>
+        <Link to="/paymentreport">
+          <li className={activateMe("paymentreport")}>
             <FaClipboardList color="#f46a06" size={25} />
-            <span>Manage reports</span>
+            <span>Payment reports</span>
           </li>
         </Link>
         <Link to="/account">

@@ -2,7 +2,7 @@ import React from "react";
 import { FaBed, FaHome, FaRegUserCircle } from "react-icons/fa";
 import { SiHotelsdotcom } from "react-icons/si";
 import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
-import { RiLogoutCircleLine } from "react-icons/ri";
+import { RiLogoutCircleLine, RiSecurePaymentFill } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -49,8 +49,14 @@ function SideBar({ activate }) {
         </Link>
         <Link to="/manageservices">
           <li className={activateMe("manageservices")}>
-            <GrSettingsOption colorProfile="#f46a06" size={25} />
+            <GrSettingsOption color="#f46a06" size={25} />
             <span>Manage Services</span>
+          </li>
+        </Link>
+        <Link to="/paymentreport">
+          <li className={activateMe("paymentreport")}>
+            <RiSecurePaymentFill color="#f46a06" size={25} />
+            <span>Payment Report</span>
           </li>
         </Link>
         <Link to="/account">

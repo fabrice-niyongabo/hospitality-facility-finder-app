@@ -26,6 +26,7 @@ import ManageTransport from "./components/Dashboard/Admin/ManageTransport";
 import Print from "./components/Print";
 import ManageReports from "./components/Dashboard/Transport/ManageReports";
 import ManageCustomers from "./components/Dashboard/Transport/ManageCustomers";
+import PaymentReports from "./components/Dashboard/PaymentReports";
 
 function App() {
   return (
@@ -92,6 +93,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Description />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/paymentreport"
+            element={
+              <ProtectedRoute>
+                <PaymentReports />
               </ProtectedRoute>
             }
           />

@@ -35,6 +35,7 @@ function ManagePayments() {
       process.env.REACT_APP_BACKEND_URL + "/orders/master/?token=" + token
     )
       .then((res) => {
+        console.log(res.data);
         setResults(res.data.result);
         setShowLoader(false);
       })
@@ -49,6 +50,7 @@ function ManagePayments() {
       process.env.REACT_APP_BACKEND_URL + "/transport/master/?token=" + token
     )
       .then((res) => {
+        console.log(res.data);
         setResults(res.data.result);
         setShowLoader(false);
       })
@@ -63,6 +65,7 @@ function ManagePayments() {
       process.env.REACT_APP_BACKEND_URL + "/booking/master/?token=" + token
     )
       .then((res) => {
+        console.log(res.data);
         setResults(res.data.result);
         setShowLoader(false);
       })
@@ -201,6 +204,9 @@ function ManagePayments() {
                         Amount to transfer(93%)
                       </th>
                       <th className="p-2" style={{ minWidth: 150 }}>
+                        Customer name
+                      </th>
+                      <th className="p-2" style={{ minWidth: 150 }}>
                         Facility Name
                       </th>
                       <th className="p-2" style={{ minWidth: 150 }}>
@@ -291,6 +297,7 @@ function ManagePayments() {
                             </>
                           )}
                         </td>
+                        <td>{item.customer[0].fullName}</td>
                         <td className="p-2">{item.facility[0].name}</td>
                         <td
                           className="p-2"

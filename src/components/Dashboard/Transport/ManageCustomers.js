@@ -68,7 +68,7 @@ function ManageCustomers() {
               }}
             >
               <div className="mb-3">
-                <button
+                {/* <button
                   style={{ padding: "5px 15px", borderRadius: 5 }}
                   className="orange-border bg-white"
                   onClick={() => {
@@ -85,7 +85,8 @@ function ManageCustomers() {
                   onClick={() => setShowConfirm(true)}
                 >
                   Monthly report
-                </button>
+                </button> */}
+                <h4>Manage customers</h4>
               </div>
               {itemsList.length > 0 ? (
                 <div className="table-responsive">
