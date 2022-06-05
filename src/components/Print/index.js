@@ -122,7 +122,22 @@ function Print() {
         fetcTransport();
       }
     }
-
+    if (status === "paymentreport3") {
+      Axios.get(
+        process.env.REACT_APP_BACKEND_URL + "/transport/manager/?token=" + token
+      )
+        .then((res) => {
+          setResults(res.data.result);
+          setShowLoader(false);
+          setTimeout(() => {
+            window.print();
+          }, 500);
+        })
+        .catch((error) => {
+          setShowLoader(false);
+          errorHandler(error);
+        });
+    }
     if (status === "paymentreport") {
       setShowLoader(true);
       Axios.get(
@@ -170,6 +185,21 @@ function Print() {
     let sum = 0;
     for (let i = 0; i < results.length; i++) {
       sum += (results[i].totalAmount * 93) / 100;
+    }
+    return sum.toFixed(1);
+  };
+
+  const paymentReportHotelcalculateIncome2 = () => {
+    let sum = 0;
+    for (let i = 0; i < results.length; i++) {
+      sum += (results[i].amountPaid * 7) / 100;
+    }
+    return sum.toFixed(1);
+  };
+  const paymentReportHotelcalculateTotal2 = () => {
+    let sum = 0;
+    for (let i = 0; i < results.length; i++) {
+      sum += (results[i].amountPaid * 93) / 100;
     }
     return sum.toFixed(1);
   };
@@ -704,6 +734,118 @@ function Print() {
           </p>
           <p className="h5 m-0 p-0">
             TOTAL EARNINGS: {paymentReportHotelcalculateTotal()} RWF
+          </p>
+        </>
+      )}
+
+      {status === "paymentreport3" && (
+        <>
+          <h4>PAYMENT REPORT {id !== "all" ? "(" + id + ")" : ""}</h4>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Transaction ID</th>
+                <th>Amount Paid</th>
+                <th>Charges(7%)</th>
+                <th>Amount to receive(93%)</th>
+                <th>Customer name</th>
+                <th>Facility Name</th>
+                <th>Facility Type</th>
+                <th>Date</th>
+                <th>Received</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody style={{ border: "none" }}>
+              {results
+                .filter((item) => {
+                  const dt = id.split("-");
+                  if (id !== "all") {
+                    return (
+                      new Date(item.date).getMonth() + 1 == dt[1] &&
+                      new Date(item.date).getFullYear() == dt[0]
+                    );
+                  }
+                  return true;
+                })
+                .map((item, i) => (
+                  <tr
+                    key={i}
+                    style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
+                  >
+                    <td>{i + 1}</td>
+                    <td>{item.transactionId}</td>
+                    <td>
+                      {item.amountPaid}
+                      RWF
+                    </td>
+                    <td>
+                      {item.status === "paid" ? (
+                        <>{(item.amountPaid * 7) / 100} RWF</>
+                      ) : (
+                        <>-</>
+                      )}
+                    </td>
+                    <td>
+                      {item.status === "paid" ? (
+                        <>{(item.amountPaid * 93) / 100} RWF</>
+                      ) : (
+                        <>-</>
+                      )}
+                    </td>
+                    <td>{item.customer[0].fullName}</td>
+                    <td>{item.facility[0].name}</td>
+                    <td style={{ textTransform: "capitalize" }}>
+                      {item.facility[0].type}
+                    </td>
+                    <td>
+                      {new Date(item.date).getDate()}-
+                      {new Date(item.date).getMonth() + 1}-
+                      {new Date(item.date).getFullYear()}
+                    </td>
+                    <td style={{ textTransform: "capitalize" }}>
+                      {item?.status === "paid" ||
+                      item?.paymentStatus === "paid" ? (
+                        <>{item.transfered ? <>YES</> : <>NO</>}</>
+                      ) : (
+                        <>NO</>
+                      )}
+                    </td>
+                    {item.status === "failed" && (
+                      <td
+                        className="p-2 text-danger"
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {item.status}
+                      </td>
+                    )}
+                    {item.status === "pending" && (
+                      <td
+                        className="p-2 text-info"
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {item.status}
+                      </td>
+                    )}
+                    {item.status === "paid" && (
+                      <td
+                        className="p-2 text-success"
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {item.status}
+                      </td>
+                    )}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+          <br />
+          <p className="h5 m-0 p-0">
+            TOTAL CHARGES: {paymentReportHotelcalculateIncome2()} RWF
+          </p>
+          <p className="h5 m-0 p-0">
+            TOTAL EARNINGS: {paymentReportHotelcalculateTotal2()} RWF
           </p>
         </>
       )}

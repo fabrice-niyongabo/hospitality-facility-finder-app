@@ -52,14 +52,14 @@ function Transport() {
   const calculateIncome = () => {
     let sum = 0;
     for (let i = 0; i < results.length; i++) {
-      sum += (results[i].totalAmount * 7) / 100;
+      sum += (results[i].amountPaid * 7) / 100;
     }
     return sum.toFixed(1);
   };
   const calculateTotal = () => {
     let sum = 0;
     for (let i = 0; i < results.length; i++) {
-      sum += (results[i].totalAmount * 93) / 100;
+      sum += (results[i].amountPaid * 93) / 100;
     }
     return sum.toFixed(1);
   };
@@ -123,7 +123,7 @@ function Transport() {
                           onClick={() =>
                             window.open(
                               process.env.REACT_APP_URL +
-                                "/print/paymentreport2/" +
+                                "/print/paymentreport3/" +
                                 (date === "" ? "all" : date)
                             )
                           }
@@ -173,19 +173,19 @@ function Transport() {
                       <td className="p-2">{i + 1}</td>
                       <td className="p-2">{item.transactionId}</td>
                       <td className="p-2">
-                        {item.totalAmount}
+                        {item.amountPaid}
                         RWF
                       </td>
                       <td className="p-2">
                         {item.status === "paid" ? (
-                          <>{(item.totalAmount * 7) / 100} RWF</>
+                          <>{(item.amountPaid * 7) / 100} RWF</>
                         ) : (
                           <>-</>
                         )}
                       </td>
                       <td className="p-2">
                         {item.status === "paid" ? (
-                          <>{(item.totalAmount * 93) / 100} RWF</>
+                          <>{(item.amountPaid * 93) / 100} RWF</>
                         ) : (
                           <>-</>
                         )}
