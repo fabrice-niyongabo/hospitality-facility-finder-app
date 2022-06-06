@@ -19,8 +19,10 @@ router.get("/detail", auth, (req, res) => {
   });
 });
 
-router.get("/find/category/:category", (req, res) => {
+router.get("/find/category/:category/:lat/:long", (req, res) => {
   const category = req.params["category"];
+  const lat = req.params["lat"];
+  const long = req.params["long"];
   let query = { type: { $ne: "transport" } };
   if (category === "restaurants") query = { type: "restaurant" };
   if (category === "transports") query = { type: "transport" };
@@ -30,7 +32,19 @@ router.get("/find/category/:category", (req, res) => {
     if (err) {
       return res.status(400).send({ msg: err.message });
     } else {
-      res.status(200).send({ result });
+      const realResult = [];
+      for (let i = 0; i < result.longth; i++) {
+        const km = helpers.calCulateDistance(
+          lat,
+          long,
+          result[i].lat,
+          result[i].long
+        );
+        if (km <= 7) {
+          realResult.push(result[i]);
+        }
+      }
+      res.status(200).send({ result: realResult });
     }
   });
 });
