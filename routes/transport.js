@@ -168,4 +168,28 @@ router.post("/update/", auth, (req, res) => {
   );
 });
 
+router.post("/confirm/", async (req, res) => {
+  try {
+    const { driverId, paymentId } = req.body;
+    const trans = await Transportation.findOne({ driverId, paymentId });
+    if (trans) {
+      if (trans.deliveryStatus !== "delivered") {
+        await Transportation.updateOne(
+          { driverId, paymentId },
+          { deliveryStatus: "delivered" }
+        );
+        return res
+          .status(200)
+          .send({ msg: "Transaction confirmed successful." });
+      } else {
+        return res.status(400).send({ msg: "Transaction already confirmed." });
+      }
+    } else {
+      return res.status(400).send({ msg: "Invalid information." });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
+
 module.exports = router;
