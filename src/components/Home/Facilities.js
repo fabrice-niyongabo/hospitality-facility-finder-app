@@ -5,6 +5,7 @@ import FacilityItem from "./FacilityItem";
 import Axios from "axios";
 import FacilitySkeleton from "./FacilitySkeleton";
 import { useSelector } from "react-redux";
+import { fetchCoordinates, toastMessage } from "../../helpers/";
 
 function Facilities() {
   const { cart } = useSelector((state) => state.cart);
@@ -13,42 +14,6 @@ function Facilities() {
   const [results, setResults] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
   const [errorMessage, setErrorMessage] = useState("");
-
-  fetchCoordinates()
-    .then((res) => {
-      console.log(res);
-      this.setState({ ...this.state, lat: res.lat, long: res.long });
-      Axios.get(
-        process.env.REACT_APP_BACKEND_URL +
-          "/map/all/" +
-          res.lat +
-          "/" +
-          res.long
-      )
-        .then((res) => {
-          toastMessage("info", res.data.msg);
-          this.setState({
-            ...this.state,
-            facilities: res.data.result,
-            triangleCoords: res.data.result.map((item) => {
-              return {
-                lat: parseFloat(item.lat),
-                lng: parseFloat(item.long),
-              };
-            }),
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          errorHandler(error);
-        });
-    })
-    .catch(() => {
-      toastMessage(
-        "error",
-        "Failed to get your current location. Please try again later and make sure you have turned on location on your device."
-      );
-    });
 
   const fetResults = () => {
     setisLoading(true);
