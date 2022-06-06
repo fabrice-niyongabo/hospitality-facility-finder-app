@@ -8,6 +8,7 @@ const Facilities = require("../model/facility");
 const Services = require("../model/services");
 const Rooms = require("../model/rooms");
 const Users = require("../model/users");
+const helpers = require("../helpers/");
 
 router.get("/detail", auth, (req, res) => {
   Facilities.find({ managerId: req.user.user_id }, (err, result) => {
@@ -33,7 +34,7 @@ router.get("/find/category/:category/:lat/:long", (req, res) => {
       return res.status(400).send({ msg: err.message });
     } else {
       const realResult = [];
-      for (let i = 0; i < result.longth; i++) {
+      for (let i = 0; i < result.length; i++) {
         const km = helpers.calCulateDistance(
           lat,
           long,
