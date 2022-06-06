@@ -27,6 +27,7 @@ import Print from "./components/Print";
 import ManageReports from "./components/Dashboard/Transport/ManageReports";
 import ManageCustomers from "./components/Dashboard/Transport/ManageCustomers";
 import PaymentReports from "./components/Dashboard/PaymentReports";
+import ConfirmTransport from "./components/ConfirmTransport";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route exact path="/logout" element={<Logout />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/map" element={<Map />} />
+          <Route exact path="/confirmation" element={<ConfirmTransport />} />
           <Route
             exact
             path="/login"

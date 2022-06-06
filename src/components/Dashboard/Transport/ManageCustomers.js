@@ -159,15 +159,6 @@ function ManageCustomers() {
                               >
                                 Assign Driver
                               </button>
-                              <button
-                                className="btn bg-orange text-white"
-                                onClick={() => {
-                                  setPreviewItem(item);
-                                  setShowModal(true);
-                                }}
-                              >
-                                <FaPrint />
-                              </button>
                             </div>
                           </td>
                         </tr>
