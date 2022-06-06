@@ -14,26 +14,74 @@ function Facilities() {
   const [activeTab, setActiveTab] = useState("all");
   const [errorMessage, setErrorMessage] = useState("");
 
+  fetchCoordinates()
+    .then((res) => {
+      console.log(res);
+      this.setState({ ...this.state, lat: res.lat, long: res.long });
+      Axios.get(
+        process.env.REACT_APP_BACKEND_URL +
+          "/map/all/" +
+          res.lat +
+          "/" +
+          res.long
+      )
+        .then((res) => {
+          toastMessage("info", res.data.msg);
+          this.setState({
+            ...this.state,
+            facilities: res.data.result,
+            triangleCoords: res.data.result.map((item) => {
+              return {
+                lat: parseFloat(item.lat),
+                lng: parseFloat(item.long),
+              };
+            }),
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          errorHandler(error);
+        });
+    })
+    .catch(() => {
+      toastMessage(
+        "error",
+        "Failed to get your current location. Please try again later and make sure you have turned on location on your device."
+      );
+    });
+
   const fetResults = () => {
     setisLoading(true);
     setErrorMessage("");
-    Axios.get(
-      process.env.REACT_APP_BACKEND_URL +
-        "/facility/find/category/" +
-        activeTab +
-        "/"
-    )
+    fetchCoordinates()
       .then((res) => {
-        setisLoading(false);
-        setResults(res.data.result);
+        Axios.get(
+          process.env.REACT_APP_BACKEND_URL +
+            "/facility/find/category/" +
+            activeTab +
+            "/" +
+            res.lat +
+            "/" +
+            res.long
+        )
+          .then((res) => {
+            setisLoading(false);
+            setResults(res.data.result);
+          })
+          .catch((error) => {
+            setisLoading(false);
+            if (error?.response?.data?.msg) {
+              setErrorMessage(error?.response?.data?.msg);
+            } else {
+              setErrorMessage(error.message);
+            }
+          });
       })
-      .catch((error) => {
-        setisLoading(false);
-        if (error?.response?.data?.msg) {
-          setErrorMessage(error?.response?.data?.msg);
-        } else {
-          setErrorMessage(error.message);
-        }
+      .catch(() => {
+        toastMessage(
+          "error",
+          "Failed to get your current location. Please try again later and make sure you have turned on location on your device."
+        );
       });
   };
 
