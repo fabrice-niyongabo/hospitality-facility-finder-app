@@ -23,14 +23,11 @@ router.get("/detail", auth, (req, res) => {
 //admin
 router.get("/find/category/:category", (req, res) => {
   const category = req.params["category"];
-  let query = { type: { $ne: "transport" }, status: "active" };
-  if (category === "restaurants")
-    query = { type: "restaurant", status: "active" };
-  if (category === "transports")
-    query = { type: "transport", status: "active" };
-  if (category === "coffeeshops")
-    query = { type: "coffeeshop", status: "active" };
-  if (category === "hotels") query = { type: "hotel", status: "active" };
+  let query = { type: { $ne: "transport" } };
+  if (category === "restaurants") query = { type: "restaurant" };
+  if (category === "transports") query = { type: "transport" };
+  if (category === "coffeeshops") query = { type: "coffeeshop" };
+  if (category === "hotels") query = { type: "hotel" };
   Facilities.find(query, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err.message });
@@ -40,6 +37,34 @@ router.get("/find/category/:category", (req, res) => {
   });
 });
 //admin
+
+router.post("/approve/", auth, async (req, res) => {
+  try {
+    const { f_id, m_id, f_t, f_n } = req.body;
+    const x = await Facilities.updateOne(
+      { _id: f_id, managerId: m_id },
+      { status: "active" }
+    );
+    if (x) {
+      await Users.updateOne({ _id: m_id }, { role: f_t, companyName: f_n });
+      return res.status(200).send({ msg: "Facility approved!" });
+    } else {
+      return res.status(400).send({ msg: "Can't find facility" });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
+
+router.post("/reject/", auth, async (req, res) => {
+  try {
+    const { f_id } = req.body;
+    const x = await Facilities.deleteOne({ _id: f_id, status: "inactive" });
+    return res.status(200).send({ msg: "Facility Rejected!" });
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
 
 router.get("/find/category/:category/:lat/:long", (req, res) => {
   const category = req.params["category"];
