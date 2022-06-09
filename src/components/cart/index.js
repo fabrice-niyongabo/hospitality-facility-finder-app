@@ -180,7 +180,7 @@ function Cart() {
               >
                 <h3>TOTAL: {calculateTotal()} RWF</h3>
                 <span>&nbsp;&nbsp;</span>
-                {token.trim !== "" && id !== "" ? (
+                {token.trim() !== "" && id !== "" ? (
                   <button
                     className="btn bg-orange text-white"
                     onClick={() => handleCheckout()}
@@ -194,7 +194,7 @@ function Cart() {
                     Continue to checkout
                   </button>
                 ) : (
-                  <a href="/">
+                  <a href="/login?redirect=cart">
                     <button
                       className="btn bg-orange text-white"
                       onClick={() => handleCheckout()}

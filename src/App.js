@@ -41,15 +41,7 @@ function App() {
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/map" element={<Map />} />
           <Route exact path="/confirmation" element={<ConfirmTransport />} />
-          <Route
-            exact
-            path="/login"
-            element={
-              <UnProtectedRoute>
-                <Login />
-              </UnProtectedRoute>
-            }
-          />
+          <Route exact path="/login" element={<Login />} />
           <Route
             path="/signup"
             element={

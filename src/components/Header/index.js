@@ -15,9 +15,9 @@ function Header() {
   useEffect(() => {
     window.addEventListener("scroll", (event) => {
       if (window.scrollY > 500) {
-        navHeaderRef.current.classList.add("fixed-header");
+        navHeaderRef?.current?.classList.add("fixed-header");
       } else {
-        navHeaderRef.current.classList.remove("fixed-header");
+        navHeaderRef?.current?.classList.remove("fixed-header");
       }
     });
   }, []);

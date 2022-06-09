@@ -275,7 +275,7 @@ function Hotel({ id }) {
                           Book Now
                         </button>
                       ) : (
-                        <a href="/login">
+                        <a href={"/login/?redirect="+ id}>
                           <button
                             className="bg-orange text-white"
                             style={{

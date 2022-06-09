@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../../styles/login.scss";
 import { Spinner } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setuserCompanyName,
   setUserEmail,
@@ -19,6 +19,22 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [redirect, setRedirect] = useState("");
+
+  const { token } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!token || token.trim() === "") {
+      const params = new URLSearchParams(window.location.search);
+      const rdr = params.get("redirect");
+      if (rdr) {
+        setRedirect(rdr);
+      }
+    } else {
+      navigate("/");
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     setError("");
     e.preventDefault();
@@ -55,7 +71,11 @@ function Login() {
     await Axios.post(process.env.REACT_APP_BACKEND_URL + "/cart/giveCart", {
       token,
     });
-    role === "user" ? navigate("/") : navigate("/dashboard");
+    if (redirect !== "") {
+      navigate(-1);
+    } else {
+      role === "user" ? navigate("/") : navigate("/dashboard");
+    }
   };
   return (
     <div className="login-main-container">
