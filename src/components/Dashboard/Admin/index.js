@@ -9,11 +9,13 @@ import { errorHandler, fetchCoordinates } from "../../../helpers";
 import AddHotel from "../Modals/AddHotel";
 import { useSelector } from "react-redux";
 import EditFacility from "../Modals/EditFacility";
+import EditFacility2 from "../Modals/EditFacility2";
 function Admin() {
   const { token } = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModal2, setShowEditModal2] = useState(false);
   const [results, setResults] = useState([]);
   const [users, setUsers] = useState([]);
   const [lat, setLat] = useState("");
@@ -108,44 +110,58 @@ function Admin() {
                     </button>
                   </div>
                 </div>
-                <table className="table">
-                  <tr>
-                    <th className="p-2">#ID</th>
-                    <th className="p-2">Name</th>
-                    <th className="p-2">Stars</th>
-                    <th className="p-2">Average price</th>
-                    <th className="p-2">Lat</th>
-                    <th className="p-2">Long</th>
-                    <th className="p-2">Address</th>
-                    <th className="p-2">Status</th>
-                  </tr>
-                  {results.map((item, i) => (
-                    <tr
-                      key={i}
-                      style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
-                    >
-                      <td className="p-2">{i + 1}</td>
-                      <td className="p-2">{item.name}</td>
-                      <td className="p-2">{item.stars}</td>
-                      <td className="p-2">{item.averagePrice}</td>
-                      <td className="p-2">{item.lat}</td>
-                      <td className="p-2">{item.long}</td>
-                      <td className="p-2">{item.address}</td>
-                      <td className="p-2">{item.status}</td>
-                      <td className="p-2">
-                        <button
-                          className="btn border"
-                          onClick={() => {
-                            setFacility(item);
-                            setShowEditModal(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </td>
+                <div className="table-responsive">
+                  <table className="table">
+                    <tr>
+                      <th className="p-2">#ID</th>
+                      <th className="p-2">Name</th>
+                      <th className="p-2">Stars</th>
+                      <th className="p-2">Average price</th>
+                      <th className="p-2">Lat</th>
+                      <th className="p-2">Long</th>
+                      <th className="p-2">Address</th>
+                      <th className="p-2">Status</th>
                     </tr>
-                  ))}
-                </table>
+                    {results.map((item, i) => (
+                      <tr
+                        key={i}
+                        style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
+                      >
+                        <td className="p-2">{i + 1}</td>
+                        <td className="p-2">{item.name}</td>
+                        <td className="p-2">{item.stars}</td>
+                        <td className="p-2">{item.averagePrice}</td>
+                        <td className="p-2">{item.lat}</td>
+                        <td className="p-2">{item.long}</td>
+                        <td className="p-2">{item.address}</td>
+                        <td className="p-2">{item.status}</td>
+                        <td className="p-2">
+                          {item.status === "inactive" ? (
+                            <button
+                              className="btn bg-info"
+                              onClick={() => {
+                                setFacility(item);
+                                setShowEditModal2(true);
+                              }}
+                            >
+                              More
+                            </button>
+                          ) : (
+                            <button
+                              className="btn border"
+                              onClick={() => {
+                                setFacility(item);
+                                setShowEditModal(true);
+                              }}
+                            >
+                              Edit
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -168,6 +184,19 @@ function Admin() {
         showModal={showEditModal}
         setShowLoader={setShowLoader}
         setShowModal={setShowEditModal}
+        getCors={getCors}
+        getData={getData}
+        facility={facility}
+        users={users}
+        results={results}
+        setResults={setResults}
+        fetchData={fetchData}
+      />
+
+      <EditFacility2
+        showModal={showEditModal2}
+        setShowLoader={setShowLoader}
+        setShowModal={setShowEditModal2}
         getCors={getCors}
         getData={getData}
         facility={facility}
