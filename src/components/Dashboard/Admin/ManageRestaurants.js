@@ -9,11 +9,13 @@ import { errorHandler, fetchCoordinates } from "../../../helpers";
 import { useSelector } from "react-redux";
 import EditFacility from "../Modals/EditFacility";
 import AddRestaurant from "../Modals/AddRestaurant";
+import EditFacility2 from "../Modals/EditFacility2";
 function ManageRestaurants() {
   const { token } = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModal2, setShowEditModal2] = useState(false);
   const [results, setResults] = useState([]);
   const [users, setUsers] = useState([]);
   const [lat, setLat] = useState("");
@@ -134,15 +136,27 @@ function ManageRestaurants() {
                       <td className="p-2">{item.address}</td>
                       <td className="p-2">{item.status}</td>
                       <td className="p-2">
-                        <button
-                          className="btn border"
-                          onClick={() => {
-                            setFacility(item);
-                            setShowEditModal(true);
-                          }}
-                        >
-                          Edit
-                        </button>
+                        {item.status === "inactive" ? (
+                          <button
+                            className="btn bg-info"
+                            onClick={() => {
+                              setFacility(item);
+                              setShowEditModal2(true);
+                            }}
+                          >
+                            More
+                          </button>
+                        ) : (
+                          <button
+                            className="btn border"
+                            onClick={() => {
+                              setFacility(item);
+                              setShowEditModal(true);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -169,6 +183,18 @@ function ManageRestaurants() {
         showModal={showEditModal}
         setShowLoader={setShowLoader}
         setShowModal={setShowEditModal}
+        getCors={getCors}
+        getData={getData}
+        facility={facility}
+        users={users}
+        results={results}
+        setResults={setResults}
+        fetchData={fetchData}
+      />
+      <EditFacility2
+        showModal={showEditModal2}
+        setShowLoader={setShowLoader}
+        setShowModal={setShowEditModal2}
         getCors={getCors}
         getData={getData}
         facility={facility}
