@@ -20,15 +20,39 @@ router.get("/detail", auth, (req, res) => {
   });
 });
 
+//admin
+router.get("/find/category/:category", (req, res) => {
+  const category = req.params["category"];
+  let query = { type: { $ne: "transport" }, status: "active" };
+  if (category === "restaurants")
+    query = { type: "restaurant", status: "active" };
+  if (category === "transports")
+    query = { type: "transport", status: "active" };
+  if (category === "coffeeshops")
+    query = { type: "coffeeshop", status: "active" };
+  if (category === "hotels") query = { type: "hotel", status: "active" };
+  Facilities.find(query, (err, result) => {
+    if (err) {
+      return res.status(400).send({ msg: err.message });
+    } else {
+      res.status(200).send({ result });
+    }
+  });
+});
+//admin
+
 router.get("/find/category/:category/:lat/:long", (req, res) => {
   const category = req.params["category"];
   const lat = req.params["lat"];
   const long = req.params["long"];
-  let query = { type: { $ne: "transport" } };
-  if (category === "restaurants") query = { type: "restaurant" };
-  if (category === "transports") query = { type: "transport" };
-  if (category === "coffeeshops") query = { type: "coffeeshop" };
-  if (category === "hotels") query = { type: "hotel" };
+  let query = { type: { $ne: "transport" }, status: "active" };
+  if (category === "restaurants")
+    query = { type: "restaurant", status: "active" };
+  if (category === "transports")
+    query = { type: "transport", status: "active" };
+  if (category === "coffeeshops")
+    query = { type: "coffeeshop", status: "active" };
+  if (category === "hotels") query = { type: "hotel", status: "active" };
   Facilities.find(query, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err.message });

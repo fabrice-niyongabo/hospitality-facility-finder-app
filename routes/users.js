@@ -6,6 +6,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 const Users = require("../model/users");
+const Facility = require("../model/facility");
 
 router.post("/login", async (req, res) => {
   try {
@@ -142,7 +143,17 @@ router.post("/getAll/", auth, async (req, res) => {
 router.post("/register", async (req, res) => {
   try {
     // Get user input
-    const { fullName, email, password, phone } = req.body;
+    const {
+      fullName,
+      email,
+      password,
+      phone,
+      createFacility,
+      facilityName,
+      facilityType,
+      averagePrice,
+      description,
+    } = req.body;
 
     // Validate user input
     if (!(email && password && fullName && phone)) {
@@ -192,17 +203,43 @@ router.post("/register", async (req, res) => {
     // save user token
     user.token = token;
 
-    // return new user
-    res.status(201).json({
-      status: "success",
-      msg: "User created successfull!",
-      phone,
-      email,
-      fullName,
-      companyName: user.companyName,
-      role: user.role,
-      token: user.token,
-    });
+    if (createFacility) {
+      const facility = await Facility.create({
+        managerId: user._id,
+        name: facilityName,
+        type: facilityType,
+        description: description,
+        address: "",
+        stars: "",
+        averagePrice,
+        lat: "",
+        long: "",
+        image: "",
+        status: "inactive",
+      });
+      res.status(201).json({
+        status: "success",
+        msg: "Registered and applied for facility activation sucessfull!",
+        phone,
+        email,
+        fullName,
+        companyName: user.companyName,
+        role: user.role,
+        token: user.token,
+      });
+    } else {
+      // return new user
+      res.status(201).json({
+        status: "success",
+        msg: "User created successfull!",
+        phone,
+        email,
+        fullName,
+        companyName: user.companyName,
+        role: user.role,
+        token: user.token,
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(400).send({
