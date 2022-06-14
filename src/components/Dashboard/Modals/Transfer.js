@@ -35,9 +35,13 @@ function Transfer({
 
   const handleTransfer = () => {
     setShowLoader(true);
-    Axios.post(
-      "https://api.flutterwave.com/v3/transfers",
-      {
+    fetch("https://api.flutterwave.com/v3/transfers", {
+      method: "post",
+      headers: new Headers({
+        Authorization: "Bearer" + process.env.REACT_APP_SECRET_KEY,
+        "Content-Type": "application/json",
+      }),
+      body: {
         account_bank: "MPS",
         account_number: 250 + "" + owner.phone,
         amount: 50,
@@ -46,15 +50,11 @@ function Transfer({
         reference: "new-rwf-momo-transfer",
         beneficiary_name: "Flutterwave Developers",
       },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_PUBLIC_KEY}`,
-        },
-      }
-    )
-      .then((res) => {
+    })
+      .then((response) => response.json())
+      .then((data) => {
         setShowLoader(false);
-        console.log(res.data);
+        console.log(data);
       })
       .catch((error) => {
         // console.log(error);

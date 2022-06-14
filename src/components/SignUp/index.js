@@ -165,57 +165,59 @@ function SignUp() {
         return { ...prevState, confirmPassword: "" };
       });
     }
-    if (state.facilityName.trim() === "") {
-      setError((prevState) => {
-        return { ...prevState, facilityName: "This field can not be empty" };
-      });
-      facilityNameRef.current.classList.add("is-invalid");
-      facilityNameRef.current.focus();
-      return;
-    } else {
-      facilityNameRef.current.classList.remove("is-invalid");
-      setError((prevState) => {
-        return { ...prevState, facilityName: "" };
-      });
-    }
-    if (state.averagePrice.trim() === "") {
-      setError((prevState) => {
-        return { ...prevState, averagePrice: "This field can not be empty" };
-      });
-      averagePriceRef.current.classList.add("is-invalid");
-      averagePriceRef.current.focus();
-      return;
-    } else {
-      averagePriceRef.current.classList.remove("is-invalid");
-      setError((prevState) => {
-        return { ...prevState, averagePrice: "" };
-      });
-    }
-    if (state.facilityType.trim() === "") {
-      setError((prevState) => {
-        return { ...prevState, facilityType: "This field can not be empty" };
-      });
-      facilityTypeRef.current.classList.add("is-invalid");
-      facilityTypeRef.current.focus();
-      return;
-    } else {
-      facilityTypeRef.current.classList.remove("is-invalid");
-      setError((prevState) => {
-        return { ...prevState, facilityType: "" };
-      });
-    }
-    if (state.description.trim() === "") {
-      setError((prevState) => {
-        return { ...prevState, description: "This field can not be empty" };
-      });
-      descriptionRef.current.classList.add("is-invalid");
-      descriptionRef.current.focus();
-      return;
-    } else {
-      descriptionRef.current.classList.remove("is-invalid");
-      setError((prevState) => {
-        return { ...prevState, description: "" };
-      });
+    if (state.createFacility) {
+      if (state.facilityName.trim() === "") {
+        setError((prevState) => {
+          return { ...prevState, facilityName: "This field can not be empty" };
+        });
+        facilityNameRef.current.classList.add("is-invalid");
+        facilityNameRef.current.focus();
+        return;
+      } else {
+        facilityNameRef.current.classList.remove("is-invalid");
+        setError((prevState) => {
+          return { ...prevState, facilityName: "" };
+        });
+      }
+      if (state.averagePrice.trim() === "") {
+        setError((prevState) => {
+          return { ...prevState, averagePrice: "This field can not be empty" };
+        });
+        averagePriceRef.current.classList.add("is-invalid");
+        averagePriceRef.current.focus();
+        return;
+      } else {
+        averagePriceRef.current.classList.remove("is-invalid");
+        setError((prevState) => {
+          return { ...prevState, averagePrice: "" };
+        });
+      }
+      if (state.facilityType.trim() === "") {
+        setError((prevState) => {
+          return { ...prevState, facilityType: "This field can not be empty" };
+        });
+        facilityTypeRef.current.classList.add("is-invalid");
+        facilityTypeRef.current.focus();
+        return;
+      } else {
+        facilityTypeRef.current.classList.remove("is-invalid");
+        setError((prevState) => {
+          return { ...prevState, facilityType: "" };
+        });
+      }
+      if (state.description.trim() === "") {
+        setError((prevState) => {
+          return { ...prevState, description: "This field can not be empty" };
+        });
+        descriptionRef.current.classList.add("is-invalid");
+        descriptionRef.current.focus();
+        return;
+      } else {
+        descriptionRef.current.classList.remove("is-invalid");
+        setError((prevState) => {
+          return { ...prevState, description: "" };
+        });
+      }
     }
     setIsSubmitting(true);
     setError((prevState) => {
