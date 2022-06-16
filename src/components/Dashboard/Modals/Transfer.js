@@ -35,23 +35,23 @@ function Transfer({
 
   const handleTransfer = () => {
     setShowLoader(true);
-    fetch("https://api.flutterwave.com/v3/transfers", {
-      method: "post",
-      headers: new Headers({
-        Authorization: "Bearer" + process.env.REACT_APP_SECRET_KEY,
-        "Content-Type": "application/json",
-      }),
-      body: {
+    Axios.post(
+      "https://api.flutterwave.com/v3/transfers",
+      {
         account_bank: "MPS",
-        account_number: 250 + "" + owner.phone,
+        account_number: 250782238638,
         amount: 50,
         narration: "New RWF momo transfer",
         currency: "RWF",
         reference: "new-rwf-momo-transfer",
         beneficiary_name: "Flutterwave Developers",
       },
-    })
-      .then((response) => response.json())
+      {
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_SECRET_KEY,
+        },
+      }
+    )
       .then((data) => {
         setShowLoader(false);
         console.log(data);
