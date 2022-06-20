@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Axios from "axios";
-import { errorHandler, toastMessage } from "../../../helpers";
+import { errorHandler, randomNumber, toastMessage } from "../../../helpers";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { percentage } from "../../../constansts";
 function Transfer({
   tx,
   setTx,
@@ -14,6 +15,7 @@ function Transfer({
 }) {
   const { token } = useSelector((state) => state.user);
   const [owner, setOwner] = useState({});
+  const [refNumber, setRefNumber] = useState("");
 
   useEffect(() => {
     if (tx._id) {
@@ -31,33 +33,29 @@ function Transfer({
           setShowLoader(false);
         });
     }
+    setRefNumber(randomNumber());
   }, [showModal]);
 
   const handleTransfer = () => {
     setShowLoader(true);
-    Axios.post(
-      "https://api.flutterwave.com/v3/transfers",
-      {
-        account_bank: "MPS",
-        account_number: 250782238638,
-        amount: 50,
-        narration: "New RWF momo transfer",
-        currency: "RWF",
-        reference: "new-rwf-momo-transfer",
-        beneficiary_name: "Flutterwave Developers",
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_SECRET_KEY,
-        },
-      }
-    )
-      .then((data) => {
+    Axios.post(process.env.REACT_APP_BACKEND_URL + "/transfers/send/", {
+      token,
+      phone: "0" + owner.phone,
+      names: tx?.facility[0]?.name,
+      refNumber,
+      amount: tx.totalAmount
+        ? (tx.totalAmount * (100 - percentage)) / 100
+        : (tx.amountPaid * (100 - percentage)) / 100,
+      type: tx.transportationManagerId ? "transport" : tx?.facility[0]?.type,
+      id: tx?._id,
+    })
+      .then((res) => {
         setShowLoader(false);
-        console.log(data);
+        toastMessage("success", res.data.msg);
+        setShowModal(false);
+        loadData();
       })
       .catch((error) => {
-        // console.log(error);
         setShowLoader(false);
         errorHandler(error);
       });
@@ -82,18 +80,64 @@ function Transfer({
           {tx.facility && (
             <>
               <p className="p-0 m-0">Facility Name: {tx?.facility[0]?.name}</p>
+              <p className="p-0 m-0">Owner Name: {owner.fullName}</p>
               <p className="p-0 m-0">Address: {tx?.facility[0]?.address}</p>
               <p className="p-0 m-0">Phone: 0{owner.phone}</p>
               <div className="border p-2">
-                <p className="p-0 m-0">
-                  Paid amount: {tx?.facility[0]?.totalAmount}
-                </p>
-                <p className="p-0 m-0">
-                  Incame: {(tx?.totalAmount * 7) / 100} RWF
-                </p>
-                <p className="p-0 m-0">
-                  Amount to be transfered: {(tx?.totalAmount * 93) / 100} RWF
-                </p>
+                {tx.totalAmount && (
+                  <>
+                    <p className="p-0 m-0">
+                      Paid amount: {tx?.facility[0]?.totalAmount}
+                    </p>
+                    <p className="p-0 m-0">
+                      Incame: {(tx?.totalAmount * percentage) / 100} RWF
+                    </p>
+                    <p className="p-0 m-0">
+                      Amount to be transfered:{" "}
+                      {(tx?.totalAmount * (100 - percentage)) / 100} RWF
+                    </p>
+                    <div className="form-group border p-2">
+                      <label>Reference ID</label>
+                      &nbsp; &nbsp;
+                      <a href="#" onClick={() => setRefNumber(randomNumber())}>
+                        Update REF ID
+                      </a>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={refNumber}
+                        disabled={true}
+                      />
+                    </div>
+                  </>
+                )}
+                {tx.amountPaid && (
+                  <>
+                    <p className="p-0 m-0">
+                      Paid amount: {tx?.facility[0]?.amountPaid}
+                    </p>
+                    <p className="p-0 m-0">
+                      Incame: {(tx?.amountPaid * percentage) / 100} RWF
+                    </p>
+                    <p className="p-0 m-0">
+                      Amount to be transfered:{" "}
+                      {(tx?.amountPaid * (100 - percentage)) / 100} RWF
+                    </p>
+                    <div className="form-group border p-2">
+                      <label>Reference ID</label>
+                      &nbsp; &nbsp;
+                      <a href="#" onClick={() => setRefNumber(randomNumber())}>
+                        Update REF ID
+                      </a>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={refNumber}
+                        disabled={true}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </>
           )}

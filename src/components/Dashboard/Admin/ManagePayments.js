@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { FaPrint, FaCheckCircle } from "react-icons/fa";
 import { BiSend } from "react-icons/bi";
 import Transfer from "../Modals/Transfer";
+import PaymentItem from "./PaymentItem";
 function ManagePayments() {
   const { token } = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
@@ -219,210 +220,14 @@ function ManagePayments() {
                       <th className="p-2">Status</th>
                     </tr>
                     {results.map((item, i) => (
-                      <tr
+                      <PaymentItem
                         key={i}
-                        style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
-                      >
-                        <td className="p-2">{i + 1}</td>
-                        <td className="p-2">{item.transactionId}</td>
-                        <td className="p-2">
-                          {activeTab === "orders" && <>{item.totalAmount}</>}
-                          {activeTab === "bookings" && (
-                            <>
-                              {item.paymentStatus === "paid" ? (
-                                <>{item.totalAmount}</>
-                              ) : (
-                                <>{item.totalDays * item.pricePerDay}</>
-                              )}
-                            </>
-                          )}
-                          {activeTab === "transport" && <>{item.amountPaid}</>}
-                          RWF
-                        </td>
-                        <td className="p-2">
-                          {activeTab === "orders" && (
-                            <>
-                              {item.status === "paid" ? (
-                                <>{(item.totalAmount * 7) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                          {activeTab === "bookings" && (
-                            <>
-                              {item.paymentStatus === "paid" ? (
-                                <>{(item.totalAmount * 7) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                          {activeTab === "transport" && (
-                            <>
-                              {item.status === "paid" ? (
-                                <>{(item.amountPaid * 7) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                        </td>
-                        <td className="p-2">
-                          {activeTab === "orders" && (
-                            <>
-                              {item.status === "paid" ? (
-                                <>{(item.totalAmount * 93) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                          {activeTab === "bookings" && (
-                            <>
-                              {item.paymentStatus === "paid" ? (
-                                <>{(item.totalAmount * 93) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                          {activeTab === "transport" && (
-                            <>
-                              {item.status === "paid" ? (
-                                <>{(item.amountPaid * 93) / 100} RWF</>
-                              ) : (
-                                <>-</>
-                              )}
-                            </>
-                          )}
-                        </td>
-                        <td>{item.customer[0].fullName}</td>
-                        <td className="p-2">{item.facility[0].name}</td>
-                        <td
-                          className="p-2"
-                          style={{ textTransform: "capitalize" }}
-                        >
-                          {item.facility[0].type}
-                        </td>
-                        <td className="p-2">
-                          {activeTab === "orders" ||
-                          activeTab === "transport" ? (
-                            <>
-                              {new Date(item.date).getDate()}-
-                              {new Date(item.date).getMonth() + 1}-
-                              {new Date(item.date).getFullYear() + 1}
-                            </>
-                          ) : (
-                            <>
-                              {new Date(item.transactionDate).getDate()}-
-                              {new Date(item.transactionDate).getMonth() + 1}-
-                              {new Date(item.transactionDate).getFullYear() + 1}
-                            </>
-                          )}
-                        </td>
-                        <td
-                          className="p-2"
-                          style={{ textTransform: "capitalize" }}
-                        >
-                          {item?.status === "paid" ||
-                          item?.paymentStatus === "paid" ? (
-                            <>
-                              {item.transfered ? (
-                                // <FaCheckCircle size={30} />
-                                <>YES</>
-                              ) : (
-                                <button
-                                  // className="btn bg-orange"
-                                  className="btn"
-                                  onClick={() => {
-                                    setTx(item);
-                                    setShowModal(true);
-                                  }}
-                                >
-                                  {/* <BiSend size={25} color="#FFF" /> */}
-                                  NO
-                                </button>
-                              )}
-                            </>
-                          ) : (
-                            <>NO</>
-                          )}
-                        </td>
-                        {(activeTab === "orders" ||
-                          activeTab === "transport") && (
-                          <>
-                            {item.status === "failed" && (
-                              <td
-                                className="p-2 text-danger"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            )}
-                            {item.status === "pending" && (
-                              <td
-                                className="p-2 text-info"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            )}
-                            {item.status === "paid" && (
-                              <td
-                                className="p-2 text-success"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            )}
-                          </>
-                        )}
-                        {activeTab === "bookings" && (
-                          <>
-                            {item.paymentStatus === "failed" && (
-                              <td
-                                className="p-2 text-danger"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.paymentStatus}
-                              </td>
-                            )}
-                            {item.paymentStatus === "pending" && (
-                              <td
-                                className="p-2 text-info"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.paymentStatus}
-                              </td>
-                            )}
-                            {item.paymentStatus === "paid" && (
-                              <td
-                                className="p-2 text-success"
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.paymentStatus}
-                              </td>
-                            )}
-                          </>
-                        )}
-                        {activeTab === "transport" && (
-                          <>
-                            {item.status === "failed" && (
-                              <td
-                                className={
-                                  item.status === "paid"
-                                    ? "p-2 text-danger text-success"
-                                    : "p-2 text-danger text-danger"
-                                }
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {item.status}
-                              </td>
-                            )}
-                          </>
-                        )}
-                      </tr>
+                        item={item}
+                        i={i}
+                        setTx={setTx}
+                        activeTab={activeTab}
+                        setShowModal={setShowModal}
+                      />
                     ))}
                   </table>
                 </div>
