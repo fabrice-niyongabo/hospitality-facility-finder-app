@@ -16,6 +16,7 @@ const transportSchema = new mongoose.Schema({
   customerId: { type: String, required: true },
   driverId: { type: String, required: true, default: "-" },
   transfered: { type: String, required: true, default: "No" },
+  transportationManagerId: { type: String, required: true },
   transferId: { type: String, required: true, default: "-" },
   date: { type: String, default: new Date() },
 });

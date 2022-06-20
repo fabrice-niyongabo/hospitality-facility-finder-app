@@ -18,6 +18,7 @@ router.post("/book/", auth, async (req, res) => {
   //validate current transaction
   try {
     let parentTransction = null;
+    const transportationManagers = await Users.find({ role: "transport" });
     if (type === "orders") {
       parentTransction = await Orders.findOne({
         _id: pt,
@@ -29,30 +30,37 @@ router.post("/book/", auth, async (req, res) => {
         customerId: req.user.user_id,
       });
     }
-    if (parentTransction) {
-      let date =
-        type === "orders"
-          ? parentTransction.pickupDate
-          : parentTransction.checkinDate;
-      let tx = await Transportation.create({
-        km: km,
-        departureTime: departureTime,
-        departureDate: date,
-        transactionId: transactionId,
-        driverLanguage: driverLanguage,
-        paymentId: randomNumber(),
-        status: "paid",
-        amountPaid: amount,
-        amountToBePaid: km * 1500,
-        parentTransactionId: parentTransction._id,
-        managerId: parentTransction.managerId,
-        customerId: req.user.user_id,
-      });
-      return res
-        .status(200)
-        .send({ msg: "You have booked taxi successffuly", result: tx });
+    if (transportationManagers) {
+      if (parentTransction) {
+        let date =
+          type === "orders"
+            ? parentTransction.pickupDate
+            : parentTransction.checkinDate;
+        let tx = await Transportation.create({
+          km: km,
+          departureTime: departureTime,
+          departureDate: date,
+          transactionId: transactionId,
+          driverLanguage: driverLanguage,
+          paymentId: randomNumber(),
+          status: "paid",
+          amountPaid: amount,
+          amountToBePaid: km * 1500,
+          parentTransactionId: parentTransction._id,
+          transportationManagerId: transportationManagers[0]._id,
+          managerId: parentTransction.managerId,
+          customerId: req.user.user_id,
+        });
+        return res
+          .status(200)
+          .send({ msg: "You have booked taxi successffuly", result: tx });
+      } else {
+        return res.status(400).send({ msg: "Invalid parent transaction ID" });
+      }
     } else {
-      return res.status(400).send({ msg: "Invalid parent transaction ID" });
+      return res.status(400).send({
+        msg: "Dear user, we can't find any transportation service registered, contact admin for inconsistency.",
+      });
     }
   } catch (error) {
     return res.status(400).send({ msg: error.message });
