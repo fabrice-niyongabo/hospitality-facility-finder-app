@@ -28,6 +28,7 @@ const profileRoute = require("./routes/profile");
 const mapRoute = require("./routes/map");
 const driversRoute = require("./routes/drivers");
 const transportRoute = require("./routes/transport");
+const transfersRoute = require("./routes/transfers");
 app.use("/api/users/", usersRoute);
 app.use("/api/facility/", facilityRoute);
 app.use("/api/rooms/", roomsRoute);
@@ -40,6 +41,7 @@ app.use("/api/profile/", profileRoute);
 app.use("/api/map/", mapRoute);
 app.use("/api/drivers/", driversRoute);
 app.use("/api/transport/", transportRoute);
+app.use("/api/transfers/", transfersRoute);
 
 //404 route
 app.use("*", (req, res) => {
