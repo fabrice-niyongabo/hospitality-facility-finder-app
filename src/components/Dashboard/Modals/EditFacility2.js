@@ -8,6 +8,8 @@ function EditFacility2({
   setShowModal,
   setShowLoader,
   facility,
+  long,
+  lat,
   getCors,
   getData,
   users,
@@ -15,10 +17,14 @@ function EditFacility2({
 }) {
   const { token } = useSelector((state) => state.user);
   const [applicant, setApplicant] = useState([]);
+  const [latitude, setLatitude] = useState(lat);
+  const [longitude, setLongitude] = useState(long);
   useEffect(() => {
     if (showModal) {
       getCors();
       setApplicant(users.filter((item) => item._id === facility.managerId));
+      setLongitude(long);
+      setLatitude(lat);
     }
   }, [showModal]);
 
@@ -30,6 +36,8 @@ function EditFacility2({
       m_id: facility.managerId,
       f_t: facility.type,
       f_n: facility.name,
+      lat: latitude,
+      long: longitude,
     })
       .then((res) => {
         setShowModal(false);
@@ -84,6 +92,24 @@ function EditFacility2({
             <p className="m-0 p-0">Name: {applicant[0]?.fullName}</p>
             <p className="m-0 p-0">Phone: {applicant[0]?.phone}</p>
             <p className="m-0 p-0">Email: {applicant[0]?.email}</p>
+          </div>
+          <div className="form-group my-2">
+            <label>Longitude</label>
+            <input
+              type="text"
+              value={longitude}
+              className="form-control"
+              onChange={(e) => setLongitude(e.target.value)}
+            />
+          </div>
+          <div className="form-group my-2">
+            <label>Latitude</label>
+            <input
+              type="text"
+              value={latitude}
+              className="form-control"
+              onChange={(e) => setLatitude(e.target.value)}
+            />
           </div>
         </Modal.Body>
         <Modal.Footer>

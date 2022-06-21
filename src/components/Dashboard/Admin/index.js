@@ -200,6 +200,8 @@ function Admin() {
         getCors={getCors}
         getData={getData}
         facility={facility}
+        lat={lat}
+        long={long}
         users={users}
         results={results}
         setResults={setResults}
