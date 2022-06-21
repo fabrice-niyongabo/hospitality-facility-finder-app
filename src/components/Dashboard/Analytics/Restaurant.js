@@ -8,7 +8,6 @@ import Axios from "axios";
 import Loader from "../Modals/Loader";
 import { errorHandler } from "../../../helpers";
 import Chart from "../Restaurant/Chart";
-import { GrUser } from "react-icons/gr";
 import { Link } from "react-router-dom";
 
 function Restaurant() {
@@ -59,23 +58,29 @@ function Restaurant() {
                 borderRadius: 10,
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div
-                  className="bg-orange"
-                  style={{ width: 10, borderRadius: 10, height: 70 }}
-                ></div>
-                <div className="w-100" style={{ marginLeft: 15 }}>
-                  <h2 className="mb-0 quicksand-font">Loyal customers</h2>
-                  <p className="text-gray">These are our loyal customers</p>
+              {results.map((item, index) => (
+                <div className={results.length > 0 ? "mb-3" : ""}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div
+                      className="bg-orange"
+                      style={{ width: 10, borderRadius: 10, height: 70 }}
+                    ></div>
+                    <div className="w-100" style={{ marginLeft: 15 }}>
+                      <h2 className="mb-0 quicksand-font">
+                        Price analytics for {item.item.menuName}
+                      </h2>
+                      <p className="text-gray">{item.item.description}</p>
+                    </div>
+                  </div>
+                  <Chart data={item.data} />
                 </div>
-              </div>
-              <Chart />
+              ))}
             </div>
           </div>
         </div>

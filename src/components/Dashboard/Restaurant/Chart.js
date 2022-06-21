@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApexCharts from "react-apexcharts";
 
-function Chart() {
+function Chart({ data }) {
   const [series, setSeries] = useState([
     {
-      name: "Inflation",
-      data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
+      name: "Price",
+      data: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0,
+      ],
     },
   ]);
   const [options, setOptions] = useState({
@@ -13,92 +16,146 @@ function Chart() {
       height: 350,
       type: "bar",
     },
-    fill: {
-      colors: ["#f46a06"],
-    },
     plotOptions: {
       bar: {
-        // borderRadius: 10,
-        dataLabels: {
-          position: "top", // top, center, bottom
-        },
+        borderRadius: 10,
+        columnWidth: "50%",
       },
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val) {
-        return val + "%";
-      },
-      offsetY: -20,
-      style: {
-        fontSize: "12px",
-        colors: ["#000000"],
-      },
+    },
+    stroke: {
+      width: 0,
     },
 
+    grid: {
+      row: {
+        colors: ["#fff", "#f1e8d7"],
+      },
+    },
     xaxis: {
+      labels: {
+        rotate: -45,
+      },
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "01st",
+        "02nd",
+        "03rd",
+        "04th",
+        "05th",
+        "06th",
+        "07th",
+        "08th",
+        "09th",
+        "10th",
+        "11st",
+        "12nd",
+        "13rd",
+        "14th",
+        "15th",
+        "16th",
+        "17th",
+        "18th",
+        "19th",
+        "20th",
+        "21st",
+        "22nd",
+        "23rd",
+        "24th",
+        "25th",
+        "26th",
+        "27th",
+        "28th",
+        "29th",
+        "30th",
+        "31st",
       ],
-      position: "top",
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-      crosshairs: {
-        fill: {
-          type: "gradient",
-          gradient: {
-            colorFrom: "#000",
-            colorTo: "#000",
-            stops: [0, 100],
-            opacityFrom: 0.4,
-            opacityTo: 0.5,
-          },
-        },
-      },
-      tooltip: {
-        enabled: true,
-      },
+      tickPlacement: "on",
     },
     yaxis: {
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return val + "%";
-        },
+      title: {
+        text:
+          "Price History for " +
+          (new Date().getMonth() + 1) +
+          "/" +
+          new Date().getFullYear(),
       },
     },
-    // title: {
-    //   text: "Yearly analytics",
-    //   floating: true,
-    //   offsetY: 330,
-    //   align: "center",
-    //   style: {
-    //     color: "#444",
-    //     font,
-    //   },
-    // },
+    fill: {
+      colors: ["#f46a06"],
+    },
   });
+
+  const compare = (a, b) => {
+    if (a.day < b.day) {
+      return -1;
+    }
+    if (a.day > b.day) {
+      return 1;
+    }
+    return 0;
+  };
+  useEffect(() => {
+    const res = [];
+    const res2 = [];
+    const ss = [...data];
+    ss.sort(compare);
+    for (let i = 0; i < ss.length; i++) {
+      res.push(ss[i].price);
+      res2.push("On " + ss[i].day + "/" + ss[i].month + "/" + ss[i].year);
+    }
+    setSeries([
+      {
+        name: "Price",
+        data: [...res],
+      },
+    ]);
+    setOptions({
+      chart: {
+        height: 350,
+        type: "bar",
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: "50%",
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        width: 0,
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f1e8d7"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: res2,
+        tickPlacement: "on",
+      },
+      yaxis: {
+        title: {
+          text:
+            "Price History for " +
+            (new Date().getMonth() + 1) +
+            "/" +
+            new Date().getFullYear(),
+        },
+      },
+      fill: {
+        colors: ["#f46a06"],
+      },
+    });
+  }, [data]);
+
   return (
     <div id="chart">
       <ApexCharts options={options} series={series} type="bar" height={350} />
