@@ -12,7 +12,7 @@ router.get("/item/all/", auth, (req, res) => {
     if (err) {
       return res.status(400).send(err);
     } else {
-      res.status(200).send({ result });
+      return res.status(200).send({ result });
     }
   });
 });
@@ -48,13 +48,13 @@ router.post("/item/add/", auth, async (req, res) => {
         year: new Date().getFullYear(),
         price,
       });
-      res.status(201).json({
+      return res.status(201).json({
         msg: "Menu created successfull!",
         menu: rm,
       });
     }
   } catch (error) {
-    res.status(400).send({ msg: error.message });
+    return res.status(400).send({ msg: error.message });
   }
 });
 
@@ -71,16 +71,18 @@ router.post("/item/update/", auth, async (req, res) => {
     );
     const analytics = await Analytics.find({ itemId: id });
     if (analytics && analytics.length > 0) {
-      for (let i = 0; analytics.length; i++) {
+      for (let i = 0; i < analytics.length; i++) {
         const x = analytics[i];
-        if (
-          x.itemId == id &&
-          x.day == day &&
-          x.month == month &&
-          x.year == year
-        ) {
-          updateId = x._id;
-          break;
+        if (x) {
+          if (
+            x.itemId == id &&
+            x.day == day &&
+            x.month == month &&
+            x.year == year
+          ) {
+            updateId = x._id;
+            break;
+          }
         }
       }
       if (updateId !== "") {
@@ -107,7 +109,7 @@ router.post("/item/update/", auth, async (req, res) => {
         price,
       });
     }
-    res.status(200).send({ result });
+    return res.status(200).send({ result });
   } catch (error) {
     return res.status(400).send({ msg: error.message });
   }
