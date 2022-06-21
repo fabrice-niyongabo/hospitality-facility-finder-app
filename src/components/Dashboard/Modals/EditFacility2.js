@@ -29,26 +29,30 @@ function EditFacility2({
   }, [showModal]);
 
   const handleApprove = () => {
-    setShowLoader(true);
-    Axios.post(process.env.REACT_APP_BACKEND_URL + "/facility/approve/", {
-      token,
-      f_id: facility._id,
-      m_id: facility.managerId,
-      f_t: facility.type,
-      f_n: facility.name,
-      lat: latitude,
-      long: longitude,
-    })
-      .then((res) => {
-        setShowModal(false);
-        toastMessage("success", res.data.msg);
-        getData();
-        fetchData();
+    if (latitude.trim() !== "" && longitude.trim() !== "") {
+      setShowLoader(true);
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "/facility/approve/", {
+        token,
+        f_id: facility._id,
+        m_id: facility.managerId,
+        f_t: facility.type,
+        f_n: facility.name,
+        lat: latitude,
+        long: longitude,
       })
-      .catch((error) => {
-        setShowLoader(false);
-        errorHandler(error);
-      });
+        .then((res) => {
+          setShowModal(false);
+          toastMessage("success", res.data.msg);
+          getData();
+          fetchData();
+        })
+        .catch((error) => {
+          setShowLoader(false);
+          errorHandler(error);
+        });
+    } else {
+      toastMessage("error", "Please provide coordinates of the facility");
+    }
   };
   const handleReject = () => {
     setShowLoader(true);
