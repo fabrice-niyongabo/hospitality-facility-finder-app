@@ -40,10 +40,10 @@ router.get("/find/category/:category", (req, res) => {
 
 router.post("/approve/", auth, async (req, res) => {
   try {
-    const { f_id, m_id, f_t, f_n } = req.body;
+    const { f_id, m_id, f_t, f_n, lat, long } = req.body;
     const x = await Facilities.updateOne(
       { _id: f_id, managerId: m_id },
-      { status: "active" }
+      { status: "active", lat, long }
     );
     if (x) {
       await Users.updateOne({ _id: m_id }, { role: f_t, companyName: f_n });
