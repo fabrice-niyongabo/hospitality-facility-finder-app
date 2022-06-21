@@ -4,7 +4,7 @@ import Hotel from "./Hotel";
 import Restaurant from "./Restaurant";
 import Transport from "./Transport";
 
-function PaymentReports() {
+function Analytics() {
   const { role } = useSelector((state) => state.user);
   if (role === "hotel") {
     return <Hotel />;
@@ -17,4 +17,4 @@ function PaymentReports() {
   }
 }
 
-export default PaymentReports;
+export default Analytics;

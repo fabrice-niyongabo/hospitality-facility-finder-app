@@ -213,7 +213,7 @@ function ManageRooms() {
                       >
                         {item?.status === "paid" ||
                         item?.paymentStatus === "paid" ? (
-                          <>{item.transfered ? <>YES</> : <>NO</>}</>
+                          <>{item.transfered}</>
                         ) : (
                           <>NO</>
                         )}

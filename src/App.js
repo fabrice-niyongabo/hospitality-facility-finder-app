@@ -14,7 +14,6 @@ import { ToastContainer } from "react-toastify";
 import ManageServices from "./components/Dashboard/Hotel/ManageServices";
 import Account from "./components/Dashboard/Account";
 import OrderList from "./components/Dashboard/Restaurant/OrderList";
-import Analytics from "./components/Dashboard/Restaurant/Analytics";
 import Facility from "./components/Facility";
 import Cart from "./components/cart";
 import Profile from "./components/Profile";
@@ -28,6 +27,7 @@ import ManageReports from "./components/Dashboard/Transport/ManageReports";
 import ManageCustomers from "./components/Dashboard/Transport/ManageCustomers";
 import PaymentReports from "./components/Dashboard/PaymentReports";
 import ConfirmTransport from "./components/ConfirmTransport";
+import Analytics from "./components/Dashboard/Analytics";
 
 function App() {
   return (

@@ -208,7 +208,7 @@ function Transport() {
                         style={{ textTransform: "capitalize" }}
                       >
                         {item?.status === "paid" || item?.status === "paid" ? (
-                          <>{item.transfered ? <>YES</> : <>NO</>}</>
+                          <>{item.transfered}</>
                         ) : (
                           <>NO</>
                         )}
