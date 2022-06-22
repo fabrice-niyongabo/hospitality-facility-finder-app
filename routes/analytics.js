@@ -36,6 +36,29 @@ router.get("/find/:type", auth, async (req, res) => {
         });
       }
     }
+    if (type === "room") {
+      const analytics = await Analytics.find({
+        itemType: type,
+        managerId: req.user.user_id,
+        year,
+        month,
+      });
+
+      for (let i = 0; i < analytics.length; i++) {
+        if (!uniqueItems.includes(analytics[i].itemId)) {
+          uniqueItems.push(analytics[i].itemId);
+        }
+      }
+      for (let i = 0; i < uniqueItems.length; i++) {
+        const item = await Rooms.findOne({
+          _id: uniqueItems[i],
+        });
+        results.push({
+          item,
+          data: analytics.filter((item) => item._doc.itemId === uniqueItems[i]),
+        });
+      }
+    }
 
     res.status(200).send({ results });
   } catch (error) {

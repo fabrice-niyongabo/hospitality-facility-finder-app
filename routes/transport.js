@@ -1,15 +1,15 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const { randomNumber } = require("../helpers");
 
 const Transportation = require("../model/transportation");
+const TransportPrice = require("../model/transportPrice");
 const Orders = require("../model/orders");
 const Booking = require("../model/booking");
 const Users = require("../model/users");
 const Facility = require("../model/facility");
+const Analytics = require("../model/analytics");
 
 router.post("/book/", auth, async (req, res) => {
   const { km, departureTime, transactionId, driverLanguage, pt, type, amount } =
@@ -156,6 +156,112 @@ router.get("/find/", auth, async (req, res) => {
       }
     }
     return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
+
+router.get("/findPrice/", async (req, res) => {
+  try {
+    const transport = await TransportPrice.find({});
+    if (transport) {
+      if (transport.length === 1) {
+        return res.status(200).send({ price: transport[0].price });
+      } else {
+        await TransportPrice.deleteMany({});
+        return res.status(200).send({ price: 0 });
+      }
+    } else {
+      return res.status(200).send({ price: 0 });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
+
+router.post("/updatePrice/", auth, async (req, res) => {
+  try {
+    let updateId = "";
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const { price } = req.body;
+    const transport = await TransportPrice.find({});
+    if (transport) {
+      if (transport.length === 1) {
+        await TransportPrice.updateMany({}, { price });
+        const analytics = await Analytics.find({
+          itemId: "transport",
+          itemType: "transport",
+        });
+        if (analytics && analytics.length > 0) {
+          for (let i = 0; i < analytics.length; i++) {
+            const x = analytics[i];
+            if (x) {
+              if (
+                x.itemId == "transport" &&
+                x.day == day &&
+                x.month == month &&
+                x.year == year
+              ) {
+                updateId = x._id;
+                break;
+              }
+            }
+          }
+          if (updateId !== "") {
+            await Analytics.updateOne({ _id: updateId }, { price });
+          } else {
+            await Analytics.create({
+              managerId: req.user.user_id,
+              itemId: "transport",
+              itemType: "transport",
+              day,
+              month,
+              year,
+              price,
+            });
+          }
+        } else {
+          await Analytics.create({
+            managerId: req.user.user_id,
+            itemId: "transport",
+            itemType: "transport",
+            day,
+            month,
+            year,
+            price,
+          });
+        }
+      } else {
+        await TransportPrice.deleteMany({});
+        await Analytics.deleteMany({ itemId: "transport" });
+        await TransportPrice.create({ price });
+        await Analytics.create({
+          managerId: req.user.user_id,
+          itemId: "transport",
+          itemType: "transport",
+          day,
+          month,
+          year,
+          price,
+        });
+      }
+    } else {
+      await TransportPrice.create({ price });
+      await Analytics.create({
+        managerId: req.user.user_id,
+        itemId: "transport",
+        itemType: "transport",
+        day,
+        month,
+        year,
+        price,
+      });
+    }
+    return res
+      .status(200)
+      .send({ msg: "Transport price has been updated successful" });
   } catch (error) {
     return res.status(400).send({ msg: error.message });
   }

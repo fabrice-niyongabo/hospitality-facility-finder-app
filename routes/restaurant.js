@@ -69,7 +69,7 @@ router.post("/item/update/", auth, async (req, res) => {
       { managerId: req.user.user_id, _id: id },
       { menuName: name, quantity, price, description, category }
     );
-    const analytics = await Analytics.find({ itemId: id });
+    const analytics = await Analytics.find({ itemId: id, itemType: "menu" });
     if (analytics && analytics.length > 0) {
       for (let i = 0; i < analytics.length; i++) {
         const x = analytics[i];
@@ -131,15 +131,17 @@ router.get("/menus/:managerId/:category", (req, res) => {
   });
 });
 
-router.post("/item/delete/", auth, (req, res) => {
-  const { items } = req.body;
-  RestaurantsMenus.deleteMany({ _id: { $in: items } }, (err, result) => {
-    if (err) {
-      return res.status(400).send({ msg: err.message });
-    } else {
-      res.status(200).send({ result });
+router.post("/item/delete/", auth, async (req, res) => {
+  try {
+    const { items } = req.body;
+    const result = await RestaurantsMenus.deleteMany({ _id: { $in: items } });
+    for (let i = 0; i < items.length; i++) {
+      await Analytics.deleteMany({ itemType: "menu", itemId: items[i] });
     }
-  });
+    return res.status(200).send({ result });
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
 });
 
 module.exports = router;
