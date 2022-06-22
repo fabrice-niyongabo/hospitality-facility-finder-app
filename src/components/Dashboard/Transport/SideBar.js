@@ -1,6 +1,7 @@
 import React from "react";
 import { FaRegUserCircle, FaUserCog, FaClipboardList } from "react-icons/fa";
 import { RiFileListLine, RiLogoutCircleLine } from "react-icons/ri";
+import { SiGoogleanalytics } from "react-icons/si";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -48,6 +49,12 @@ function SideBar({ activate }) {
           <li className={activateMe("paymentreport")}>
             <FaClipboardList color="#f46a06" size={25} />
             <span>Payment reports</span>
+          </li>
+        </Link>
+        <Link to="/analytics">
+          <li className={activateMe("analytics")}>
+            <SiGoogleanalytics color="#f46a06" size={25} />
+            <span>Analytics</span>
           </li>
         </Link>
         <Link to="/account">
