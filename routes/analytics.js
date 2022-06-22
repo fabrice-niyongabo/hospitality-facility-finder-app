@@ -60,6 +60,27 @@ router.get("/find/:type", auth, async (req, res) => {
       }
     }
 
+    if (type === "transport") {
+      const analytics = await Analytics.find({
+        itemType: type,
+        managerId: req.user.user_id,
+        year,
+        month,
+      });
+
+      for (let i = 0; i < analytics.length; i++) {
+        if (!uniqueItems.includes(analytics[i].itemId)) {
+          uniqueItems.push(analytics[i].itemId);
+        }
+      }
+      for (let i = 0; i < uniqueItems.length; i++) {
+        results.push({
+          item: {},
+          data: analytics.filter((item) => item._doc.itemId === uniqueItems[i]),
+        });
+      }
+    }
+
     res.status(200).send({ results });
   } catch (error) {
     res.status(400).send({ msg: error.message });
