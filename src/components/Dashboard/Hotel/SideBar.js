@@ -1,6 +1,6 @@
 import React from "react";
 import { FaBed, FaHome, FaRegUserCircle } from "react-icons/fa";
-import { SiHotelsdotcom } from "react-icons/si";
+import { SiGoogleanalytics, SiHotelsdotcom } from "react-icons/si";
 import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
 import { RiLogoutCircleLine, RiSecurePaymentFill } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
@@ -57,6 +57,12 @@ function SideBar({ activate }) {
           <li className={activateMe("paymentreport")}>
             <RiSecurePaymentFill color="#f46a06" size={25} />
             <span>Payment Report</span>
+          </li>
+        </Link>
+        <Link to="/analytics">
+          <li className={activateMe("analytics")}>
+            <SiGoogleanalytics color="#f46a06" size={25} />
+            <span>Analytics</span>
           </li>
         </Link>
         <Link to="/account">

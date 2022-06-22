@@ -3,6 +3,7 @@ import { FaHome, FaPrint } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
 import SideBar from "../Restaurant/SideBar";
+import CoffeSidebar from "../CoffeeShop/SideBar";
 import Loader from "../Modals/Loader";
 import Axios from "axios";
 import { errorHandler } from "../../../helpers";
@@ -67,7 +68,11 @@ function Restaurant() {
     <div className="body">
       <div className="dashoard-main-container">
         <div className="sidebar">
-          <SideBar activate="paymentreport" />
+          {userObj.role === "restaurant" ? (
+            <SideBar activate="paymentreport" />
+          ) : (
+            <CoffeSidebar activate="paymentreport" />
+          )}
         </div>
         <div className="contents">
           <div className="contents-header">

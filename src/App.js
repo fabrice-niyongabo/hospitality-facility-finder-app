@@ -28,6 +28,7 @@ import ManageCustomers from "./components/Dashboard/Transport/ManageCustomers";
 import PaymentReports from "./components/Dashboard/PaymentReports";
 import ConfirmTransport from "./components/ConfirmTransport";
 import Analytics from "./components/Dashboard/Analytics";
+import Drivers from "./components/Dashboard/Transport/Drivers";
 
 function App() {
   return (
@@ -166,6 +167,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <OrderList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/drivers"
+            element={
+              <ProtectedRoute>
+                <Drivers />
               </ProtectedRoute>
             }
           />

@@ -141,26 +141,28 @@ function ManageCustomers() {
                           <td className="p-2">{item.driverId}</td>
                           <td className="p-2">{item.status}</td>
                           <td className="p-2">{item.deliveryStatus}</td>
-                          <td className="p-2">
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              <button
-                                className="btn bg-orange text-white"
-                                onClick={() => {
-                                  setTx(item);
-                                  setShowModal(true);
+                          {item.deliveryStatus !== "delivered" && (
+                            <td className="p-2">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
                                 }}
-                                style={{ marginRight: 10, width: 140 }}
                               >
-                                Assign Driver
-                              </button>
-                            </div>
-                          </td>
+                                <button
+                                  className="btn bg-orange text-white"
+                                  onClick={() => {
+                                    setTx(item);
+                                    setShowModal(true);
+                                  }}
+                                  style={{ marginRight: 10, width: 140 }}
+                                >
+                                  Assign Driver
+                                </button>
+                              </div>
+                            </td>
+                          )}
                         </tr>
                       ))}
                     </tbody>

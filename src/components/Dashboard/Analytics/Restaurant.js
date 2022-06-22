@@ -37,7 +37,7 @@ function Restaurant() {
           {userObj.role === "restaurant" ? (
             <SideBar activate="analytics" />
           ) : (
-            <CoffeSidebar />
+            <CoffeSidebar activate="analytics" />
           )}
         </div>
         <div className="contents">
@@ -59,7 +59,7 @@ function Restaurant() {
               }}
             >
               {results.map((item, index) => (
-                <div className={results.length > 0 ? "mb-3" : ""}>
+                <div key={index} className={results.length > 0 ? "mb-3" : ""}>
                   <div
                     style={{
                       display: "flex",

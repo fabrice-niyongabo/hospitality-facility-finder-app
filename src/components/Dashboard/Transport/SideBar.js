@@ -29,6 +29,12 @@ function SideBar({ activate }) {
         <Link to="/dashboard">
           <li className={activateMe("dashboard")}>
             <RiFileListLine color="#f46a06" size={25} />
+            <span>Dashboard</span>
+          </li>
+        </Link>
+        <Link to="/drivers">
+          <li className={activateMe("drivers")}>
+            <RiFileListLine color="#f46a06" size={25} />
             <span>Drivers List</span>
           </li>
         </Link>

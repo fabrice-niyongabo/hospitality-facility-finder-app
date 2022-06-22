@@ -8,7 +8,7 @@ function PaymentReports() {
   const { role } = useSelector((state) => state.user);
   if (role === "hotel") {
     return <Hotel />;
-  } else if (role === "restaurant" || role === "coffeshopp") {
+  } else if (role === "restaurant" || role === "coffeeshop") {
     return <Restaurant />;
   } else if (role === "transport") {
     return <Transport />;
