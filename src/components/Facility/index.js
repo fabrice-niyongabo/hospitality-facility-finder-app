@@ -181,8 +181,13 @@ function Facility() {
 
           {/* body */}
           {facility.type === "hotel" && <Hotel id={facility.managerId} />}
-          {facility.type === "restaurant" && (
-            <Restaurant id={facility.managerId} restoName={facility.name} />
+          {(facility.type === "restaurant" ||
+            facility.type === "coffeeshop") && (
+            <Restaurant
+              id={facility.managerId}
+              restoName={facility.name}
+              type={facility.type}
+            />
           )}
           {/* body */}
         </>

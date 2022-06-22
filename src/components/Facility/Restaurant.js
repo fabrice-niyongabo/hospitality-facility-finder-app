@@ -9,7 +9,7 @@ import RestaurantMenuItem from "./RestaurantMenuItem";
 import Axios from "axios";
 import Loader from "../Dashboard/Modals/Loader";
 import { useSelector } from "react-redux";
-function Restaurant({ id, restoName }) {
+function Restaurant({ id, restoName, type }) {
   const { cart } = useSelector((state) => state.cart);
   const [menus, setMenus] = useState([]);
   const [isLoadingMenus, setIsLoadingMenus] = useState(true);
@@ -56,12 +56,22 @@ function Restaurant({ id, restoName }) {
             >
               All
             </li>
-            <li
-              className={activeTab == "Main dishes" ? "active" : ""}
-              onClick={() => setActiveTab("Main dishes")}
-            >
-              Main dishes
-            </li>
+            {type === "restaurant" ? (
+              <li
+                className={activeTab == "Main dishes" ? "active" : ""}
+                onClick={() => setActiveTab("Main dishes")}
+              >
+                Main dishes
+              </li>
+            ) : (
+              <li
+                className={activeTab == "Coffee" ? "active" : ""}
+                onClick={() => setActiveTab("Coffee")}
+              >
+                Coffee
+              </li>
+            )}
+
             <li
               className={activeTab == "Snaks" ? "active" : ""}
               onClick={() => setActiveTab("Snaks")}

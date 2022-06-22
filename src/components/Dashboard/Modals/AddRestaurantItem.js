@@ -16,7 +16,7 @@ function AddRestaurantItem({
   itemsList,
   setItemsList,
 }) {
-  const { token } = useSelector((state) => state.user);
+  const { token, role } = useSelector((state) => state.user);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
@@ -136,8 +136,11 @@ function AddRestaurantItem({
                 required
               >
                 <option value="">choose category</option>
-                <option value="Main dishes">Main dishes</option>
-                <option value="Coffee">Coffee</option>
+                {role === "restaurant" ? (
+                  <option value="Main dishes">Main dishes</option>
+                ) : (
+                  <option value="Coffee">Coffee</option>
+                )}
                 <option value="Drinks">Drinks</option>
                 <option value="Snaks">Snaks</option>
               </select>

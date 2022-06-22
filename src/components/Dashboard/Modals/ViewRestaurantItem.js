@@ -11,7 +11,7 @@ function ViewRestaurantItem({
   setItemsList,
   itemsList,
 }) {
-  const { token } = useSelector((state) => state.user);
+  const { token, role } = useSelector((state) => state.user);
   const [editItem, setEditItem] = useState(false);
   const [name, setName] = useState(item.menuName);
   const [quantity, setQuantity] = useState(item.quantity);
@@ -185,7 +185,11 @@ function ViewRestaurantItem({
                     required
                   >
                     <option value={category}>{category}</option>
-                    <option value="Main dishes">Main dishes</option>
+                    {role === "restaurant" ? (
+                      <option value="Main dishes">Main dishes</option>
+                    ) : (
+                      <option value="Coffee">Coffee</option>
+                    )}
                     <option value="Coffee">Coffee</option>
                     <option value="Drinks">Drinks</option>
                     <option value="Snaks">Snaks</option>
