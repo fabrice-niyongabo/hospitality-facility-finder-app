@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEye, FaHome } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import "../../../styles/hotel.dashboard.scss";
-import SideBar from "../Hotel/SideBar";
+import SideBar from "../Transport/SideBar";
 import Axios from "axios";
 import Loader from "../Modals/Loader";
 import { errorHandler } from "../../../helpers";
