@@ -217,4 +217,29 @@ router.post("/check/", auth, async (req, res) => {
     });
 });
 
+router.post("/retry/", auth, async (req, res) => {
+  const { tId, id, type } = req.body;
+  var config = {
+    method: "get",
+    url: "https://api.flutterwave.com/v3/transfers/" + tId + "/retries",
+    headers: {
+      Authorization: "Bearer " + process.env.SECRET,
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios(config)
+    .then(function (response) {
+      // console.log(JSON.stringify(response.data));
+      return res.status(200).send({ status: "Check Again" });
+    })
+    .catch(function (error) {
+      if (error.response?.data?.message) {
+        return res.status(400).send({ msg: error.response.data.message });
+      } else {
+        return res.status(400).send({ msg: error.message });
+      }
+    });
+});
+
 module.exports = router;
