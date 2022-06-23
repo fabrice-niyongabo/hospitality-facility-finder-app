@@ -32,13 +32,15 @@ function BookTaxi({
   const [processStatus, setProcessStatus] = useState("");
   const [paymentId, setPaymentId] = useState("111");
   const [result, setResult] = useState(null);
+  const [isGettingPrice, setIsGettingPrice] = useState(true);
+  const [transportPrice, setTransportPrice] = useState(0);
 
   const config = {
     public_key: process.env.REACT_APP_PUBLIC_KEY,
     tx_ref: Date.now(),
     amount: (
       calCulateDistance(lat, long, facility.lat, facility.long).toFixed(1) *
-      amountPerKilometer
+      transportPrice
     ).toFixed(1),
     currency: "RWF",
     payment_options: "card,mobilemoney",
@@ -69,6 +71,16 @@ function BookTaxi({
         setErrorMessage(
           "Failed to get your current location. This is because you have not granted us permision to get your current loaction or the location is turned off on you device. Please fix this issue an try again later."
         );
+      });
+
+    Axios.get(process.env.REACT_APP_BACKEND_URL + "/transport/findPrice/")
+      .then((res) => {
+        setIsGettingPrice(false);
+        setTransportPrice(res.data.price);
+      })
+      .catch((error) => {
+        setIsGettingPrice(false);
+        errorHandler(error);
       });
   }, [showModal]);
   const handleSubmit = (e) => {
@@ -191,7 +203,7 @@ function BookTaxi({
                         long,
                         facility.lat,
                         facility.long
-                      ).toFixed(1) * amountPerKilometer
+                      ).toFixed(1) * transportPrice
                     ).toFixed(1)}{" "}
                     RWF /{" "}
                     {(
@@ -201,12 +213,22 @@ function BookTaxi({
                         facility.lat,
                         facility.long
                       ).toFixed(1) *
-                        amountPerKilometer) /
+                        transportPrice) /
                       1000
                     ).toFixed(1)}{" "}
                     USD
                   </p>
-                  <button className="text-white bg-orange btn">Pay Now</button>
+                  {isGettingPrice && (
+                    <div className="alert alert-info mt-3">
+                      Fetching transport price...
+                    </div>
+                  )}
+                  <button
+                    className="text-white bg-orange btn"
+                    disabled={isGettingPrice}
+                  >
+                    Pay Now
+                  </button>
                 </div>
               </form>
             </>
