@@ -32,10 +32,19 @@ router.post("/book/", auth, async (req, res) => {
     }
     if (transportationManagers) {
       if (parentTransction) {
+        let dbPrice = 0;
         let date =
           type === "orders"
             ? parentTransction.pickupDate
             : parentTransction.checkinDate;
+        const transport = await TransportPrice.find({});
+        if (transport) {
+          if (transport.length === 1) {
+            dbPrice = transport[0].price;
+          } else {
+            await TransportPrice.deleteMany({});
+          }
+        }
         let tx = await Transportation.create({
           km: km,
           departureTime: departureTime,
@@ -45,7 +54,7 @@ router.post("/book/", auth, async (req, res) => {
           paymentId: randomNumber(),
           status: "paid",
           amountPaid: amount,
-          amountToBePaid: km * 1500,
+          amountToBePaid: km * dbPrice,
           parentTransactionId: parentTransction._id,
           transportationManagerId: transportationManagers[0]._id,
           managerId: parentTransction.managerId,
