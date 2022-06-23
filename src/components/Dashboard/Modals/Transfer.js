@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Axios from "axios";
 import { errorHandler, randomNumber, toastMessage } from "../../../helpers";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { percentage } from "../../../constansts";
 function Transfer({

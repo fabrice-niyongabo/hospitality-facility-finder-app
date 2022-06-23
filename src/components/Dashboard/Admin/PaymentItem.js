@@ -2,35 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import Axios from "axios";
-import { handleAuthError } from "../../../helpers";
+import { errorHandler, handleAuthError } from "../../../helpers";
 
 function PaymentItem({ item, i, setTx, activeTab, setShowModal }) {
   const { token } = useSelector((state) => state.user);
-  const [isChecking, setIsChecking] = useState(true);
+  const [isChecking, setIsChecking] = useState(false);
   const [isRetrying, setIsRetrying] = useState(false);
   const [transferStatus, setTransferStatus] = useState("");
   useEffect(() => {
     setTransferStatus(item.transfered);
     if (item.transfered === "Pending") {
-      setIsChecking(true);
-      Axios.post(process.env.REACT_APP_BACKEND_URL + "/transfers/check/", {
-        tId: item.transferId,
-        type: item.transportationManagerId
-          ? "transport"
-          : item.facility[0]?.type,
-        id: item._id,
-        token,
-      })
-        .then((res) => {
-          setTransferStatus(res.data.status);
-          setIsChecking(false);
-        })
-        .catch((error) => {
-          setIsChecking(false);
-          handleAuthError(error);
-        });
+      handleChecking();
     }
   }, []);
+
+  const handleChecking = () => {
+    setIsChecking(true);
+    Axios.post(process.env.REACT_APP_BACKEND_URL + "/transfers/check/", {
+      tId: item.transferId,
+      type: item.transportationManagerId ? "transport" : item.facility[0]?.type,
+      id: item._id,
+      token,
+    })
+      .then((res) => {
+        setTransferStatus(res.data.status);
+        setIsChecking(false);
+      })
+      .catch((error) => {
+        setIsChecking(false);
+        handleAuthError(error);
+      });
+  };
 
   const handleRetry = () => {
     setIsRetrying(true);
@@ -46,7 +48,7 @@ function PaymentItem({ item, i, setTx, activeTab, setShowModal }) {
       })
       .catch((error) => {
         setIsRetrying(false);
-        handleAuthError(error);
+        errorHandler(error);
       });
   };
   return (
@@ -158,17 +160,34 @@ function PaymentItem({ item, i, setTx, activeTab, setShowModal }) {
                       setTx(item);
                       setShowModal(true);
                     }}
+                    title="Click to transfer"
                   >
                     {item.transfered}
                   </button>
                 ) : (
                   <>
                     {transferStatus == "Failed" ? (
-                      <button className="btn" onClick={() => handleRetry()}>
+                      <button
+                        className="btn"
+                        title="Click to retry transfer"
+                        onClick={() => handleRetry()}
+                      >
                         {transferStatus}
                       </button>
                     ) : (
-                      <>{transferStatus}</>
+                      <>
+                        {transferStatus === "Check Again" ? (
+                          <button
+                            className="btn"
+                            title="Click to check transfer status again"
+                            onClick={() => handleChecking()}
+                          >
+                            {transferStatus}
+                          </button>
+                        ) : (
+                          <>{transferStatus}</>
+                        )}
+                      </>
                     )}
                   </>
                 )}
