@@ -27,7 +27,9 @@ router.get("/find/category/:category", (req, res) => {
   if (category === "restaurants") query = { type: "restaurant" };
   if (category === "transports") query = { type: "transport" };
   if (category === "coffeeshops") query = { type: "coffeeshop" };
-  if (category === "hotels") query = { type: "hotel" };
+  if (category === "hotels") query = { type: "hotel", mainManagerId: "none" };
+  if (category === "hotelsb")
+    query = { type: "hotel", mainManagerId: { $ne: "none" } };
   Facilities.find(query, (err, result) => {
     if (err) {
       return res.status(400).send({ msg: err.message });
@@ -168,6 +170,49 @@ router.post("/create/", auth, async (req, res) => {
     }
   } else {
     return res.status(400).send({ msg: "Invalid facility type." });
+  }
+});
+
+router.post("/createBranch/", auth, async (req, res) => {
+  const {
+    name,
+    latitude,
+    longitude,
+    averagePrice,
+    stars,
+    address,
+    managerId,
+    type,
+    mainName,
+  } = req.body;
+  try {
+    //validate manager
+    const manager = await Users.findOne({ _id: managerId });
+    if (manager) {
+      const facility = await Facilities.create({
+        managerId: managerId + "at" + helpers.randomNumber(),
+        name,
+        type,
+        description: "",
+        address,
+        stars,
+        averagePrice,
+        lat: latitude,
+        long: longitude,
+        image: "",
+        mainManagerId: managerId,
+        mainName,
+      });
+      await Users.updateOne(
+        { _id: manager._id },
+        { companyName: name, role: type }
+      );
+      res.status(200).send({ msg: "Facility created successfull", facility });
+    } else {
+      return res.status(400).send({ msg: "Invalid manager ID." });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
   }
 });
 

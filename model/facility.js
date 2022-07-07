@@ -11,6 +11,8 @@ const facilitySchema = new mongoose.Schema({
   averagePrice: { type: String, default: "50000" },
   image: { type: String },
   managerId: { type: String, unique: true, required: true },
+  mainManagerId: { type: String, required: true, default: "none" },
+  mainName: { type: String, required: true, default: "none" },
   status: { type: String, required: true, default: "active" },
 });
 
