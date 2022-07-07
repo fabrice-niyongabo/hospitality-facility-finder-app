@@ -29,6 +29,7 @@ import PaymentReports from "./components/Dashboard/PaymentReports";
 import ConfirmTransport from "./components/ConfirmTransport";
 import Analytics from "./components/Dashboard/Analytics";
 import Drivers from "./components/Dashboard/Transport/Drivers";
+import ManageBranches from "./components/Dashboard/Admin/ManageBranches";
 
 function App() {
   return (
@@ -115,6 +116,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManageRestaurants />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managebranches"
+            element={
+              <ProtectedRoute>
+                <ManageBranches />
               </ProtectedRoute>
             }
           />

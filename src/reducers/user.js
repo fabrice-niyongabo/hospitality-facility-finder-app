@@ -15,6 +15,7 @@ const initialState = {
   email: "",
   role: "",
   token: "",
+  isBranch: false,
 };
 
 const user = (state = initialState, action) => {
@@ -45,6 +46,7 @@ const user = (state = initialState, action) => {
         email: "",
         role: "",
         token: "",
+        isBranch: false,
       };
 
     default:

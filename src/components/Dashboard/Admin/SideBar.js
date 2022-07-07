@@ -38,6 +38,12 @@ function SideBar({ activate }) {
             <span>Manage Hotels</span>
           </li>
         </Link>
+        <Link to="/managebranches">
+          <li className={activateMe("managebranches")}>
+            <RiSettingsLine color="#f46a06" size={25} />
+            <span>Hotel Branches</span>
+          </li>
+        </Link>
         <Link to="/managerestaurants">
           <li className={activateMe("managerestaurants")}>
             <RiSettingsLine color="#f46a06" size={25} />
