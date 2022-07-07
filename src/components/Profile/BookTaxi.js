@@ -87,7 +87,7 @@ function BookTaxi({
     e.preventDefault();
     const totalAmount =
       calCulateDistance(lat, long, facility.lat, facility.long).toFixed(1) *
-      amountPerKilometer;
+      transportPrice;
     if (totalAmount !== NaN && totalAmount > 0) {
       setErrorMessage("");
       setShowLoader(true);

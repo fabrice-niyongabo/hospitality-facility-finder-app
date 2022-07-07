@@ -9,14 +9,18 @@ import Loader from "../Modals/Loader";
 import { errorHandler } from "../../../helpers";
 import { Link } from "react-router-dom";
 import OrderDetails from "./OrderDetails";
+import { BiReset } from "react-icons/bi";
 
 function OrderList() {
   const userObj = useSelector((state) => state.user);
   const [showLoader, setShowLoader] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const [results, setResults] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [date, setDate] = useState("");
+
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -33,6 +37,7 @@ function OrderList() {
       .then((res) => {
         setShowLoader(false);
         setResults(res.data.result);
+        setAllData(res.data.result);
       })
       .catch((error) => {
         setShowLoader(false);
@@ -45,6 +50,22 @@ function OrderList() {
       total += results[i].order.totalAmount;
     }
     return total;
+  };
+
+  const handleFilter = (date) => {
+    setDate(date);
+    const dt = date.split("-");
+    setResults(
+      allData.filter(
+        (item) =>
+          new Date(item.order.date).getMonth() + 1 == dt[1] &&
+          new Date(item.order.date).getFullYear() == dt[0]
+      )
+    );
+  };
+  const handleReset = () => {
+    setResults(allData);
+    setDate("");
   };
   return (
     <div className="body">
@@ -122,6 +143,31 @@ function OrderList() {
                 >
                   COMPLETED ORDERS
                 </button>
+              </div>
+              <div>
+                <table>
+                  <tr>
+                    <td>Filter: </td>
+                    <td>
+                      <input
+                        type="month"
+                        onChange={(e) => handleFilter(e.target.value)}
+                      />
+                    </td>
+                    <td className="text-center">
+                      <button
+                        className="btn"
+                        style={{
+                          backgroundColor: "transparent",
+                          color: "brown",
+                        }}
+                        onClick={() => handleReset()}
+                      >
+                        <BiReset size={25} />
+                      </button>
+                    </td>
+                  </tr>
+                </table>
               </div>
               {results.length > 0 ? (
                 <>

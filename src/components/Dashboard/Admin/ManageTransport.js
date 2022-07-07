@@ -110,44 +110,46 @@ function ManageTransport() {
                     </button>
                   </div>
                 </div>
-                <table className="table">
-                  <tr>
-                    <th className="p-2">#ID</th>
-                    <th className="p-2">Name</th>
-                    <th className="p-2">Stars</th>
-                    <th className="p-2">Average price</th>
-                    <th className="p-2">Lat</th>
-                    <th className="p-2">Long</th>
-                    <th className="p-2">Address</th>
-                    <th className="p-2">Status</th>
-                  </tr>
-                  {results.map((item, i) => (
-                    <tr
-                      key={i}
-                      style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
-                    >
-                      <td className="p-2">{i + 1}</td>
-                      <td className="p-2">{item.name}</td>
-                      <td className="p-2">{item.stars}</td>
-                      <td className="p-2">{item.averagePrice}</td>
-                      <td className="p-2">{item.lat}</td>
-                      <td className="p-2">{item.long}</td>
-                      <td className="p-2">{item.address}</td>
-                      <td className="p-2">{item.status}</td>
-                      <td className="p-2">
-                        <button
-                          className="btn border"
-                          onClick={() => {
-                            setFacility(item);
-                            setShowEditModal(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                      </td>
+                <div className="table-responsive">
+                  <table className="table">
+                    <tr>
+                      <th className="p-2">#ID</th>
+                      <th className="p-2">Name</th>
+                      <th className="p-2">Stars</th>
+                      <th className="p-2">Average price</th>
+                      <th className="p-2">Lat</th>
+                      <th className="p-2">Long</th>
+                      <th className="p-2">Address</th>
+                      <th className="p-2">Status</th>
                     </tr>
-                  ))}
-                </table>
+                    {results.map((item, i) => (
+                      <tr
+                        key={i}
+                        style={{ borderTopColor: "#CCC", borderTopWidth: 1 }}
+                      >
+                        <td className="p-2">{i + 1}</td>
+                        <td className="p-2">{item.name}</td>
+                        <td className="p-2">{item.stars}</td>
+                        <td className="p-2">{item.averagePrice}</td>
+                        <td className="p-2">{item.lat}</td>
+                        <td className="p-2">{item.long}</td>
+                        <td className="p-2">{item.address}</td>
+                        <td className="p-2">{item.status}</td>
+                        <td className="p-2">
+                          <button
+                            className="btn border"
+                            onClick={() => {
+                              setFacility(item);
+                              setShowEditModal(true);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </table>
+                </div>
               </div>
             </div>
           </div>

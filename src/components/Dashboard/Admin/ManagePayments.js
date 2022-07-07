@@ -8,7 +8,7 @@ import Axios from "axios";
 import { errorHandler } from "../../../helpers";
 import { useSelector } from "react-redux";
 import { FaPrint, FaCheckCircle } from "react-icons/fa";
-import { BiSend } from "react-icons/bi";
+import { BiReset, BiSend } from "react-icons/bi";
 import Transfer from "../Modals/Transfer";
 import PaymentItem from "./PaymentItem";
 function ManagePayments() {
@@ -18,6 +18,8 @@ function ManagePayments() {
   const [results, setResults] = useState([]);
   const [activeTab, setActiveTab] = useState("orders");
   const [tx, setTx] = useState({});
+  const [allData, setAllData] = useState([]);
+  const [date, setDate] = useState("");
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -38,6 +40,7 @@ function ManagePayments() {
       .then((res) => {
         console.log(res.data);
         setResults(res.data.result);
+        setAllData(res.data.result);
         setShowLoader(false);
       })
       .catch((error) => {
@@ -53,6 +56,7 @@ function ManagePayments() {
       .then((res) => {
         console.log(res.data);
         setResults(res.data.result);
+        setAllData(res.data.result);
         setShowLoader(false);
       })
       .catch((error) => {
@@ -68,6 +72,7 @@ function ManagePayments() {
       .then((res) => {
         console.log(res.data);
         setResults(res.data.result);
+        setAllData(res.data.result);
         setShowLoader(false);
       })
       .catch((error) => {
@@ -75,6 +80,33 @@ function ManagePayments() {
         errorHandler(error);
       });
   };
+
+  const handleFilter = (date) => {
+    setDate(date);
+    const dt = date.split("-");
+    if (activeTab === "orders" || activeTab === "transport") {
+      setResults(
+        allData.filter(
+          (item) =>
+            new Date(item.date).getMonth() + 1 == dt[1] &&
+            new Date(item.date).getFullYear() == dt[0]
+        )
+      );
+    } else {
+      setResults(
+        allData.filter(
+          (item) =>
+            new Date(item.transactionDate).getMonth() + 1 == dt[1] &&
+            new Date(item.transactionDate).getFullYear() == dt[0]
+        )
+      );
+    }
+  };
+  const handleReset = () => {
+    setResults(allData);
+    setDate("");
+  };
+
   return (
     <>
       <div className="body">
@@ -187,6 +219,29 @@ function ManagePayments() {
                       >
                         TRANSPORT
                       </h4>
+                    </td>
+                  </tr>
+                </table>
+                <table>
+                  <tr>
+                    <td>Filter: </td>
+                    <td>
+                      <input
+                        type="month"
+                        onChange={(e) => handleFilter(e.target.value)}
+                      />
+                    </td>
+                    <td className="text-center">
+                      <button
+                        className="btn"
+                        style={{
+                          backgroundColor: "transparent",
+                          color: "brown",
+                        }}
+                        onClick={() => handleReset()}
+                      >
+                        <BiReset size={25} />
+                      </button>
                     </td>
                   </tr>
                 </table>
