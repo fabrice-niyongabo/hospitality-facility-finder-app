@@ -30,6 +30,7 @@ import ConfirmTransport from "./components/ConfirmTransport";
 import Analytics from "./components/Dashboard/Analytics";
 import Drivers from "./components/Dashboard/Transport/Drivers";
 import ManageBranches from "./components/Dashboard/Admin/ManageBranches";
+import Branches from "./components/Dashboard/Hotel/Branches";
 
 function App() {
   return (
@@ -153,6 +154,15 @@ function App() {
           />
           {/* admin routes */}
           {/* hotel routes */}
+
+          <Route
+            path="/branches"
+            element={
+              <ProtectedRoute>
+                <Branches />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/managerooms"
             element={

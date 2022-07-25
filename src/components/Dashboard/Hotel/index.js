@@ -86,6 +86,15 @@ function Hotel() {
                   <span>Room Types</span>
                 </div>
               </div>
+              <div className="col-md-4 py-4">
+                <div className="hotel-service">
+                  <a href="branches">
+                    <button className="btn bg-orange text-white">
+                      Switch Branches
+                    </button>
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="br my-4"></div>

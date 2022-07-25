@@ -29,7 +29,7 @@ function EditFacility2({
   }, [showModal]);
 
   const handleApprove = () => {
-    if (latitude.trim() !== "" && longitude.trim() !== "") {
+    if (latitude !== "" && longitude !== "") {
       setShowLoader(true);
       Axios.post(process.env.REACT_APP_BACKEND_URL + "/facility/approve/", {
         token,
@@ -120,7 +120,11 @@ function EditFacility2({
           <Button type="submit" variant="secondary" onClick={handleReject}>
             Reject
           </Button>
-          <Button type="submit" variant="primary" onClick={handleApprove}>
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={() => handleApprove()}
+          >
             Approve
           </Button>
         </Modal.Footer>
