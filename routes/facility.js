@@ -20,6 +20,35 @@ router.get("/detail", auth, (req, res) => {
   });
 });
 
+router.get("/getMyBranches", auth, async (req, res) => {
+  try {
+    let mainBranch = "";
+    const result = await Facilities.find({
+      $or: [
+        { managerId: req.user.user_id },
+        { mainManagerId: req.user.user_id },
+      ],
+    });
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].mainManagerId !== "none") {
+        mainBranch = result[i].mainManagerId;
+        break;
+      }
+    }
+    if (mainBranch !== "") {
+      return res.status(200).send({
+        result: await Facilities.find({
+          $or: [{ managerId: mainBranch }, { mainManagerId: mainBranch }],
+        }),
+      });
+    } else {
+      return res.status(200).send({ result });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: err.message });
+  }
+});
+
 //admin
 router.get("/find/category/:category", (req, res) => {
   const category = req.params["category"];
@@ -189,8 +218,17 @@ router.post("/createBranch/", auth, async (req, res) => {
     //validate manager
     const manager = await Users.findOne({ _id: managerId });
     if (manager) {
+      const branchUser = await Users.create({
+        fullName: manager.fullName,
+        email: manager.email + helpers.randomNumber(),
+        password: manager.password,
+        phone: manager.phone + helpers.randomNumber,
+        role: type,
+        token: "branch token",
+        companyName: "Branch of " + manager.companyName,
+      });
       const facility = await Facilities.create({
-        managerId: managerId + "at" + helpers.randomNumber(),
+        managerId: branchUser._id,
         name,
         type,
         description: "",
@@ -207,7 +245,7 @@ router.post("/createBranch/", auth, async (req, res) => {
         { _id: manager._id },
         { companyName: name, role: type }
       );
-      res.status(200).send({ msg: "Facility created successfull", facility });
+      res.status(200).send({ msg: "Branch created successfull", facility });
     } else {
       return res.status(400).send({ msg: "Invalid manager ID." });
     }

@@ -76,6 +76,86 @@ router.post("/updateInfo/", auth, (req, res) => {
   );
 });
 
+router.post("/updateToken/", auth, async (req, res) => {
+  const { id } = req.body;
+  try {
+    const facility = await Facility.findOne({ _id: id });
+    if (facility) {
+      if (facility.mainManagerId != "none") {
+        const user = await Users.findOne({ _id: facility.managerId });
+        const realManager = await Users.findOne({
+          _id: facility.mainManagerId,
+        });
+        if (user) {
+          const token = jwt.sign(
+            {
+              user_id: user._id,
+              email: realManager.email,
+              role: realManager.role,
+              phone: realManager.phone,
+              createdAt: realManager.createdAt,
+              companyName: realManager.companyName,
+              fullName: realManager.fullName,
+            },
+            process.env.TOKEN_KEY,
+            {
+              expiresIn: "2h",
+            }
+          );
+          return res.status(200).json({
+            phone: user.phone,
+            email: user.email,
+            fullName: user.fullName,
+            companyName: user.companyName,
+            role: user.role,
+            token,
+          });
+        } else {
+          return res
+            .status(400)
+            .send({ msg: "Can not find the owner of this facility" });
+        }
+      } else {
+        //real user
+        const user = await Users.findOne({ _id: facility.managerId });
+        if (user) {
+          const token = jwt.sign(
+            {
+              user_id: user._id,
+              email: user.email,
+              role: user.role,
+              phone: user.phone,
+              createdAt: user.createdAt,
+              companyName: user.companyName,
+              fullName: user.fullName,
+            },
+            process.env.TOKEN_KEY,
+            {
+              expiresIn: "2h",
+            }
+          );
+          return res.status(200).json({
+            phone: user.phone,
+            email: user.email,
+            fullName: user.fullName,
+            companyName: user.companyName,
+            role: user.role,
+            token,
+          });
+        } else {
+          return res
+            .status(400)
+            .send({ msg: "Can not find the owner of this facility" });
+        }
+      }
+    } else {
+      return res.status(400).send({ msg: "Invalid Facility." });
+    }
+  } catch (error) {
+    return res.status(400).send({ msg: error.message });
+  }
+});
+
 // admin
 router.post("/userInfo/", auth, (req, res) => {
   const { i } = req.body;
