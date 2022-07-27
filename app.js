@@ -30,6 +30,7 @@ const driversRoute = require("./routes/drivers");
 const transportRoute = require("./routes/transport");
 const transfersRoute = require("./routes/transfers");
 const analyticsRoute = require("./routes/analytics");
+const refundsRoute = require("./routes/refunds");
 app.use("/api/users/", usersRoute);
 app.use("/api/facility/", facilityRoute);
 app.use("/api/rooms/", roomsRoute);
@@ -44,6 +45,7 @@ app.use("/api/drivers/", driversRoute);
 app.use("/api/transport/", transportRoute);
 app.use("/api/transfers/", transfersRoute);
 app.use("/api/analytics/", analyticsRoute);
+app.use("/api/refunds/", refundsRoute);
 
 //404 route
 app.use("*", (req, res) => {
