@@ -14,6 +14,7 @@ function OrderItem({
   setShowLoader,
   setParentId,
   setFacility,
+  setRefundOrder,
 }) {
   const { fullName, phone, email, token, id } = useSelector(
     (state) => state.user
@@ -156,6 +157,8 @@ function OrderItem({
                 View Booked Taxi
               </button>
             )}
+
+            <p>Refund</p>
           </td>
         )}
       </tr>

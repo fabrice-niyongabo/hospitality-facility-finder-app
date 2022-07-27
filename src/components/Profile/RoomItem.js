@@ -4,7 +4,14 @@ import { BsCheck2Circle } from "react-icons/bs";
 import { errorHandler, toastMessage } from "../../helpers";
 import { Skeleton } from "@mui/material";
 import BookTaxi from "./BookTaxi";
-function RoomItem({ item, token, fetchData, setShowLoader }) {
+function RoomItem({
+  item,
+  token,
+  fetchData,
+  setShowLoader,
+  setRefundOrder,
+  setShowRefund,
+}) {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -124,6 +131,16 @@ function RoomItem({ item, token, fetchData, setShowLoader }) {
               )}
             </>
           )}
+          <p
+            className="text-success"
+            style={{ textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => {
+              setRefundOrder(item);
+              setShowRefund(true);
+            }}
+          >
+            Claim for Refund
+          </p>
         </td>
         <td>
           {item.paymentStatus === "pending" ? (

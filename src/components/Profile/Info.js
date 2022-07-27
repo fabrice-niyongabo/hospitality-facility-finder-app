@@ -14,6 +14,8 @@ function Info({
   token,
   setShowOrderDetailsModal,
   setOrderId,
+  setRefundOrder,
+  setShowRefund,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [facility, setFacility] = useState({});
@@ -136,6 +138,8 @@ function Info({
                           setParentId={setParentId}
                           setShowModal={setShowModal}
                           setShowOrderDetailsModal={setShowOrderDetailsModal}
+                          setRefundOrder={setRefundOrder}
+                          setShowRefund={setShowRefund}
                         />
                       ))}
                     </tbody>
@@ -151,6 +155,8 @@ function Info({
                         fetchData={fetchData}
                         setShowLoader={setShowLoader}
                         token={token}
+                        setRefundOrder={setRefundOrder}
+                        setShowRefund={setShowRefund}
                       />
                     ))}
                   </table>

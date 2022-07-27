@@ -10,6 +10,7 @@ import Loader from "../Dashboard/Modals/Loader";
 import ProfileDetails from "./ProfileDetails";
 import { useParams } from "react-router-dom";
 import OrderDetails from "./OrderDeatails";
+import Refund from "../Dashboard/Modals/Refund";
 function Profile() {
   const params = useParams();
   const { fullName, token } = useSelector((state) => state.user);
@@ -20,7 +21,9 @@ function Profile() {
   const [showLoader, setShowLoader] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showOrderDetailsModal, setShowOrderDetailsModal] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [refundOrder, setRefundOrder] = useState(null);
   useEffect(() => {
     fetchData();
   }, [activeTab]);
@@ -167,6 +170,8 @@ function Profile() {
           token={token}
           setShowOrderDetailsModal={setShowOrderDetailsModal}
           setOrderId={setOrderId}
+          setRefundOrder={setRefundOrder}
+          setShowRefund={setShowRefund}
         />
       </div>
       <Loader showLoader={showLoader} />
@@ -180,6 +185,13 @@ function Profile() {
         showModal={showOrderDetailsModal}
         orderId={orderId}
         setOrderId={setOrderId}
+      />
+      <Refund
+        setShowLoader={setShowLoader}
+        setShowModal={setShowRefund}
+        showModal={showRefund}
+        refundOrder={refundOrder}
+        setRefundOrder={setRefundOrder}
       />
     </>
   );
