@@ -30,6 +30,20 @@ function RoomItem({
       });
   }, []);
 
+  const showRefund = (date) => {
+    const currentDate = new Date();
+    const transactionDate = new Date(date);
+    if (currentDate.getHours() === transactionDate.getHours()) {
+      if (currentDate.getMinutes() - transactionDate.getMinutes() <= 30) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
+
   const handleCancel = () => {
     Axios.post(process.env.REACT_APP_BACKEND_URL + "/booking/cancel/", {
       id: item._id,
@@ -131,16 +145,19 @@ function RoomItem({
               )}
             </>
           )}
-          <p
-            className="text-success"
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-            onClick={() => {
-              setRefundOrder(item);
-              setShowRefund(true);
-            }}
-          >
-            Claim for Refund
-          </p>
+
+          {showRefund(item.transactionDate) && (
+            <p
+              className="text-success"
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => {
+                setRefundOrder(item);
+                setShowRefund(true);
+              }}
+            >
+              Claim for Refund
+            </p>
+          )}
         </td>
         <td>
           {item.paymentStatus === "pending" ? (
